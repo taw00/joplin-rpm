@@ -6,7 +6,8 @@ storing them, fully encrypted, on the local filesystem as well as syncing to
 the cloud, thus allowing your multiple devices to maintain the same set of
 documents.
 
-You can read more about what Joplin is [here](https://joplin.cozic.net).
+You can read more about what Joplin is [here](https://joplin.cozic.net) and
+[here](https://github.com/laurent22/joplin).
 
 # What's in this repository?
 
