@@ -114,3 +114,4 @@ sharing of documents making it very collaborative.
 Both are great projects. And yes, there are a lot of great markdown
 notebook-ish applications out there. But Turtl and Joplin are my two favorite
 projects in this application space.
+
