@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This metadata copyright 2019 Todd Warner <t0dd_at_protonmail.com> -->
+<!-- https://docs.fedoraproject.org/en-US/packaging-guidelines/AppData/ -->
+<!-- https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html -->
+<component type="desktop-application">
+  <id>joplin.desktop</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Joplin</name>
+  <summary>A free and secure notebook application.</summary>
+
+  <description>
+    <p>Joplin is a free and secure notebook application. Organization is easy using
+notebooks and tags which can all be synchronized between your various devices.
+The notes are can be searched, copied, tagged, and modified either from the
+applications directly or from your own favorite text editor. The notes are
+composed with the ever-popular and familiar markdown format.</p>
+
+    <p>Notes can be imported from Evernote, to include all associated resources
+(images, attachments, etc) and all metadata (geo-location, update time,
+creation time, etc). Notes can, of course, also be imported from any other
+markdown source.</p>
+
+    <p>Mirroring to your devices and redundancy is achieved by a simple, and
+optionally encrypted, synchronization to various cloud services including
+Nextcloud, Dropbox, Onedrive, WebDAV, or your local or network-accessible file
+system.</p>
+  </description>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>For all of your devices</caption>
+      <image>https://camo.githubusercontent.com/372ddfe5bb318ccbdd6803a8fec25b642a335a92/68747470733a2f2f6a6f706c696e2e636f7a69632e6e65742f696d616765732f416c6c436c69656e74732e6a7067</image>
+    </screenshot>
+  </screenshots>
+
+  <url type="homepage">https://joplin.cozic.net</url>
+  <url type="bugtracker">https://github.com/laurent22/joplin/issues</url>
+  <url type="bugtracker">https://github.com/taw00/joplin-rpm/issues</url>
+  <url type="help">https://discourse.joplin.cozic.net/</url>
+
+  <update_contact>t0dd_at_protonmail.com</update_contact>
+
+  <developer_name>Laurent Cozic</developer_name>
+
+  <provides>
+    <binary>joplin-desktop</binary>
+  </provides>
+
+  <releases>
+    <release version="1.0.140" date="2019-03-10">
+      <description>
+        <p>Bug fixes, code refactoring, and performance improvements.</p>
+      </description>
+    </release>
+  </releases>
+</component>
+

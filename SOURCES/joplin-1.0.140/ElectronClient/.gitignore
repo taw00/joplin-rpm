@@ -1,0 +1,6 @@
+app/node_modules/
+app/packageInfo.js
+dist/
+app/lib/
+app/gui/*.min.js
+.DS_Store
