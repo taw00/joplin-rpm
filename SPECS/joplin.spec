@@ -21,7 +21,7 @@ Name: joplin
 %define name2 joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -274,8 +274,6 @@ npm audit fix
 rsync --delete -aP ../ReactNativeClient/locales/ build/locales/
 cd ..
 
-echo "----------debugging----------------" ; tree -d -L 2 ElectronClient/app/dist/ ; echo "----------debugging----------------"
-
 
 %install
 # Install section starts us in directory {_builddir}/{sourceroot}
@@ -383,5 +381,6 @@ umask 007
 
 
 %changelog
-* Tue Mar 19 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.140-0.1.taw
+* Wed Mar 20 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.140-1.taw
+* Tue Mar 19 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.140-0.1.testing.taw
   - 1.0.140
