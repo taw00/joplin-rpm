@@ -31,7 +31,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 140
+%define verminor 142
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -111,28 +111,34 @@ Source1: https://github.com/taw00/joplin-rpm/blob/master/SOURCES/%{sourcetree_co
 BuildRequires: git rsync findutils 
 BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
-# This is super ugly
-# EL7 is too far behind on many many packages. Therefore, you have to pull
-# from other repos. In this case, nodejs and yarn.
-# Include these repos into your mock or build environments...
+%if 0%{?rhel} < 8
+# EL7 -- This is super ugly
+# EL7 is too far behind on many many packages (EL7 is based on F19 and F20).
+# Therefore, you have to pull from some RPMs from other repos. In this case,
+# nodejs and yarn. Include these repos into your mock or build environments...
 #   https://rpm.nodesource.com/pub_10.x/el/7/$basearch
 #   https://dl.yarnpkg.com/rpm/
 # Note that this version of nodejs installs npm as well.
 BuildRequires: nodejs >= 2:10
 BuildRequires: yarn
 BuildRequires: python
+%else
+# EL8 is based on Fedora 28 (sorta)
+# Note: /usr/bin/python is going away -- https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
+BuildRequires: nodejs npm python2
+%endif
 %endif
 
 %if 0%{?fedora:1}
 BuildRequires: git rsync findutils 
 BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
+# Note: /usr/bin/python is going away -- https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
 BuildRequires: python
 %if 0%{?fedora} >= 29
 BuildRequires: nodejs npm nodejs-yarn node-gyp
 %else
-# probably broken
-BuildRequires: nodejs npm
+BuildRequires: nodejs npm node-gyp
 %endif
 %endif
 
@@ -178,24 +184,27 @@ echo "Supporting ANY version of opensuse is a struggle. Fair warning."
 
 %if 0%{?fedora:1}
 echo "======== Fedora version: %{fedora}"
-%if 0%{?fedora} == 28
-echo "Fedora 28 can't be supported. Sorry."
-exit 1
-%endif
+#%%if 0%%{?fedora} == 28
+#  echo "Fedora 28 can't be supported. Sorry."
+#  exit 1
+#%%endif
 %if 0%{?fedora} < 28
-echo "Fedora 27 and older can't be supported. Sorry."
-exit 1
+  echo "Fedora 27 and older can't be supported. Sorry."
+  exit 1
 %endif
 %endif
 
 %if 0%{?rhel:1}
 echo "======== EL version: %{rhel}"
 %if 0%{?rhel} < 7
-echo "EL 6 and older can't be supported. Sorry."
-exit 1
+  echo "EL 6 and older can't be supported. Sorry."
+  exit 1
 %endif
 %if 0%{?rhel} >= 8
-echo "EL 8 and newer is untested thus far. Good luck."
+  # This is ugly. But EL8 doesn't have /usr/bin/python
+  # /usr/bin/python is going away -- https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
+  mkdir -p $HOME/.local/bin
+  ln -s /usr/bin/python2 $HOME/.local/bin/python
 %endif
 %endif
 
@@ -218,25 +227,24 @@ echo "EL 8 and newer is untested thus far. Good luck."
 
 %build
 # Build section starts us in directory {_builddir}/{sourceroot}
-
-# Clearing npm's cache and package lock to eliminate SHA1 integrity issues.
-#%%{warn: "taw build note: I keep running into this fatal error --'integrity checksum failed when using sha1'. Taking dramatic action -brute force- in an attempt to remedy it.' If someone can figure out what is causing this, I will buy them a beer."}
-#/usr/bin/npm cache clean --force
-#rm -rf ${HOME}/.npm/_cacache
-#rm -f package-lock.json
-
 cd %{sourcetree}
 
+#
+# tools (supportive)
+#
 cd Tools
 npm install
 npm audit fix
 cd ..
 
+#
 # desktop app
+#
 cd ElectronClient/app
 rsync --delete -a ../../ReactNativeClient/lib/ lib/
 npm install
 npm audit fix
+
 %if 0%{?fedora:1}
 # Fedora 29+
 %if 0%{?fedora} >= 29
@@ -244,29 +252,40 @@ npm audit fix
 # nodejs-yarn installs /usr/bin/yarnpkg for some reason (conflicts?). So, we
 # simply alias it so that embedded scripts don't stumble over this anomaly
 alias yarn='/usr/bin/yarnpkg'" >> ~/.bashrc
-  . ~/.bashrc
+  source ~/.bashrc
 # Fedora 28-
 %else
   npm install yarn
   _pwd=$(pwd)
   echo "\
 alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
-  . ~/.bashrc
+  source ~/.bashrc
   yarn add electron-builder --dev
   yarn add electron-packager --dev
 %endif
 %endif
-# Epel (EL7, RHEL/CentOS)
+
+# EL7 and 8
 %if 0%{?rhel:1}
-  # Note: If you did not add the two extra repos mentioned in the BuildRequires
-  # section into your build system, this will fail.
+%if 0%{?rhel} >= 8
+  npm install yarn
+  npm install gyp
+  _pwd=$(pwd)
+  echo "\
+alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
+  source ~/.bashrc
+%endif
   yarn add electron-builder --dev
   yarn add electron-packager --dev
 %endif
+
+# all versions of OS
 yarn dist
 cd ../..
 
+#
 # commandline app
+#
 cd CliClient
 npm install
 npm audit fix
@@ -381,6 +400,10 @@ umask 007
 
 
 %changelog
+* Tue Apr 02 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.142-1.taw
+* Tue Apr 02 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.142-0.1.testing.taw
+  - 1.0.142
+
 * Wed Mar 20 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.140-1.taw
 * Tue Mar 19 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.140-0.1.testing.taw
   - 1.0.140

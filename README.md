@@ -46,7 +46,7 @@ Open up a terminal and copy and paste these commands on the commandline of your
 Fedora Linux workstation/desktop. Note, I assume you are logged in as a user
 that has "sudo" rights.
 
-**For Fedora users...**
+**For Fedora and EL8 (RHEL8 and CentOS8) users...**
 ```
 # Initial install...
 sudo dnf copr enable taw/joplin
@@ -57,7 +57,7 @@ sudo dnf install -y joplin
 sudo dnf upgrade -y joplin
 ```
 
-**For RHEL or CentOS users (EL7 or "EPEL")...**
+**For EL7 (RHEL7 and CentOS7) users...**
 
 ```
 # Initial install...
