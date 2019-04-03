@@ -1,1 +1,0 @@
-Similarly, I need another regex to match double newlines (`\n\n`) that are not part of a longer run of newline characters like `\n\n\n` or `\n\n\n\n\n\n` etc.

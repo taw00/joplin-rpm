@@ -1,1 +1,0 @@
-[Testing](http://example.com/That%20is%20not%20right)

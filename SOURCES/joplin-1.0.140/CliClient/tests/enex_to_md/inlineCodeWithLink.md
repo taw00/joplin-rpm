@@ -1,1 +1,0 @@
-the `[runtime.onConnect](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onConnect)` listener gets passed its own `[runtime.Port](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/Port)` object.
