@@ -303,7 +303,6 @@ alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
 
 # all versions of OS
 yarn dist
-exit 1
 cd ../..
 
 #
