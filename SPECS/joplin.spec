@@ -35,9 +35,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -179,7 +179,6 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 echo "======== Opensuse version: %{suse_version}"
 echo "Right now... OpenSUSE is not supported. Sorry."
 exit 1
-echo "Supporting ANY version of opensuse is a struggle. Fair warning."
 %endif
 
 %if 0%{?fedora:1}
@@ -202,9 +201,12 @@ echo "======== EL version: %{rhel}"
 %endif
 %if 0%{?rhel} >= 8
   # This is ugly. But EL8 doesn't have /usr/bin/python
-  # /usr/bin/python is going away -- https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
+  # /usr/bin/python is going away: https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
+  # ...brute forcing things...
   mkdir -p $HOME/.local/bin
-  ln -s /usr/bin/python2 $HOME/.local/bin/python
+  if [ ! -e "$HOME/.local/bin/python" ] ;  then
+    ln -s /usr/bin/python2 $HOME/.local/bin/python
+  fi
 %endif
 %endif
 
@@ -242,24 +244,38 @@ cd ..
 #
 cd ElectronClient/app
 rsync --delete -a ../../ReactNativeClient/lib/ lib/
+# to force pathing for python in .local (EL8)
+source ~/.bashrc
 npm install
 npm audit fix
 
 %if 0%{?fedora:1}
 # Fedora 29+
 %if 0%{?fedora} >= 29
-  echo "\
+  #source ~/.bashrc
+  #which yarn > /dev/null 2>&1
+  #if [ "$?" -ne 0 ] ; then
+    echo "\
+# yarn alias inserted here by the Joplin RPM specfile build script
+# this can be removed after build is complete
 # nodejs-yarn installs /usr/bin/yarnpkg for some reason (conflicts?). So, we
 # simply alias it so that embedded scripts don't stumble over this anomaly
 alias yarn='/usr/bin/yarnpkg'" >> ~/.bashrc
-  source ~/.bashrc
+    source ~/.bashrc
+  #fi
 # Fedora 28-
 %else
   npm install yarn
-  _pwd=$(pwd)
-  echo "\
+  #source ~/.bashrc
+  #which yarn > /dev/null 2>&1
+  #if [ "$?" -ne 0 ] ; then
+    _pwd=$(pwd)
+    echo "\
+# yarn alias inserted here by the Joplin RPM specfile build script
+# this can be removed after build is complete
 alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
-  source ~/.bashrc
+    source ~/.bashrc
+  #fi
   yarn add electron-builder --dev
   yarn add electron-packager --dev
 %endif
@@ -268,12 +284,18 @@ alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
 # EL7 and 8
 %if 0%{?rhel:1}
 %if 0%{?rhel} >= 8
-  npm install yarn
   npm install gyp
-  _pwd=$(pwd)
-  echo "\
+  npm install yarn
+  #source ~/.bashrc
+  #which yarn > /dev/null 2>&1
+  #if [ "$?" -ne 0 ] ; then
+    _pwd=$(pwd)
+    echo "\
+# yarn alias inserted here by the Joplin RPM specfile build script
+# this can be removed after build is complete
 alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
-  source ~/.bashrc
+    source ~/.bashrc
+  #fi
 %endif
   yarn add electron-builder --dev
   yarn add electron-packager --dev
@@ -281,6 +303,7 @@ alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
 
 # all versions of OS
 yarn dist
+exit 1
 cd ../..
 
 #
@@ -400,6 +423,11 @@ umask 007
 
 
 %changelog
+* Wed Apr 03 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.142-2.taw
+* Wed Apr 03 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.142-1.1.testing.taw
+  - a bit more checking during builds for existence of python symlink
+  - have to force the path reset right prior to npm install for EL8 support
+
 * Tue Apr 02 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.142-1.taw
 * Tue Apr 02 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.142-0.1.testing.taw
   - 1.0.142
