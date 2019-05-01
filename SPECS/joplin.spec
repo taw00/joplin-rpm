@@ -238,6 +238,7 @@ cd %{sourcetree}
 #
 cd Tools
 npm install
+npm update
 npm audit fix
 cd ..
 
@@ -249,6 +250,7 @@ rsync --delete -a ../../ReactNativeClient/lib/ lib/
 # to force pathing for python in .local (EL8)
 source ~/.bashrc
 npm install
+npm update
 npm audit fix
 
 %if 0%{?fedora:1}
@@ -312,6 +314,7 @@ cd ../..
 #
 cd CliClient
 npm install
+npm update
 npm audit fix
 ./build.sh
 rsync --delete -aP ../ReactNativeClient/locales/ build/locales/
