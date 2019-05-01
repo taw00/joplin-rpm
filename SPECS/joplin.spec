@@ -21,7 +21,7 @@ Name: joplin
 %define name2 joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -31,7 +31,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 143
+%define verminor 144
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -424,8 +424,13 @@ umask 007
 
 
 %changelog
+* Wed May 01 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.143-1.taw
+* Wed May 01 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.143-0.1.testing.taw
+  - 1.0.144
+
 * Mon Apr 22 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.143-1.taw
 * Mon Apr 22 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.143-0.1.testing.taw
+  - 1.0.143
   - normal soft break behavior rolled into the application. Woot.  
     https://github.com/laurent22/joplin/pull/1408
 
