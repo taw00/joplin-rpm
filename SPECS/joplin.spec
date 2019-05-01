@@ -31,13 +31,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 142
+%define verminor 143
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -47,9 +47,11 @@ Version: %{vermajor}.%{verminor}
 # Build the release string - don't edit this
 #
 
-%define snapinfo testing
+%define snapinfo highlyexperimental
 %if %{targetIsProduction}
   %undefine snapinfo
+%else
+  %define snapinfo testing
 %endif
 %if 0%{?buildQualifier:1}
   %define snapinfo %{buildQualifier}
@@ -388,7 +390,7 @@ ln -s %{installtree}/desktop/joplin %{buildroot}%{_bindir}/%{name2}
 # AppImage build
 %else
 # This is SUPER ugly... It's an alternative if we want to use it.
-install -D -m755 -p %{sourcetree}/ElectronClient/app/dist/'Joplin 1.0.140.AppImage' %{buildroot}%{_bindir}/%{name2}
+install -D -m755 -p %{sourcetree}/ElectronClient/app/dist/'Joplin '%{version}'.AppImage' %{buildroot}%{_bindir}/%{name2}
 %endif
 
 
@@ -422,6 +424,11 @@ umask 007
 
 
 %changelog
+* Mon Apr 22 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.143-1.taw
+* Mon Apr 22 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.143-0.1.testing.taw
+  - normal soft break behavior rolled into the application. Woot.  
+    https://github.com/laurent22/joplin/pull/1408
+
 * Wed Apr 03 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.142-2.taw
 * Wed Apr 03 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.142-1.1.testing.taw
   - a bit more checking during builds for existence of python symlink
