@@ -18,7 +18,8 @@
 # <name>-<vermajor.<verminor>-<pkgrel>[.<extraver>][.<snapinfo>].DIST[.<minorbump>]
 
 Name: joplin
-%define name2 joplin-desktop
+%define name_cli joplin-cli
+%define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
 %define targetIsProduction 0
@@ -238,8 +239,12 @@ cd %{sourcetree}
 #
 cd Tools
 npm install
-npm update
-npm audit fix
+%if 0%{?fedora:1}
+  echo "======== Fedora version: %{fedora}"
+%if 0%{?fedora} < 30
+  #npm audit fix
+%endif
+%endif
 cd ..
 
 #
@@ -250,8 +255,12 @@ rsync --delete -a ../../ReactNativeClient/lib/ lib/
 # to force pathing for python in .local (EL8)
 source ~/.bashrc
 npm install
-npm update
-npm audit fix
+%if 0%{?fedora:1}
+  echo "======== Fedora version: %{fedora}"
+%if 0%{?fedora} < 30
+  #npm audit fix
+%endif
+%endif
 
 %if 0%{?fedora:1}
 # Fedora 29+
@@ -314,8 +323,12 @@ cd ../..
 #
 cd CliClient
 npm install
-npm update
-npm audit fix
+%if 0%{?fedora:1}
+  echo "======== Fedora version: %{fedora}"
+%if 0%{?fedora} < 30
+  #npm audit fix
+%endif
+%endif
 ./build.sh
 rsync --delete -aP ../ReactNativeClient/locales/ build/locales/
 cd ..
@@ -350,7 +363,7 @@ Type=Application
 Name=Joplin
 GenericName=Secure notes
 Comment=A secure notebook
-Exec=%{name2}
+Exec=%{name_desktop}
 Icon=%{name}
 Terminal=false
 Categories=Office;
@@ -387,13 +400,14 @@ rm -rf $(find %{sourcetree}/ElectronClient/app/dist/linux-unpacked/resources/app
 cp -a %{sourcetree}/CliClient/build/* %{buildroot}%{installtree}/cli/
 cp -a %{sourcetree}/ElectronClient/app/dist/linux-unpacked/* %{buildroot}%{installtree}/desktop/
 # a little ugly
-ln -s %{installtree}/cli/main.js %{buildroot}%{_bindir}/%{name}
-ln -s %{installtree}/desktop/joplin %{buildroot}%{_bindir}/%{name2}
+ln -s %{installtree}/cli/main.js %{buildroot}%{installtree}/cli/%{name_cli}
+ln -s %{installtree}/desktop/joplin %{buildroot}%{installtree}/desktop/%{name_desktop}
+ln -s %{installtree}/desktop/joplin %{buildroot}%{_bindir}/%{name_desktop}
 
 # AppImage build
 %else
 # This is SUPER ugly... It's an alternative if we want to use it.
-install -D -m755 -p %{sourcetree}/ElectronClient/app/dist/'Joplin '%{version}'.AppImage' %{buildroot}%{_bindir}/%{name2}
+install -D -m755 -p %{sourcetree}/ElectronClient/app/dist/'Joplin '%{version}'.AppImage' %{buildroot}%{_bindir}/%{name_desktop}
 %endif
 
 
@@ -402,7 +416,7 @@ install -D -m755 -p %{sourcetree}/ElectronClient/app/dist/'Joplin '%{version}'.A
 %license %{sourcetree}/LICENSE
 %doc %{sourcetree}/ElectronClient/app/dist/linux-unpacked/LICENSE.electron.txt
 %doc %{sourcetree}/ElectronClient/app/dist/linux-unpacked/LICENSES.chromium.html
-%{_bindir}/%{name2}
+%{_bindir}/%{name_desktop}
 %{_datadir}/icons/*
 %{_datadir}/applications/%{name}.desktop
 %{_metainfodir}/%{name}.appdata.xml
@@ -410,7 +424,7 @@ install -D -m755 -p %{sourcetree}/ElectronClient/app/dist/'Joplin '%{version}'.A
 %if 0%{?nativebuild:1}
 # /usr/share/joplin
 %{installtree}
-%{_bindir}/%{name}
+#%%{_bindir}/%%{name_cli}
 %endif
 
 
@@ -427,9 +441,11 @@ umask 007
 
 
 %changelog
-* Sat May 04 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.145-1.taw
-* Sat May 04 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.145-0.1.testing.taw
+* Mon May 06 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.145-1.taw
+* Mon May 06 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.145-0.1.testing.taw
   - 1.0.145
+  - Note, have to tred carefully with npm update and audit fix.  
+    Can lead to breakage and behavior is never certain.
 
 * Wed May 01 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.144-1.taw
 * Wed May 01 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.144-0.1.testing.taw
