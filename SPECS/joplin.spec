@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 145
+%define verminor 147
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -441,6 +441,10 @@ umask 007
 
 
 %changelog
+* Mon May 11 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.147-1.taw
+* Mon May 11 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.147-0.1.testing.taw
+  - 1.0.147
+
 * Mon May 06 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.145-1.taw
 * Mon May 06 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.145-0.1.testing.taw
   - 1.0.145
