@@ -1,4 +1,4 @@
-# Joplin: a free and secure notebook - for Fedora Linux
+# Joplin: A free and secure notebook - for Fedora Linux
 
 Joplin is a nifty desktop and mobile application for writing and organizing
 [markdown](https://en.wikipedia.org/wiki/Markdown)-formatted documents and then
@@ -29,7 +29,7 @@ RPMs is very much like any other software or documentation effort. That effort
 for Joplin is maintained with source-control via github. Binaries are provided
 [here](https://copr.fedorainfracloud.org/coprs/taw/joplin/). But you don't need
 to know a whole lot about Fedora's COPR build environment to install and user
-these RPMs. Just follow the "TL;DR" instructions below to install Turtl.
+these RPMs. Just follow the "TL;DR" instructions below to install Joplin.
 
 If you are technically able, you can build your own binary packages from the
 source RPMs provided in this github repository. Please note that all `src.rpm`
@@ -74,25 +74,6 @@ Once installed, find Joplin in your menus or normal application search and run
 it.
 
 * Note: data is, by default, located here: `~/.config/Joplin
-
-## A comment about how Turtl Desktop word-wraps paragraphs of text
-
-**A soft break:** When line breaks in a paragraph of text are ignored upon
-rendering the final published content. The markdown interpreter will freely flow the
-paragraph of text as needed to fit the dimensions of the document. Hard breaks
-can still be forced with <br/> or a double-space at the end of a line.
-Traditional markdown assumes 'soft breaking' behavior.
-
-**A hard break:** When every line break in a paragraph of text is treated as a
-carriage return in the final published content, regardless of the dimensions
-and margin spacing of the output medium.
-
-***Joplin has 'hard breaking' behavior set by default. And as of yet, there is
-no easy way to change this.***
-
-You can read more about a "soft line-breaks", otherwise known as a "soft
-breaks" or "soft returns" here:
-<https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap#Soft_and_hard_returns>
 
 ---
 
