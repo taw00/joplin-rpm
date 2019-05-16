@@ -1,4 +1,4 @@
-# Joplin: A free and secure notebook - for Fedora Linux
+# Joplin - a free and secure notebook - for Fedora Linux
 
 Joplin is a nifty desktop and mobile application for writing and organizing
 [markdown](https://en.wikipedia.org/wiki/Markdown)-formatted documents and then
@@ -80,7 +80,7 @@ it.
 ## Comments? Suggestions?
 Open an issue here, or send me a note via Keybase -- https://keybase.io/toddwarner
 
-## Turtl, that other notebook application
+## What about Turtl, that other notebook application?
 
 I also build packages for Turtl. Another encrypted multi-device opensource
 notebook application. You can find more information about that
