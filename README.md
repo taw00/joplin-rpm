@@ -1,4 +1,4 @@
-# Joplin - a secure, opensource note taking and organizing application for Fedora Linux
+# Joplin - a secure, open-source note taking and management application for Fedora Linux
 
 Joplin is a powerful desktop and mobile application for writing and organizing
 [markdown-formatted](https://en.wikipedia.org/wiki/Markdown) documents and then
