@@ -1,13 +1,53 @@
-# Joplin - a free and secure notebook - for Fedora Linux
+# Joplin - an opensouce and secure notebook for Fedora Linux
 
-Joplin is a nifty desktop and mobile application for writing and organizing
-[markdown](https://en.wikipedia.org/wiki/Markdown)-formatted documents and then
-storing them, fully encrypted, on the local filesystem as well as syncing to
-the cloud, thus allowing your multiple devices to maintain the same set of
-documents.
+Joplin is a powerful desktop and mobile application for writing and organizing
+[markdown-formatted](https://en.wikipedia.org/wiki/Markdown) documents and then
+storing them, fully end-to-end encrypted, on the local filesystem as well as
+syncing to the cloud, thus allowing your multiple devices to maintain the same
+set of documents.
 
 You can read more about what Joplin is [here](https://joplin.cozic.net) and
 [here](https://github.com/laurent22/joplin).
+
+## TL;DR - I want to install Joplin!
+
+Open up a terminal and copy and paste these commands on the commandline of your
+Fedora Linux workstation or desktop. Note, I assume you are logged in as a user
+that has "sudo" rights.
+
+**For Fedora users...**  
+_note: EL8/RHEL8/CentOS8 builds are in testing_
+
+```
+# Initial install...
+sudo dnf copr enable taw/joplin
+sudo dnf install -y joplin
+```
+```
+# Update/upgrade...
+sudo dnf upgrade -y joplin
+```
+
+**For EL7 (RHEL7 and CentOS7) users...**
+_note: EL7 builds will be ending soon, migrate to Fedora_
+
+```
+# Initial install...
+sudo yum install -y yum-plugin-copr
+sudo yum copr enable taw/joplin
+sudo yum install -y joplin
+```
+```
+# Update/upgrade...
+sudo yum update -y joplin
+```
+
+Once installed, find Joplin in your menus or normal application search and run
+it.
+
+* Note: data is, by default, located here: `~/.config/Joplin
+
+---
 
 # What's in this repository?
 
@@ -39,41 +79,6 @@ files (found here) will be signed with my general-purpose GPG key found here:
 Packages delivered via COPR are signed with a GPG key specific to that
 repository. COPR enablement as shown below (TL;DR) will install this key
 appropriately when necessary.
-
-## TL;DR - I want to install Joplin!
-
-Open up a terminal and copy and paste these commands on the commandline of your
-Fedora Linux workstation/desktop. Note, I assume you are logged in as a user
-that has "sudo" rights.
-
-**For Fedora and EL8 (RHEL8 and CentOS8) users...**
-```
-# Initial install...
-sudo dnf copr enable taw/joplin
-sudo dnf install -y joplin
-```
-```
-# Update/upgrade...
-sudo dnf upgrade -y joplin
-```
-
-**For EL7 (RHEL7 and CentOS7) users...**
-
-```
-# Initial install...
-sudo yum install -y yum-plugin-copr
-sudo yum copr enable taw/joplin
-sudo yum install -y joplin
-```
-```
-# Update/upgrade...
-sudo yum update -y joplin
-```
-
-Once installed, find Joplin in your menus or normal application search and run
-it.
-
-* Note: data is, by default, located here: `~/.config/Joplin
 
 ---
 
