@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -441,6 +441,7 @@ umask 007
 
 
 %changelog
+* Mon May 26 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.157-1.taw
 * Fri May 24 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.157-0.1.testing.taw
   - 1.0.157
 
