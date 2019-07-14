@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 160
+%define verminor 161
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -80,7 +80,8 @@ Release: %{_release}
 # https://fedoraproject.org/wiki/Licensing:Main?rd=Licensing
 # Apache Software License 2.0
 License: MIT
-URL: https://joplin.cozic.net/
+# URL: https://joplin.cozic.net/
+URL: https://joplinapp.org/
 # Note, for example, this will not build on ppc64le
 ExclusiveArch: x86_64 i686 i586 i386
 
@@ -441,6 +442,9 @@ umask 007
 
 
 %changelog
+* Sun Jul 14 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.161-1.taw
+  - 1.0.161
+
 * Tue Jun 18 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.160-1.taw
 * Tue Jun 18 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.160-0.1.testing.taw
   - 1.0.160
