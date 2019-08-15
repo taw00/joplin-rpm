@@ -34,10 +34,10 @@ system.</p>
     </screenshot>
   </screenshots>
 
-  <url type="homepage">https://joplin.cozic.net</url>
+  <url type="homepage">https://joplinapp.org/</url>
   <url type="bugtracker">https://github.com/laurent22/joplin/issues</url>
   <url type="bugtracker">https://github.com/taw00/joplin-rpm/issues</url>
-  <url type="help">https://discourse.joplin.cozic.net/</url>
+  <url type="help">https://discourse.joplinapp.org/</url>
 
   <update_contact>t0dd_at_protonmail.com</update_contact>
 
@@ -48,6 +48,32 @@ system.</p>
   </provides>
 
   <releases>
+    <release version="1.0.165" date="2019-08-15">
+      <description>
+        <p>More information here: https://github.com/laurent22/joplin/releases/tag/v1.0.165</p>
+        <p>Summary:</p>
+        <ul>
+            <li>New: Added support for Fountain screenwriting language</li>
+            <li>New: Add solarized themes to desktop client (#1733)</li>
+            <li>New: Added support for templates (#1647)</li>
+            <li>New: Added markup language to property dialog</li>
+            <li>New: Add support for cinnamon to install script (#1738)</li>
+            <li>Improved: Better handling of adding the title to print and export to PDF (#1744)</li>
+            <li>Improved: Improved bold formatting support in Enex import (#1708)</li>
+            <li>Improved: Create fileURLs via drag and drop (#1653)</li>
+            <li>Improved: No longer crash if certain theme properties are not set</li>
+            <li>Improved: Make translation files smaller by not including untranslated strings. Also add percentage translated to config screen. (#1459)</li>
+            <li>Improved: Only repeat failed requests up to 3 times during sync</li>
+            <li>Improved: Upgraded packages to fix security issue</li>
+            <li>Improved: Make depthColor theme property optional</li>
+            <li>Improved: Optimised loading of multiple items</li>
+            <li>Improved: Disable Markdown actions for HTML notes</li>
+            <li>Improved: Footnote, toc-done-right, anchor (#1741)</li>
+            <li>...and other fixes and more minor improvements</li>
+        </ul>
+        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
+      </description>
+    </release>
     <release version="1.0.140" date="2019-03-10">
       <description>
         <p>Bug fixes, code refactoring, and performance improvements.</p>
