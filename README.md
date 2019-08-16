@@ -30,6 +30,7 @@ sudo dnf install -y joplin
 sudo dnf upgrade -y joplin
 ```
 
+<!--
 **For EL7 (RHEL7 and CentOS7) users...**
 _note: EL7 builds will be ending soon, migrate to Fedora_
 
@@ -43,6 +44,7 @@ sudo yum install -y joplin
 # Update/upgrade...
 sudo yum update -y joplin
 ```
+-->
 
 Once installed, find Joplin in your menus or normal application search. Enjoy!
 
@@ -53,9 +55,9 @@ Once installed, find Joplin in your menus or normal application search. Enjoy!
 # What's in this repository?
 
 This repository provides and maintains source packages that can be built to run
-on Fedora Linux 29+ and EL7 on x86_64. Binary (fully functional) application
-packages based on these source packages are available elsewhere (see below) and
-make Joplin relatively easy to install and maintain.
+on Fedora Linux 29+ and EL8 (testing-only) on x86_64. Binary (fully functional)
+application packages based on these source packages are available elsewhere
+(see below) and make Joplin relatively easy to install and maintain.
 
 In order to use this application, you only need to download and install the
 `joplin` application. It will, by default, only store your notes and documents
