@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 167
+%define verminor 168
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -442,6 +442,9 @@ umask 007
 
 
 %changelog
+* Wed Sep 25 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.168-1.taw
+  - 1.0.168
+
 * Tue Sep 10 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.167-1.taw
   - 1.0.167 - fixes an upstream link management issue
 
