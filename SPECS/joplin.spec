@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 168
+%define verminor 170
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -141,6 +141,9 @@ BuildRequires: libappstream-glib
 BuildRequires: python
 %if 0%{?fedora} >= 29
 BuildRequires: nodejs npm nodejs-yarn node-gyp
+%if 0%{?fedora} >= 31
+BuildRequires: nodejs-sqlite3
+%endif
 %else
 BuildRequires: nodejs npm node-gyp
 %endif
@@ -194,6 +197,20 @@ echo "======== Fedora version: %{fedora}"
 %if 0%{?fedora} < 28
   echo "Fedora 27 and older can't be supported. Sorry."
   exit 1
+%if 0%{?fedora} > 30
+  # NOTE: NOT WORKING AS PLANNED YET! -taw
+  cd %{sourcetree}
+  # desktop -- strip out certain packages from json file
+  cd ElectronClient/app
+  cat package.json | grep -v sqlite3 > package.json
+  rm package-lock.json
+  cd ../..
+  cd CliClient
+  cat package.json | grep -v sqlite3 > package.json
+  rm package-lock.json
+  cd ../..
+  cd ..
+%endif
 %endif
 %endif
 
@@ -442,8 +459,18 @@ umask 007
 
 
 %changelog
+* Mon Oct 14 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.170-1.taw
+* Mon Oct 14 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.170-0.1.testing.taw
+  - 1.0.170
+  - problems with building on Fedora 31 due to python support issues
+
+* Sat Sep 28 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.169-0.1.testing.taw
+  - 1.0.169
+  - problems with building on Fedora 31 due to python support issues
+
 * Wed Sep 25 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.168-1.taw
   - 1.0.168
+  - problems with building on Fedora 31 due to python support issues
 
 * Tue Sep 10 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.167-1.taw
   - 1.0.167 - fixes an upstream link management issue
