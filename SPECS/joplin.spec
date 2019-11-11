@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 170
+%define verminor 173
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -459,6 +459,11 @@ umask 007
 
 
 %changelog
+* Mon Nov 11 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.173-1.taw
+* Mon Nov 11 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.173-0.1.testing.taw
+  - 1.0.173
+  - problems with building on Fedora 31 due to python support issues
+
 * Mon Oct 14 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.170-1.taw
 * Mon Oct 14 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.170-0.1.testing.taw
   - 1.0.170
