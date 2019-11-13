@@ -88,9 +88,10 @@ appropriately when necessary.
 ## Comments? Suggestions?
 Open an issue here, or send me a note via Keybase -- https://keybase.io/toddwarner
 
+<!--
 ## What about Turtl, that other notebook application?
 
-I also build packages for Turtl. Another encrypted multi-device opensource
+I used to also build packages for Turtl. Another encrypted multi-device opensource
 notebook application. You can find more information about that
 [here](https://github.com/taw00/turtl-rpm).
 
@@ -102,6 +103,6 @@ a postit-note feel. Turtl has a more powerful security model and enables
 sharing of documents making it very collaborative.
 
 Both are great projects. And yes, there are a lot of great markdown
-notebook-ish applications out there. But Turtl and Joplin are my two favorite
-projects in this application space.
-
+notebook-ish applications out there. But Joplin is my hands-down favorite
+project in this application space.
+-->
