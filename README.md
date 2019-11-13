@@ -1,4 +1,4 @@
-# Joplin - a secure, open-source note management and writing application for Fedora Linux
+# Joplin - a secure, open-source note management and writing application, packaged for Fedora, Red Hat Enterprise, and CentOS Linux
 
 Joplin is a powerful desktop and mobile application for writing and organizing
 [markdown-formatted](https://en.wikipedia.org/wiki/Markdown) documents and then
@@ -9,7 +9,7 @@ notebooks. The notes are searchable, can be copied, tagged and modified either
 from the applications directly or from your own favorite text editor.
 
 You can read more about what Joplin is [here](https://joplinapp.org/) and
-[here](https://github.com/laurent22/joplin).
+[here](https://github.com/laurent22/joplin) and the Joplin forums [here](https://discourse.joplinapp.org/).
 
 ## TL;DR - I want to install Joplin!
 
@@ -46,7 +46,8 @@ sudo yum update -y joplin
 
 Once installed, find Joplin in your menus or normal application search. Enjoy!
 
-* Note: data is, by default, saved here: `~/.config/Joplin
+* Useful tidbit: all data is mirrored here locally by default (even if you sync to the cloud): `~/.config/Joplin`
+* More help can be found at the official Joplin [website](https://joplinapp.org/) and [user forums](https://discourse.joplinapp.org/).
 
 ---
 
