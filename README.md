@@ -17,9 +17,7 @@ Open up a terminal and copy and paste these commands on the commandline of your
 Fedora Linux workstation or desktop. Note, I assume you are logged in as a user
 that has "sudo" rights.
 
-**For Fedora users...**  
-_note: EL8/RHEL8/CentOS8 builds are in testing_
-
+**For Fedora and EL8 (RHEL8/CentOS8) users...**  
 ```
 # Initial install...
 sudo dnf copr enable taw/joplin
