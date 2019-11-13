@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 173
+%define verminor 174
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -138,14 +138,13 @@ BuildRequires: git rsync findutils
 BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
 # Note: /usr/bin/python is going away -- https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
-BuildRequires: python
-%if 0%{?fedora} >= 29
-BuildRequires: nodejs npm nodejs-yarn node-gyp
-%if 0%{?fedora} >= 31
+BuildRequires: python sed grep
 BuildRequires: nodejs-sqlite3
-%endif
-%else
-BuildRequires: nodejs npm node-gyp
+#%%if 0%%{?fedora} <= 30
+BuildRequires: nodejs npm nodejs-yarn node-gyp
+#%%endif
+%if 0%{?fedora} >= 31
+BuildRequires: python2
 %endif
 %endif
 
@@ -183,43 +182,80 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 # The prep section is the first place we can run shell commands. Therefore,
 # these checks are here...
 %if 0%{?suse_version:1}
-echo "======== Opensuse version: %{suse_version}"
-echo "Right now... OpenSUSE is not supported. Sorry."
-exit 1
+  echo "======== Opensuse version: %{suse_version}"
+  echo "Builds for OpenSUSE are not currently supported."
+  exit 1
+%endif
+%if 0%{?fedora:1}
+  echo "======== Fedora version: %{fedora}"
+%if 0%{?fedora} <= 28
+  echo "Builds for Fedora 28 and older are no longer supported."
+  exit 1
+%endif
+%endif
+%if 0%{?rhel:1}
+  echo "======== EL version: %{rhel}"
+%if 0%{?rhel} < 7
+  echo "Builds for EL 6 and older are not supported."
+  exit 1
+%endif
 %endif
 
+
+# Unarchived source tree structure (extracted in {_builddir})
+#   sourceroot             joplin-1.0
+#    \_{sourcetree}          \_joplin-1.0.174
+#    \_{sourcetree_contrib}  \_joplin-1.0-contrib
+
+# Extract into {_builddir}/{sourceroot}/
+# Source0 and Source1
+%setup -q -T -D -a 0 -n %{sourceroot}
+%setup -q -T -D -a 1 -n %{sourceroot}
+
+
 %if 0%{?fedora:1}
-echo "======== Fedora version: %{fedora}"
-#%%if 0%%{?fedora} == 28
-#  echo "Fedora 28 can't be supported. Sorry."
-#  exit 1
+  echo "======== Fedora version: %{fedora}"
+  mkdir -p $HOME/.local/bin
+  if [ ! -e "$HOME/.local/bin/python" ] ;  then
+    ln -s /usr/bin/python2 $HOME/.local/bin/python
+  fi
+#%%if 0%%{?fedora} > 30
+#  # THIS IS NOT WORKING
+#  mkdir -p %%{sourcetree}/ElectronClient/app/node_modules
+#  mkdir -p %%{sourcetree}/CliClient/node_modules
+#  cp -aL --no-preserve=ownership /usr/lib/node_modules/sqlite3 %%{sourcetree}/ElectronClient/app/node_modules/sqlite3
+#  cp -aL --no-preserve=ownership /usr/lib/node_modules/sqlite3 %%{sourcetree}/CliClient/node_modules/sqlite3
+  # This is a hack, but the various package.json files have too old of a sqlite3 version declared
+  grep '"version"' /usr/lib/node_modules/sqlite3/package.json > temp.json
+  nodejs_sqlite3_version=$(sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p' temp.json)
+  sed -i.bak '/sqlite/c\    "sqlite3": "^'${nodejs_sqlite3_version}'",' %{sourcetree}/ElectronClient/app/package.json
+  sed -i.bak '/sqlite/c\    "sqlite3": "^'${nodejs_sqlite3_version}'",' %{sourcetree}/CliClient/package.json
+  rm temp.json
 #%%endif
-%if 0%{?fedora} < 28
-  echo "Fedora 27 and older can't be supported. Sorry."
-  exit 1
-%if 0%{?fedora} > 30
-  # NOTE: NOT WORKING AS PLANNED YET! -taw
-  cd %{sourcetree}
-  # desktop -- strip out certain packages from json file
-  cd ElectronClient/app
-  cat package.json | grep -v sqlite3 > package.json
-  rm package-lock.json
-  cd ../..
-  cd CliClient
-  cat package.json | grep -v sqlite3 > package.json
-  rm package-lock.json
-  cd ../..
-  cd ..
-%endif
-%endif
+#%%if 0%%{?fedora} > 30
+#  cd %%{sourcetree}
+#  # desktop -- strip out certain packages from json file
+#  cd ElectronClient/app
+#  grep -v sqlite3 package.json > temp.json
+#  mv temp.json package.json
+#  rm package-lock.json
+#  cd ../..
+#  cd CliClient
+#  grep -v sqlite3 package.json > temp.json
+#  mv temp.json package.json
+#  rm package-lock.json
+#  cd ..
+#  cd Tools
+#  grep -v sqlite3 package.json > temp.json
+#  mv temp.json package.json
+#  rm package-lock.json
+#  cd ..
+#  cd ..
+#%%endif
 %endif
 
 %if 0%{?rhel:1}
-echo "======== EL version: %{rhel}"
-%if 0%{?rhel} < 7
-  echo "EL 6 and older can't be supported. Sorry."
-  exit 1
-%endif
+  echo "======== EL version: %{rhel}"
 %if 0%{?rhel} >= 8
   # This is ugly. But EL8 doesn't have /usr/bin/python
   # /usr/bin/python is going away: https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
@@ -231,16 +267,7 @@ echo "======== EL version: %{rhel}"
 %endif
 %endif
 
-# Unarchived source tree structure (extracted in {_builddir})
-#   sourceroot             joplin-1.0
-#    \_{sourcetree}          \_joplin-1.0.140
-#    \_{sourcetree_contrib}  \_joplin-1.0-contrib
 
-# Extract into {_builddir}/{sourceroot}/
-# Source0:...
-%setup -q -T -D -a 0 -n %{sourceroot}
-# Source1:...
-%setup -q -T -D -a 1 -n %{sourceroot}
 
 # For debugging purposes...
 %if ! %{targetIsProduction}
@@ -283,16 +310,18 @@ npm install
 %if 0%{?fedora:1}
 # Fedora 29+
 %if 0%{?fedora} >= 29
-  #source ~/.bashrc
-  #which yarn > /dev/null 2>&1
   #if [ "$?" -ne 0 ] ; then
-    echo "\
-# yarn alias inserted here by the Joplin RPM specfile build script
-# this can be removed after build is complete
-# nodejs-yarn installs /usr/bin/yarnpkg for some reason (conflicts?). So, we
-# simply alias it so that embedded scripts don't stumble over this anomaly
-alias yarn='/usr/bin/yarnpkg'" >> ~/.bashrc
-    source ~/.bashrc
+    mkdir -p $HOME/.local/bin
+    if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
+      ln -s /usr/bin/yarnpkg $HOME/.local/bin/yarn
+    fi
+#    echo "\
+## yarn alias inserted here by the Joplin RPM specfile build script
+## this can be removed after build is complete
+## nodejs-yarn installs /usr/bin/yarnpkg for some reason (conflicts?). So, we
+## simply alias it so that embedded scripts don't stumble over this anomaly
+#alias yarn='/usr/bin/yarnpkg'" >> ~/.bashrc
+#    source ~/.bashrc
   #fi
 # Fedora 28-
 %else
@@ -301,11 +330,15 @@ alias yarn='/usr/bin/yarnpkg'" >> ~/.bashrc
   #which yarn > /dev/null 2>&1
   #if [ "$?" -ne 0 ] ; then
     _pwd=$(pwd)
-    echo "\
-# yarn alias inserted here by the Joplin RPM specfile build script
-# this can be removed after build is complete
-alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
-    source ~/.bashrc
+    mkdir -p $HOME/.local/bin
+    if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
+      ln -s ${_pwd}/node_modules/.bin/yarn $HOME/.local/bin/yarn
+    fi
+#    echo "\
+## yarn alias inserted here by the Joplin RPM specfile build script
+## this can be removed after build is complete
+#alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
+#    source ~/.bashrc
   #fi
   yarn add electron-builder --dev
   yarn add electron-packager --dev
@@ -321,11 +354,15 @@ alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
   #which yarn > /dev/null 2>&1
   #if [ "$?" -ne 0 ] ; then
     _pwd=$(pwd)
-    echo "\
-# yarn alias inserted here by the Joplin RPM specfile build script
-# this can be removed after build is complete
-alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
-    source ~/.bashrc
+    mkdir -p $HOME/.local/bin
+    if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
+      ln -s ${_pwd}/node_modules/.bin/yarn $HOME/.local/bin/yarn
+    fi
+##    echo "\
+### yarn alias inserted here by the Joplin RPM specfile build script
+### this can be removed after build is complete
+##alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
+##    source ~/.bashrc
   #fi
 %endif
   yarn add electron-builder --dev
@@ -459,6 +496,13 @@ umask 007
 
 
 %changelog
+* Wed Nov 13 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.174-1.taw
+* Wed Nov 13 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.174-0.1.testing.taw
+  - 1.0.174
+  - first successful build on Fedora 31 using an sqlite3 versioning hack  
+    in package.json. Look what I did with sed and grep in the prep phase
+  - and why the HECK does Joplin require python2 to build!?! Terrible.
+
 * Mon Nov 11 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.173-1.taw
 * Mon Nov 11 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.173-0.1.testing.taw
   - 1.0.173
