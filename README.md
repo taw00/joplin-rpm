@@ -51,18 +51,19 @@ Once installed, find Joplin in your menus or normal application search. Enjoy!
 
 ---
 
-# What's in this repository?
+# What's in this Github repository?
 
 This repository provides and maintains source packages that can be built to run
 on Fedora Linux 29+ and EL8 (testing-only) on x86_64. Binary (fully functional)
-application packages based on these source packages are available elsewhere
-(see below) and make Joplin relatively easy to install and maintain.
+application packages based on these source packages are available elsewhere (in
+the Fedora Project's COPR repositories) (see below) and make Joplin relatively
+easy to install and maintain.
 
 In order to use this application, you only need to download and install the
-`joplin` application. It will, by default, only store your notes and documents
-local. And unencrypted. It is highly recommended that (a) you secure your notes
-with encryption, and (b) configure the application to sync to the cloud
-(Dropbox, Nextcloud, the).
+`joplin` application (via the COPR repos). It will, by default, only store your
+notes and documents locally. And unencrypted. It is highly recommended that (a)
+you secure your notes with encryption, and (b) configure the application to
+sync to the cloud (Dropbox, Nextcloud, etc).
 
 ## Why github for this sort of thing?
 
@@ -73,13 +74,13 @@ for Joplin is maintained with source-control via github. Binaries are provided
 to know a whole lot about Fedora's COPR build environment to install and user
 these RPMs. Just follow the "TL;DR" instructions below to install Joplin.
 
-If you are technically able, you can build your own binary packages from the
-source RPMs provided in this github repository. Please note that all `src.rpm`
-files (found here) will be signed with my general-purpose GPG key found here:
+If you are technically savvy, you can build your own binary packages from the
+source RPMs provided in this github repository. All `src.rpm` files (found here
+in Github) will be signed with my general-purpose GPG key found here:
 <https://keybase.io/toddwarner/key.asc>.
 
 Packages delivered via COPR are signed with a GPG key specific to that
-repository. COPR enablement as shown below (TL;DR) will install this key
+repository. COPR enablement as shown elsewhere (TL;DR) will install this key
 appropriately when necessary.
 
 ---
