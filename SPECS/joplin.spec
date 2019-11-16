@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -36,9 +36,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -177,6 +177,9 @@ system.
 
 %prep
 # Prep section starts us in directory {_builddir}
+
+echo "======== prep stage ========"
+
 rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 
 # The prep section is the first place we can run shell commands. Therefore,
@@ -214,7 +217,7 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 
 
 %if 0%{?fedora:1}
-  echo "======== Fedora version: %{fedora}"
+  echo "======== Forcing python2 availability for SQLite build requirements"
   mkdir -p $HOME/.local/bin
   if [ ! -e "$HOME/.local/bin/python" ] ;  then
     ln -s /usr/bin/python2 $HOME/.local/bin/python
@@ -233,6 +236,7 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
   rm temp.json
 #%%endif
 #%%if 0%%{?fedora} > 30
+#  # NOTE: THIS IS EXPERIMENTAL AND LIKELY TO BE REMOVED
 #  cd %%{sourcetree}
 #  # desktop -- strip out certain packages from json file
 #  cd ElectronClient/app
@@ -255,11 +259,11 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 %endif
 
 %if 0%{?rhel:1}
-  echo "======== EL version: %{rhel}"
 %if 0%{?rhel} >= 8
   # This is ugly. But EL8 doesn't have /usr/bin/python
   # /usr/bin/python is going away: https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
   # ...brute forcing things...
+  echo "======== Forcing python2 availability for SQLite build requirements"
   mkdir -p $HOME/.local/bin
   if [ ! -e "$HOME/.local/bin/python" ] ;  then
     ln -s /usr/bin/python2 $HOME/.local/bin/python
@@ -277,19 +281,15 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 
 %build
 # Build section starts us in directory {_builddir}/{sourceroot}
+echo "======== build stage ========"
+
 cd %{sourcetree}
 
 #
-# tools (supportive)
+# tools (supportive stuff)
 #
 cd Tools
 npm install
-%if 0%{?fedora:1}
-  echo "======== Fedora version: %{fedora}"
-%if 0%{?fedora} < 30
-  #npm audit fix
-%endif
-%endif
 cd ..
 
 #
@@ -297,24 +297,19 @@ cd ..
 #
 cd ElectronClient/app
 rsync --delete -a ../../ReactNativeClient/lib/ lib/
-# to force pathing for python in .local (EL8)
+# to force pathing for python in .local (EL8 and Fedora 31)
 source ~/.bashrc
 npm install
-%if 0%{?fedora:1}
-  echo "======== Fedora version: %{fedora}"
-%if 0%{?fedora} < 30
-  #npm audit fix
-%endif
-%endif
 
 %if 0%{?fedora:1}
-# Fedora 29+
+# Fedora 29+ (executable is yarnpkg and not yarn)
 %if 0%{?fedora} >= 29
   #if [ "$?" -ne 0 ] ; then
-    mkdir -p $HOME/.local/bin
-    if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
-      ln -s /usr/bin/yarnpkg $HOME/.local/bin/yarn
-    fi
+  echo "======== Mapping yarnpkg to 'yarn' as build scripts expect"
+  mkdir -p $HOME/.local/bin
+  if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
+    ln -s /usr/bin/yarnpkg $HOME/.local/bin/yarn
+  fi
 #    echo "\
 ## yarn alias inserted here by the Joplin RPM specfile build script
 ## this can be removed after build is complete
@@ -323,23 +318,28 @@ npm install
 #alias yarn='/usr/bin/yarnpkg'" >> ~/.bashrc
 #    source ~/.bashrc
   #fi
+
 # Fedora 28-
 %else
+  # NOTE: This is here for posterity. We are no longer building for Fedora 28
+  #       and older.
   npm install yarn
-  #source ~/.bashrc
-  #which yarn > /dev/null 2>&1
-  #if [ "$?" -ne 0 ] ; then
-    _pwd=$(pwd)
-    mkdir -p $HOME/.local/bin
-    if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
-      ln -s ${_pwd}/node_modules/.bin/yarn $HOME/.local/bin/yarn
-    fi
+  _pwd=$(pwd)
+  echo "======== Mapping yarn so it can be found in the path"
+  mkdir -p $HOME/.local/bin
+  if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
+    ln -s ${_pwd}/node_modules/.bin/yarn $HOME/.local/bin/yarn
+  fi
+#  source ~/.bashrc
+#  which yarn > /dev/null 2>&1
+#  if [ "$?" -ne 0 ] ; then
+#    _pwd=$(pwd)
 #    echo "\
 ## yarn alias inserted here by the Joplin RPM specfile build script
 ## this can be removed after build is complete
 #alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
 #    source ~/.bashrc
-  #fi
+#  fi
   yarn add electron-builder --dev
   yarn add electron-packager --dev
 %endif
@@ -350,20 +350,22 @@ npm install
 %if 0%{?rhel} >= 8
   npm install gyp
   npm install yarn
-  #source ~/.bashrc
-  #which yarn > /dev/null 2>&1
-  #if [ "$?" -ne 0 ] ; then
-    _pwd=$(pwd)
-    mkdir -p $HOME/.local/bin
-    if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
-      ln -s ${_pwd}/node_modules/.bin/yarn $HOME/.local/bin/yarn
-    fi
-##    echo "\
-### yarn alias inserted here by the Joplin RPM specfile build script
-### this can be removed after build is complete
-##alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
-##    source ~/.bashrc
-  #fi
+  _pwd=$(pwd)
+  echo "======== Mapping yarn so it can be found in the path"
+  mkdir -p $HOME/.local/bin
+  if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
+    ln -s ${_pwd}/node_modules/.bin/yarn $HOME/.local/bin/yarn
+  fi
+#  source ~/.bashrc
+#  which yarn > /dev/null 2>&1
+#  if [ "$?" -ne 0 ] ; then
+#    _pwd=$(pwd)
+#    echo "\
+## yarn alias inserted here by the Joplin RPM specfile build script
+## this can be removed after build is complete
+#alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
+#    source ~/.bashrc
+#  fi
 %endif
   yarn add electron-builder --dev
   yarn add electron-packager --dev
@@ -378,12 +380,6 @@ cd ../..
 #
 cd CliClient
 npm install
-%if 0%{?fedora:1}
-  echo "======== Fedora version: %{fedora}"
-%if 0%{?fedora} < 30
-  #npm audit fix
-%endif
-%endif
 ./build.sh
 rsync --delete -aP ../ReactNativeClient/locales/ build/locales/
 cd ..
@@ -496,6 +492,10 @@ umask 007
 
 
 %changelog
+* Sat Nov 16 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.174-1.1.testing.taw
+  - specfile cleanup
+  - contrib tarball cleanup
+
 * Wed Nov 13 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.174-1.taw
 * Wed Nov 13 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.174-0.1.testing.taw
   - 1.0.174
