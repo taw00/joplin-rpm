@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -36,9 +36,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -505,6 +505,10 @@ umask 007
 
 
 %changelog
+* Mon Dec 9 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.175-1.1.testing.taw
+  - changed my mind on a naming scheme for an icon. Trivial, but it is indeed  
+    a change.
+
 * Mon Dec 9 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.175-1.taw
 * Mon Dec 9 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.175-0.1.testing.taw
   - 1.0.175
