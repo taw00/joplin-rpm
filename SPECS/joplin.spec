@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -32,13 +32,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 174
+%define verminor 175
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -422,16 +422,29 @@ Keywords=secure;security;privacy;private;notes;bookmarks;collaborate;research;
 StartupNotify=true
 X-Desktop-File-Install-Version=0.23
 " > %{buildroot}%{_datadir}/applications/%{name}.desktop
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/256x256.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/32x32.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/16x16.png %{buildroot}%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/128x128.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/96x96.png %{buildroot}%{_datadir}/icons/hicolor/96x96/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/256x256.png   %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/32x32.png     %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/16x16.png     %{buildroot}%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/128x128.png   %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/96x96.png     %{buildroot}%{_datadir}/icons/hicolor/96x96/apps/%{name}.png
 install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/1024x1024.png %{buildroot}%{_datadir}/icons/hicolor/1024x1024/apps/%{name}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/24x24.png %{buildroot}%{_datadir}/icons/hicolor/24x24/apps/%{name}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/144x144.png %{buildroot}%{_datadir}/icons/hicolor/144x144/apps/%{name}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/72x72.png %{buildroot}%{_datadir}/icons/hicolor/72x72/apps/%{name}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/512x512.png %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/24x24.png     %{buildroot}%{_datadir}/icons/hicolor/24x24/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/144x144.png   %{buildroot}%{_datadir}/icons/hicolor/144x144/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/72x72.png     %{buildroot}%{_datadir}/icons/hicolor/72x72/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/512x512.png   %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/JoplinIcon.svg           %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.png
+
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/256x256-highcontrast.png    %{buildroot}%{_datadir}/icons/HighContrast/256x256/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/32x32-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/32x32/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/16x16-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/16x16/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/128x128-highcontrast.png    %{buildroot}%{_datadir}/icons/HighContrast/128x128/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/96x96-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/96x96/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/1024x1024-highcontrast.png  %{buildroot}%{_datadir}/icons/HighContrast/1024x1024/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/24x24-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/24x24/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/144x144-highcontrast.png    %{buildroot}%{_datadir}/icons/HighContrast/144x144/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/72x72-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/72x72/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/512x512-highcontrast.png    %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/JoplinIcon-highcontrast.svg %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{name}.png
 
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 install -D -m644 -p %{sourcetree_contrib}/%{name}.appdata.xml %{buildroot}%{_metainfodir}/%{name}.appdata.xml
@@ -492,6 +505,13 @@ umask 007
 
 
 %changelog
+* Mon Dec 9 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.175-1.taw
+* Mon Dec 9 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.175-0.1.testing.taw
+  - 1.0.175
+  - icon was changed. I created highcontrast versions in contrib tarball and  
+    they are deployed as they should be with the packaging into the desktop  
+    environment.
+
 * Sat Nov 16 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.174-1.1.testing.taw
   - specfile cleanup
   - contrib tarball cleanup
