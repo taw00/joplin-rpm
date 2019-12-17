@@ -32,13 +32,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 175
+%define verminor 176
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -432,7 +432,7 @@ install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/24x24.png     %{buildroot}%{
 install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/144x144.png   %{buildroot}%{_datadir}/icons/hicolor/144x144/apps/%{name}.png
 install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/72x72.png     %{buildroot}%{_datadir}/icons/hicolor/72x72/apps/%{name}.png
 install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/512x512.png   %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{name}.png
-install -D -m644 -p %{sourcetree}/Assets/JoplinIcon.svg           %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.png
+install -D -m644 -p %{sourcetree}/Assets/JoplinIcon.svg           %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/256x256-highcontrast.png    %{buildroot}%{_datadir}/icons/HighContrast/256x256/apps/%{name}.png
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/32x32-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/32x32/apps/%{name}.png
@@ -444,7 +444,7 @@ install -D -m644 -p %{sourcetree_contrib}/desktop-icons/24x24-highcontrast.png  
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/144x144-highcontrast.png    %{buildroot}%{_datadir}/icons/HighContrast/144x144/apps/%{name}.png
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/72x72-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/72x72/apps/%{name}.png
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/512x512-highcontrast.png    %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{name}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/JoplinIcon-highcontrast.svg %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{name}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/JoplinIcon-highcontrast.svg %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{name}.svg
 
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
 install -D -m644 -p %{sourcetree_contrib}/%{name}.appdata.xml %{buildroot}%{_metainfodir}/%{name}.appdata.xml
@@ -481,9 +481,32 @@ install -D -m755 -p %{sourcetree}/ElectronClient/app/dist/'Joplin '%{version}'.A
 %doc %{sourcetree}/ElectronClient/app/dist/linux-unpacked/LICENSE.electron.txt
 %doc %{sourcetree}/ElectronClient/app/dist/linux-unpacked/LICENSES.chromium.html
 %{_bindir}/%{name_desktop}
-%{_datadir}/icons/*
+# desktop environment metadata
 %{_datadir}/applications/%{name}.desktop
 %{_metainfodir}/%{name}.appdata.xml
+# desktop environment icons
+%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
+%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
+%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
+%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
+%{_datadir}/icons/hicolor/96x96/apps/%{name}.png
+%{_datadir}/icons/hicolor/1024x1024/apps/%{name}.png
+%{_datadir}/icons/hicolor/24x24/apps/%{name}.png
+%{_datadir}/icons/hicolor/144x144/apps/%{name}.png
+%{_datadir}/icons/hicolor/72x72/apps/%{name}.png
+%{_datadir}/icons/hicolor/512x512/apps/%{name}.png
+%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
+%{_datadir}/icons/HighContrast/256x256/apps/%{name}.png
+%{_datadir}/icons/HighContrast/32x32/apps/%{name}.png
+%{_datadir}/icons/HighContrast/16x16/apps/%{name}.png
+%{_datadir}/icons/HighContrast/128x128/apps/%{name}.png
+%{_datadir}/icons/HighContrast/96x96/apps/%{name}.png
+%{_datadir}/icons/HighContrast/1024x1024/apps/%{name}.png
+%{_datadir}/icons/HighContrast/24x24/apps/%{name}.png
+%{_datadir}/icons/HighContrast/144x144/apps/%{name}.png
+%{_datadir}/icons/HighContrast/72x72/apps/%{name}.png
+%{_datadir}/icons/HighContrast/512x512/apps/%{name}.png
+%{_datadir}/icons/HighContrast/scalable/apps/%{name}.svg
 
 %if 0%{?nativebuild:1}
 # /usr/share/joplin
@@ -505,6 +528,11 @@ umask 007
 
 
 %changelog
+* Mon Dec 16 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.176-0.1.testing.taw
+  - 1.0.176
+  - (specfile) fixed svg icon filename
+  - (specfile) joplin should own individual icons, not the whole icon file tree
+
 * Mon Dec 9 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.175-1.1.testing.taw
   - changed my mind on a naming scheme for an icon. Trivial, but it is indeed  
     a change.
