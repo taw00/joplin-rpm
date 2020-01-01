@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 176
+%define verminor 177
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -528,6 +528,9 @@ umask 007
 
 
 %changelog
+* Wed Jan 01 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.177-0.1.testing.taw
+  - 1.0.177
+
 * Mon Dec 16 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.176-0.1.testing.taw
   - 1.0.176
   - (specfile) fixed svg icon filename
