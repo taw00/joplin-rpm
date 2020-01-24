@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -32,13 +32,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 177
+%define verminor 178
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 0.3
 %endif
 
 # MINORBUMP
@@ -286,6 +286,11 @@ echo "======== build stage ========"
 cd %{sourcetree}
 
 #
+# preliminary
+#
+npm install
+
+#
 # tools (supportive stuff)
 #
 cd Tools
@@ -295,8 +300,11 @@ cd ..
 #
 # desktop app
 #
+npm run copyLib
+npm run tsc
 cd ElectronClient/app
-rsync --delete -a ../../ReactNativeClient/lib/ lib/
+# old builds...
+#rsync --delete -a ../../ReactNativeClient/lib/ lib/
 # to force pathing for python in .local (EL8 and Fedora 31)
 source ~/.bashrc
 npm install
@@ -381,7 +389,8 @@ cd ../..
 cd CliClient
 npm install
 ./build.sh
-rsync --delete -aP ../ReactNativeClient/locales/ build/locales/
+# older builds...
+#rsync --delete -aP ../ReactNativeClient/locales/ build/locales/
 cd ..
 
 
@@ -528,8 +537,23 @@ umask 007
 
 
 %changelog
-* Wed Jan 01 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.177-0.1.testing.taw
-  - 1.0.177
+* Fri Jan 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.178-1.taw
+* Fri Jan 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.178-0.3.testing.taw
+  - 1.8.178 -- a "fatal error" is reported but it is an error in a git lookup  
+    that otherwise does not break the build. The only work around (so far) is  
+    what you see in 1.0.178-0.2 below which is not ideal. The error is  
+    generated in the code found in ./ElectronClient/app/compile-package-info.js
+
+* Fri Jan 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.178-0.2.testing.taw
+  - 1.0.178 -- my own tarball generated from the git repo tag (and includes  
+    git info) seems to work. Ugly, but it is a workaround.
+
+* Tue Jan 21 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.178-0.1.testing.taw
+  - 1.0.178 -- release tarball fails just like 1.0.177
+
+* Fri Jan 17 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.177-0.2.testing.taw
+* Wed Jan 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.177-0.1.testing.taw
+  - 1.0.177 -- fails to build correctly
 
 * Mon Dec 16 2019 Todd Warner <t0dd_at_protonmail.com> 1.0.176-0.1.testing.taw
   - 1.0.176
