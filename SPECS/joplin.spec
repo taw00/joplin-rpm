@@ -32,13 +32,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 178
+%define verminor 179
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.3
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -537,9 +537,13 @@ umask 007
 
 
 %changelog
+* Sat Jan 25 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.179-1.taw
+* Sat Jan 25 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.179-0.1.testing.taw
+  - 1.0.179
+
 * Fri Jan 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.178-1.taw
 * Fri Jan 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.178-0.3.testing.taw
-  - 1.8.178 -- a "fatal error" is reported but it is an error in a git lookup  
+  - 1.0.178 -- a "fatal error" is reported but it is an error in a git lookup  
     that otherwise does not break the build. The only work around (so far) is  
     what you see in 1.0.178-0.2 below which is not ideal. The error is  
     generated in the code found in ./ElectronClient/app/compile-package-info.js
