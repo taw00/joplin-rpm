@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -38,7 +38,7 @@ Version: %{vermajor}.%{verminor}
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 0.2
 %endif
 
 # MINORBUMP
@@ -228,12 +228,15 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 #  mkdir -p %%{sourcetree}/CliClient/node_modules
 #  cp -aL --no-preserve=ownership /usr/lib/node_modules/sqlite3 %%{sourcetree}/ElectronClient/app/node_modules/sqlite3
 #  cp -aL --no-preserve=ownership /usr/lib/node_modules/sqlite3 %%{sourcetree}/CliClient/node_modules/sqlite3
-  # This is a hack, but the various package.json files have too old of a sqlite3 version declared
-  grep '"version"' /usr/lib/node_modules/sqlite3/package.json > temp.json
-  nodejs_sqlite3_version=$(sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p' temp.json)
-  sed -i.bak '/sqlite/c\    "sqlite3": "^'${nodejs_sqlite3_version}'",' %{sourcetree}/ElectronClient/app/package.json
-  sed -i.bak '/sqlite/c\    "sqlite3": "^'${nodejs_sqlite3_version}'",' %{sourcetree}/CliClient/package.json
-  rm temp.json
+
+#  # THIS _IS_ WORKING (joplin 1.0.174 to 1.0.179)
+#  # This is a hack, but the various package.json files have too old of a sqlite3 version declared
+#  grep '"version"' /usr/lib/node_modules/sqlite3/package.json > temp.json
+#  nodejs_sqlite3_version=$(sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p' temp.json)
+#  sed -i.bak '/sqlite/c\    "sqlite3": "^'${nodejs_sqlite3_version}'",' %{sourcetree}/ElectronClient/app/package.json
+#  sed -i.bak '/sqlite/c\    "sqlite3": "^'${nodejs_sqlite3_version}'",' %{sourcetree}/CliClient/package.json
+#  rm temp.json
+
 #%%endif
 #%%if 0%%{?fedora} > 30
 #  # NOTE: THIS IS EXPERIMENTAL AND LIKELY TO BE REMOVED
@@ -285,30 +288,6 @@ echo "======== build stage ========"
 
 cd %{sourcetree}
 
-#
-# preliminary
-#
-npm install
-
-#
-# tools (supportive stuff)
-#
-cd Tools
-npm install
-cd ..
-
-#
-# desktop app
-#
-npm run copyLib
-npm run tsc
-cd ElectronClient/app
-# old builds...
-#rsync --delete -a ../../ReactNativeClient/lib/ lib/
-# to force pathing for python in .local (EL8 and Fedora 31)
-source ~/.bashrc
-npm install
-
 %if 0%{?fedora:1}
 # Fedora 29+ (executable is yarnpkg and not yarn)
 %if 0%{?fedora} >= 29
@@ -318,14 +297,6 @@ npm install
   if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
     ln -s /usr/bin/yarnpkg $HOME/.local/bin/yarn
   fi
-#    echo "\
-## yarn alias inserted here by the Joplin RPM specfile build script
-## this can be removed after build is complete
-## nodejs-yarn installs /usr/bin/yarnpkg for some reason (conflicts?). So, we
-## simply alias it so that embedded scripts don't stumble over this anomaly
-#alias yarn='/usr/bin/yarnpkg'" >> ~/.bashrc
-#    source ~/.bashrc
-  #fi
 
 # Fedora 28-
 %else
@@ -338,16 +309,7 @@ npm install
   if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
     ln -s ${_pwd}/node_modules/.bin/yarn $HOME/.local/bin/yarn
   fi
-#  source ~/.bashrc
-#  which yarn > /dev/null 2>&1
-#  if [ "$?" -ne 0 ] ; then
-#    _pwd=$(pwd)
-#    echo "\
-## yarn alias inserted here by the Joplin RPM specfile build script
-## this can be removed after build is complete
-#alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
-#    source ~/.bashrc
-#  fi
+
   yarn add electron-builder --dev
   yarn add electron-packager --dev
 %endif
@@ -364,33 +326,15 @@ npm install
   if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
     ln -s ${_pwd}/node_modules/.bin/yarn $HOME/.local/bin/yarn
   fi
-#  source ~/.bashrc
-#  which yarn > /dev/null 2>&1
-#  if [ "$?" -ne 0 ] ; then
-#    _pwd=$(pwd)
-#    echo "\
-## yarn alias inserted here by the Joplin RPM specfile build script
-## this can be removed after build is complete
-#alias yarn='${_pwd}/node_modules/.bin/yarn'" >> ~/.bashrc
-#    source ~/.bashrc
-#  fi
 %endif
   yarn add electron-builder --dev
   yarn add electron-packager --dev
 %endif
 
-# all versions of OS
-yarn dist
-cd ../..
-
-#
-# commandline app
-#
-cd CliClient
+### BUILD IT!
 npm install
-./build.sh
-# older builds...
-#rsync --delete -aP ../ReactNativeClient/locales/ build/locales/
+cd ElectronClient
+yarn dist
 cd ..
 
 
@@ -466,12 +410,12 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 # Question I have is... do we need 7zip-bin? Probably, so leaving it in.
 #%%if "%%{?_lib}" == "lib64"
 %ifarch x86_64 amd64
-rm -rf $(find %{sourcetree}/ElectronClient/app/dist/linux-unpacked/resources/app/node_modules/7zip-bin-linux/* -type d | grep -v x64)
+rm -rf $(find %{sourcetree}/ElectronClient/dist/linux-unpacked/resources/app*/node_modules/7zip-bin-linux/* -type d | grep -v x64)
 %else
-rm -rf $(find %{sourcetree}/ElectronClient/app/dist/linux-unpacked/resources/app/node_modules/7zip-bin-linux/* -type d | grep -v ia32)
+rm -rf $(find %{sourcetree}/ElectronClient/dist/linux-unpacked/resources/app*/node_modules/7zip-bin-linux/* -type d | grep -v ia32)
 %endif
 cp -a %{sourcetree}/CliClient/build/* %{buildroot}%{installtree}/cli/
-cp -a %{sourcetree}/ElectronClient/app/dist/linux-unpacked/* %{buildroot}%{installtree}/desktop/
+cp -a %{sourcetree}/ElectronClient/dist/linux-unpacked/* %{buildroot}%{installtree}/desktop/
 # a little ugly
 ln -s %{installtree}/cli/main.js %{buildroot}%{installtree}/cli/%{name_cli}
 ln -s %{installtree}/desktop/joplin %{buildroot}%{installtree}/desktop/%{name_desktop}
@@ -480,15 +424,15 @@ ln -s %{installtree}/desktop/joplin %{buildroot}%{_bindir}/%{name_desktop}
 # AppImage build
 %else
 # This is SUPER ugly... It's an alternative if we want to use it.
-install -D -m755 -p %{sourcetree}/ElectronClient/app/dist/'Joplin '%{version}'.AppImage' %{buildroot}%{_bindir}/%{name_desktop}
+install -D -m755 -p %{sourcetree}/ElectronClient/dist/'Joplin '%{version}'.AppImage' %{buildroot}%{_bindir}/%{name_desktop}
 %endif
 
 
 %files
 %defattr(-,root,root,-)
 %license %{sourcetree}/LICENSE
-%doc %{sourcetree}/ElectronClient/app/dist/linux-unpacked/LICENSE.electron.txt
-%doc %{sourcetree}/ElectronClient/app/dist/linux-unpacked/LICENSES.chromium.html
+%doc %{sourcetree}/ElectronClient/dist/linux-unpacked/LICENSE.electron.txt
+%doc %{sourcetree}/ElectronClient/dist/linux-unpacked/LICENSES.chromium.html
 %{_bindir}/%{name_desktop}
 # desktop environment metadata
 %{_datadir}/applications/%{name}.desktop
@@ -537,9 +481,11 @@ umask 007
 
 
 %changelog
-* Mon Mar 02 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.187-1.taw
+* Mon Mar 02 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.187-0.2.testing.taw
 * Mon Mar 02 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.187-0.1.testing.taw
   - 1.0.187
+  - The build process upstream was simplified which resulted in changes to the  
+    spec
 
 * Sat Jan 25 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.179-1.taw
 * Sat Jan 25 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.179-0.1.testing.taw
