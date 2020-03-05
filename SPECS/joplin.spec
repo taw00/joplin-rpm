@@ -32,13 +32,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 187
+%define verminor 189
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.2
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -481,6 +481,9 @@ umask 007
 
 
 %changelog
+* Wed Mar 04 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.189-0.1.testing.taw
+  - 1.0.189
+
 * Mon Mar 02 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.187-0.2.testing.taw
 * Mon Mar 02 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.187-0.1.testing.taw
   - 1.0.187
