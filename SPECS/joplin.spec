@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -36,9 +36,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.2
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -369,7 +369,7 @@ echo "[Desktop Entry]
 Type=Application
 Name=Joplin
 GenericName=Secure notes
-Comment=A secure notebook
+Comment=A free and secure notebook application
 Exec=%{name_desktop}
 Icon=%{name}
 Terminal=false
@@ -377,6 +377,7 @@ Categories=Office;
 Keywords=secure;security;privacy;private;notes;bookmarks;collaborate;research;
 StartupNotify=true
 X-Desktop-File-Install-Version=0.23
+StartupWMClass=Joplin
 " > %{buildroot}%{_datadir}/applications/%{name}.desktop
 install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/256x256.png   %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
 install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/32x32.png     %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
@@ -484,6 +485,10 @@ umask 007
 
 
 %changelog
+* Sun Mar 08 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.193-1.1.testing.taw
+  - added StartupWMClass window-grouping designation
+  - updated XML metadata to include a history of versions
+
 * Sun Mar 08 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.193-1.taw
 * Sun Mar 08 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.193-0.2.testing.taw
   - 1.0.192 -- libcanberra-gtk2 dependency is not generated for some  
