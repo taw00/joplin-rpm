@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -32,13 +32,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 192
+%define verminor 193
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 0.2
 %endif
 
 # MINORBUMP
@@ -107,6 +107,9 @@ ExclusiveArch: x86_64 i686 i586 i386
 
 Source0: https://github.com/taw00/joplin-rpm/blob/master/SOURCES/%{sourcetree}.tar.gz
 Source1: https://github.com/taw00/joplin-rpm/blob/master/SOURCES/%{sourcetree_contrib}.tar.gz
+
+# See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
+Requires: libcanberra-gtk2
 
 # provided by coreutils RPM
 #BuildRequires: /usr/bin/readlink /usr/bin/dirname
@@ -481,10 +484,16 @@ umask 007
 
 
 %changelog
+* Sun Mar 08 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.193-1.taw
+* Sun Mar 08 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.193-0.2.testing.taw
+  - 1.0.192 -- libcanberra-gtk2 dependency is not generated for some  
+    reason. See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
+
+* Sun Mar 08 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.193-0.1.testing.taw
 * Sat Mar 07 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.192-0.1.testing.taw
 * Fri Mar 06 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.190-0.1.testing.taw
 * Wed Mar 04 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.189-0.1.testing.taw
-  - 1.0.189, 1.0.190, 1.0.192, ...
+  - 1.0.189, 1.0.190, 1.0.192, 1.0.193
 
 * Mon Mar 02 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.187-0.2.testing.taw
 * Mon Mar 02 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.187-0.1.testing.taw
