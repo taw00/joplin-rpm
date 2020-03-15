@@ -32,13 +32,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 193
+%define verminor 194
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -485,6 +485,9 @@ umask 007
 
 
 %changelog
+* Sat Mar 14 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.194-0.1.testing.taw
+  - 1.0.194 -- hey, cool. Apparently this version comes with a WYSIWYG.
+
 * Sun Mar 08 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.193-1.1.testing.taw
   - added StartupWMClass window-grouping designation
   - updated XML metadata to include a history of versions
