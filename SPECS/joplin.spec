@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 194
+%define verminor 195
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -485,8 +485,13 @@ umask 007
 
 
 %changelog
+* Thu Mar 26 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.195-1.taw
+* Thu Mar 26 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.195-0.1.testing.taw
+  - 1.0.195
+
 * Sat Mar 14 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.194-0.1.testing.taw
   - 1.0.194 -- hey, cool. Apparently this version comes with a WYSIWYG.
+  - Seeing issues with not being able to switch documents via the sidebars.
 
 * Sun Mar 08 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.193-1.1.testing.taw
   - added StartupWMClass window-grouping designation
