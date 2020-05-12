@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 201
+%define verminor 207
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -485,6 +485,9 @@ umask 007
 
 
 %changelog
+* Tue May 12 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.207-0.1.testing.taw
+  - 1.0.207
+
 * Thu Apr 16 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.201-1.taw
 * Thu Apr 16 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.201-0.1.testing.taw
   - 1.0.201
