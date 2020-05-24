@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 214
+%define verminor 216
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -105,14 +105,22 @@ ExclusiveArch: x86_64 i686 i586 i386
 # /usr/share/joplin
 %define installtree %{_datadir}/%{name}
 
-Source0: https://github.com/taw00/joplin-rpm/blob/master/SOURCES/%{sourcetree}.tar.gz
-Source1: https://github.com/taw00/joplin-rpm/blob/master/SOURCES/%{sourcetree_contrib}.tar.gz
+Source0: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree}.tar.gz
+Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_contrib}.tar.gz
 
 # See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
 Requires: libcanberra-gtk2
 
 # provided by coreutils RPM
 #BuildRequires: /usr/bin/readlink /usr/bin/dirname
+
+%if 0%{?suse_version:1}
+BuildRequires: ca-certificates-cacert ca-certificates-mozilla ca-certificates
+BuildRequires: desktop-file-utils
+BuildRequires: appstream-glib /bin/sh
+BuildRequires: nodejs10 npm10 nodejs10-devel nodejs-common
+BuildRequires: python
+%endif
 
 %if 0%{?rhel:1}
 BuildRequires: git rsync findutils 
@@ -189,8 +197,10 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 # these checks are here...
 %if 0%{?suse_version:1}
   echo "======== Opensuse version: %{suse_version}"
-  echo "Builds for OpenSUSE are not currently supported."
+%if 0%{?suse_version} != 1550
+  echo "Builds for OpenSUSE Leap are not currently supported."
   exit 1
+%endif
 %endif
 %if 0%{?fedora:1}
   echo "======== Fedora version: %{fedora}"
@@ -219,49 +229,20 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 %setup -q -T -D -a 1 -n %{sourceroot}
 
 
+%if 0%{?suse_version:1}
+  echo "======== Forcing python2 availability for SQLite build requirements"
+  mkdir -p $HOME/.local/bin
+  if [ ! -e "$HOME/.local/bin/python" ] ;  then
+    ln -s /usr/bin/python2 $HOME/.local/bin/python
+  fi
+%endif
+
 %if 0%{?fedora:1}
   echo "======== Forcing python2 availability for SQLite build requirements"
   mkdir -p $HOME/.local/bin
   if [ ! -e "$HOME/.local/bin/python" ] ;  then
     ln -s /usr/bin/python2 $HOME/.local/bin/python
   fi
-#%%if 0%%{?fedora} > 30
-#  # THIS IS NOT WORKING
-#  mkdir -p %%{sourcetree}/ElectronClient/app/node_modules
-#  mkdir -p %%{sourcetree}/CliClient/node_modules
-#  cp -aL --no-preserve=ownership /usr/lib/node_modules/sqlite3 %%{sourcetree}/ElectronClient/app/node_modules/sqlite3
-#  cp -aL --no-preserve=ownership /usr/lib/node_modules/sqlite3 %%{sourcetree}/CliClient/node_modules/sqlite3
-
-#  # THIS _IS_ WORKING (joplin 1.0.174 to 1.0.179)
-#  # This is a hack, but the various package.json files have too old of a sqlite3 version declared
-#  grep '"version"' /usr/lib/node_modules/sqlite3/package.json > temp.json
-#  nodejs_sqlite3_version=$(sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p' temp.json)
-#  sed -i.bak '/sqlite/c\    "sqlite3": "^'${nodejs_sqlite3_version}'",' %{sourcetree}/ElectronClient/app/package.json
-#  sed -i.bak '/sqlite/c\    "sqlite3": "^'${nodejs_sqlite3_version}'",' %{sourcetree}/CliClient/package.json
-#  rm temp.json
-
-#%%endif
-#%%if 0%%{?fedora} > 30
-#  # NOTE: THIS IS EXPERIMENTAL AND LIKELY TO BE REMOVED
-#  cd %%{sourcetree}
-#  # desktop -- strip out certain packages from json file
-#  cd ElectronClient/app
-#  grep -v sqlite3 package.json > temp.json
-#  mv temp.json package.json
-#  rm package-lock.json
-#  cd ../..
-#  cd CliClient
-#  grep -v sqlite3 package.json > temp.json
-#  mv temp.json package.json
-#  rm package-lock.json
-#  cd ..
-#  cd Tools
-#  grep -v sqlite3 package.json > temp.json
-#  mv temp.json package.json
-#  rm package-lock.json
-#  cd ..
-#  cd ..
-#%%endif
 %endif
 
 %if 0%{?rhel:1}
@@ -485,6 +466,11 @@ umask 007
 
 
 %changelog
+* Sun May 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-0.1.testing.taw
+  - 1.0.216
+  - Fixed raw source links in specfile
+  - First attempt at OpenSUSE build -- FAILED at npm install (failed husky install)
+
 * Thu May 21 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.214-1..taw
 * Thu May 21 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.214-0.1.testing.taw
   - 1.0.214
