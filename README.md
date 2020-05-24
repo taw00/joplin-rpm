@@ -1,15 +1,16 @@
-# Joplin - a secure, open-source note management and writing application, packaged for Fedora, Red Hat Enterprise, and CentOS Linux
+# Joplin - a free and secure notebook application (packaged for Fedora, RHEL, CentOS)<!--, and OpenSUSE-->
 
 Joplin is a powerful desktop and mobile application for writing and organizing
-[markdown-formatted](https://en.wikipedia.org/wiki/Markdown) documents and then
-storing them, fully end-to-end encrypted, on the local filesystem as well as
-syncing to the cloud, thus allowing your multiple devices to maintain the same
-set of documents. Joplin can handle a large number of notes organised into
-notebooks. The notes are searchable, can be copied, tagged and modified either
-from the applications directly or from your own favorite text editor.
+[markdown-formatted](https://joplinapp.org/markdown/) documents synced
+between devices and storeed fully end-to-end encrypted on the local filesystem
+as well as the cloud. Joplin can manage large numbers of notes and documents
+organised into notebooks. The notes are searchable, can be copied, tagged and
+modified either from the applications directly or from your own favorite text
+or markdown editor.
 
 You can read more about what Joplin is [here](https://joplinapp.org/) and
-[here](https://github.com/laurent22/joplin) and the Joplin forums [here](https://discourse.joplinapp.org/).
+[here](https://github.com/laurent22/joplin) and the Joplin forums
+[here](https://discourse.joplinapp.org/).
 
 ## TL;DR - I want to install Joplin!
 
@@ -17,7 +18,11 @@ Open up a terminal and copy and paste these commands on the commandline of your
 Fedora Linux workstation or desktop. Note, I assume you are logged in as a user
 that has "sudo" rights.
 
-**For Fedora and EL8 (RHEL8/CentOS8) users...**  
+**For Fedora and EL8 (RHEL8/CentOS8) users . . .**  
+
+_Note that the last RHEL/CentoOS builds ending soon (v1.0.216?). Migrate your
+desktop to Fedora._
+
 ```
 # Initial install...
 sudo dnf copr enable taw/joplin
@@ -27,6 +32,14 @@ sudo dnf install -y joplin
 # Update/upgrade...
 sudo dnf upgrade -y joplin
 ```
+
+<!--
+**For OpenSUSE users . . .**
+
+_Stay tuned. The packages exist at
+<https://copr.fedorainfracloud.org/coprs/taw/joplin/>, I am just unsure of the
+right way to enable them for SUSE at the moment._
+-->
 
 <!--
 **For EL7 (RHEL7 and CentOS7) users...**
