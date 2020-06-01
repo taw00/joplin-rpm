@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -36,9 +36,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.2
 %endif
 
 # MINORBUMP
@@ -109,7 +109,16 @@ Source0: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree}.ta
 Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_contrib}.tar.gz
 
 # See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
-Requires: libcanberra-gtk2
+Requires: libcanberra-gtk2 libnotify
+Requires: libnotify
+
+# Including the terminal client tree really does a number on dependencies. We
+# need to filter things.
+# Desktop will include some silly scans for provides and deps as well
+%global __provides_exclude_from ^(.%{installtree}/.*\\.so.*|%{installtree}/cli/node_modules/.*|%{installtree}/cli/build/.*|%{installtree}/cli/tests/.*|%{installtree}/desktop/resources/.*)$
+%global __requires_exclude_from ^(.%{installtree}/.*\\.so.*|%{installtree}/cli/node_modules/.*|%{installtree}/cli/build/.*|%{installtree}/cli/tests/.*|%{installtree}/desktop/resources/.*)$
+%global __provides_exclude ^(lib.*\\.so.*)$
+%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(/usr/bin.*/coffee))$
 
 # provided by coreutils RPM
 #BuildRequires: /usr/bin/readlink /usr/bin/dirname
@@ -169,21 +178,23 @@ BuildRequires: tree vim-enhanced less
 
 
 %description
-Joplin is a free and secure notebook application. Organization is easy using
-notebooks and tags which can all be synchronized between your various devices.
-The notes are can be searched, copied, tagged, and modified either from the
-applications directly or from your own favorite text editor. The notes are
-composed with the ever-popular and familiar markdown format.
+Joplin is a secure notebook application designed to organize your notes,
+to-dos, web-snippets, and more. Documents are organized using tags and
+hierarchical notebooks and can be end-to-end synchronized with all your
+devices. Notes are can be searched, copied, tagged, and modified either from
+the applications directly or from your own favorite text editor. Notes are
+composed in the ever-popular and familiar markdown format.
 
-Notes can be imported from Evernote, to include all associated resources
+Notes can, of course, be imported from any markdown source Notes can also be
+imported from Evernote. Import from Evernote includes all associated resources
 (images, attachments, etc) and all metadata (geo-location, update time,
 creation time, etc). Notes can, of course, also be imported from any other
 markdown source.
 
-Mirroring to your devices and redundancy is achieved by a simple, and
-optionally encrypted, synchronization to various cloud services including
-Nextcloud, Dropbox, Onedrive, WebDAV, or your local or network-accessible file
-system.
+Mirroring to your devices and redundancy is achieved by a simple—and
+optionally end-to-end encrypted—synchronization to various cloud services
+including Nextcloud, Dropbox, Onedrive, WebDAV, or your local or
+network-accessible file system.
 
 
 %prep
@@ -216,7 +227,6 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
   exit 1
 %endif
 %endif
-
 
 # Unarchived source tree structure (extracted in {_builddir})
 #   sourceroot             joplin-1.0
@@ -257,8 +267,6 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
   fi
 %endif
 %endif
-
-
 
 # For debugging purposes...
 %if ! %{targetIsProduction}
@@ -315,7 +323,11 @@ cd %{sourcetree}
   yarn add electron-packager --dev
 %endif
 
+echo "###### NOTE: You will see the build gripe about a husky build failure because a .git can't be found. Ignore this #######"
+
 ### BUILD IT!
+# This npm install will trigger these set of events:
+# cd Tools && npm i && cd .. && cd ReactNativeClient && npm i && cd .. && cd ElectronClient && npm i && cd .. && cd CliClient && npm i && cd .. && gulp build
 npm install
 cd ElectronClient
 yarn dist
@@ -399,10 +411,11 @@ rm -rf $(find %{sourcetree}/ElectronClient/dist/linux-unpacked/resources/app*/no
 %else
 rm -rf $(find %{sourcetree}/ElectronClient/dist/linux-unpacked/resources/app*/node_modules/7zip-bin-linux/* -type d | grep -v ia32)
 %endif
-cp -a %{sourcetree}/CliClient/build/* %{buildroot}%{installtree}/cli/
+cp -a %{sourcetree}/CliClient/* %{buildroot}%{installtree}/cli
 cp -a %{sourcetree}/ElectronClient/dist/linux-unpacked/* %{buildroot}%{installtree}/desktop/
 # a little ugly
-ln -s %{installtree}/cli/main.js %{buildroot}%{installtree}/cli/%{name_cli}
+ln -s %{installtree}/cli/build/main.js %{buildroot}%{installtree}/cli/%{name}
+ln -s %{installtree}/cli/%{name} %{buildroot}%{_bindir}/%{name_cli}
 ln -s %{installtree}/desktop/joplin %{buildroot}%{installtree}/desktop/%{name_desktop}
 ln -s %{installtree}/desktop/joplin %{buildroot}%{_bindir}/%{name_desktop}
 
@@ -419,6 +432,7 @@ install -D -m755 -p %{sourcetree}/ElectronClient/dist/'Joplin '%{version}'.AppIm
 %doc %{sourcetree}/ElectronClient/dist/linux-unpacked/LICENSE.electron.txt
 %doc %{sourcetree}/ElectronClient/dist/linux-unpacked/LICENSES.chromium.html
 %{_bindir}/%{name_desktop}
+%{_bindir}/%{name_cli}
 # desktop environment metadata
 %{_datadir}/applications/%{name}.desktop
 %{_metainfodir}/%{name}.appdata.xml
@@ -447,9 +461,7 @@ install -D -m755 -p %{sourcetree}/ElectronClient/dist/'Joplin '%{version}'.AppIm
 %{_datadir}/icons/HighContrast/scalable/apps/%{name}.svg
 
 %if 0%{?nativebuild:1}
-# /usr/share/joplin
 %{installtree}
-#%%{_bindir}/%%{name_cli}
 %endif
 
 
@@ -466,6 +478,14 @@ umask 007
 
 
 %changelog
+* Mon Jun 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-2.taw
+* Mon Jun 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-1.2.testing.taw
+* Tue May 26 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-1.1.testing.taw
+  - First attempt at including the terminal application.
+  - Added libnotify dependency. Technically optional but it makes things better.
+  - Cleaned up provides and requires. autoreq pulls in far too much.
+
+* Sun May 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-1.taw
 * Sun May 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-0.1.testing.taw
   - 1.0.216
   - Fixed raw source links in specfile
