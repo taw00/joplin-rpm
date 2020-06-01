@@ -36,9 +36,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 3
 %if ! %{targetIsProduction}
-  %define _pkgrel 1.2
+  %define _pkgrel 2.2
 %endif
 
 # MINORBUMP
@@ -207,25 +207,26 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 # The prep section is the first place we can run shell commands. Therefore,
 # these checks are here...
 %if 0%{?suse_version:1}
-  echo "======== Opensuse version: %{suse_version}"
-%if 0%{?suse_version} != 1550
-  echo "Builds for OpenSUSE Leap are not currently supported."
-  exit 1
-%endif
+  echo "======== OpenSuse suse_version: %{suse_version}"
+  echo "======== Opensuse  sle_version: %{sle_version}"
+  %if 0%{?sle_version} && 0%{?sle_version} <= 150100
+    echo "Builds for OpenSUSE Leap 15.1 and older are not currently supported."
+    exit 1
+  %endif
 %endif
 %if 0%{?fedora:1}
   echo "======== Fedora version: %{fedora}"
-%if 0%{?fedora} <= 28
-  echo "Builds for Fedora 28 and older are no longer supported."
-  exit 1
-%endif
+  %if 0%{?fedora} <= 28
+    echo "Builds for Fedora 28 and older are no longer supported."
+    exit 1
+  %endif
 %endif
 %if 0%{?rhel:1}
   echo "======== EL version: %{rhel}"
-%if 0%{?rhel} < 7
-  echo "Builds for EL 6 and older are not supported."
-  exit 1
-%endif
+  %if 0%{?rhel} < 7
+    echo "Builds for EL 6 and older are not supported."
+    exit 1
+  %endif
 %endif
 
 # Unarchived source tree structure (extracted in {_builddir})
@@ -478,6 +479,10 @@ umask 007
 
 
 %changelog
+* Mon Jun 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-3.taw
+* Mon Jun 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-2.2.testing.taw
+  - allowing OpenSuse 15.2 builds.
+
 * Mon Jun 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-2.taw
 * Mon Jun 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-1.2.testing.taw
 * Tue May 26 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-1.1.testing.taw
