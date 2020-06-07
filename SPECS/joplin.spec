@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -32,13 +32,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 216
+%define verminor 218
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 3
+%define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 2.2
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -123,6 +123,8 @@ Requires: libnotify
 # provided by coreutils RPM
 #BuildRequires: /usr/bin/readlink /usr/bin/dirname
 
+BuildRequires: libsecret-devel
+
 %if 0%{?suse_version:1}
 BuildRequires: ca-certificates-cacert ca-certificates-mozilla ca-certificates
 BuildRequires: desktop-file-utils
@@ -158,7 +160,7 @@ BuildRequires: git rsync findutils
 BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
 # Note: /usr/bin/python is going away -- https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
-BuildRequires: python sed grep
+BuildRequires: python grep
 BuildRequires: nodejs-sqlite3
 #%%if 0%%{?fedora} <= 30
 BuildRequires: nodejs npm nodejs-yarn node-gyp
@@ -479,6 +481,14 @@ umask 007
 
 
 %changelog
+* Sun Jun 07 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.218-0.1.testing.taw
+  - specfile: removed sed build requirement (a legacy requirement)
+  - specfile: new BuildRequires: libsecret-devel
+  - New editor: Code Mirror (potentially replacing Ace Editor?)
+  - New translation (Bahasa Indonesian)
+  - Improvement: Upload attachments > 4MB if you use OneDrive
+  - And a whole pile of smaller improvements and fixes
+
 * Mon Jun 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-3.taw
 * Mon Jun 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.216-2.2.testing.taw
   - allowing OpenSuse 15.2 builds.
