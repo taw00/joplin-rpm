@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -481,6 +481,7 @@ umask 007
 
 
 %changelog
+* Sun Jun 13 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.218-1.taw
 * Sun Jun 07 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.218-0.1.testing.taw
   - specfile: removed sed build requirement (a legacy requirement)
   - specfile: new BuildRequires: libsecret-devel
