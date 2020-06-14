@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 218
+%define verminor 220
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -481,6 +481,14 @@ umask 007
 
 
 %changelog
+* Sun Jun 13 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.220-0.1.testing.taw
+  - 1.0.220 — <https://github.com/laurent22/joplin/releases/tag/v1.0.220>
+  - Improved: Improved escaping of Markdown titles in links (#3333)
+  - Improved: Refactored themes to allow using the same ones in both desktop  
+    and mobile version
+  - Fixed: Fixed issue with setting filename for edited attachments
+  - Fixed: Prevent notebook to be the parent of itself (#3334)
+
 * Sun Jun 13 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.218-1.taw
 * Sun Jun 07 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.218-0.1.testing.taw
   - specfile: removed sed build requirement (a legacy requirement)
