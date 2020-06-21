@@ -32,7 +32,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 220
+%define verminor 224
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -481,6 +481,21 @@ umask 007
 
 
 %changelog
+* Sun Jun 21 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.224-0.1.testing.taw
+  - 1.0.24 — https://github.com/laurent22/joplin/releases/tag/v1.0.224
+  - Fixed regression
+  - Improved: API: Improved error handling on service end-point
+  - Fixed: API: Fixed externalEditWatcher/noteIsWatched call, fixed tests
+  - New: API: Add support for external editing from API
+  - New: Add default filename for jex export (#3034 by @CalebJohn)
+  - New: Add swapLineUp and swapLineDown keys to Code Mirror editor (#3363 by @CalebJohn)
+  - Improved: Do not expand the left notebook when following a link to a note
+  - Improved: Reduce database logging statements
+  - Improved: Remove auto-indent for in note html/xml for Code Mirror (#3374 by @CalebJohn)
+  - Fixed: Fix getLineSpan logic and list token regex logic (#3365 by @CalebJohn)
+  - Fixed: Fixed various bugs related to the import of ENEX files as HTML
+  - Fixed: Prevent desktop.ini file from breaking sync lock (#3381)
+
 * Sun Jun 13 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.220-0.1.testing.taw
   - 1.0.220 — <https://github.com/laurent22/joplin/releases/tag/v1.0.220>
   - Improved: Improved escaping of Markdown titles in links (#3333)
