@@ -38,7 +38,7 @@ Version: %{vermajor}.%{verminor}
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 0.2
 %endif
 
 # MINORBUMP
@@ -374,7 +374,7 @@ Keywords=secure;security;privacy;private;notes;bookmarks;collaborate;research;
 StartupNotify=true
 X-Desktop-File-Install-Version=0.23
 StartupWMClass=Joplin
-" > %{buildroot}%{_datadir}/applications/%{name}.desktop
+" > %{buildroot}%{_datadir}/applications/org.joplinapp.Joplin.desktop
 install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/256x256.png   %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
 install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/32x32.png     %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/16x16.png     %{buildroot}%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
@@ -399,8 +399,8 @@ install -D -m644 -p %{sourcetree_contrib}/desktop-icons/72x72-highcontrast.png  
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/512x512-highcontrast.png    %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{name}.png
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/JoplinIcon-highcontrast.svg %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{name}.svg
 
-desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop
-install -D -m644 -p %{sourcetree_contrib}/%{name}.appdata.xml %{buildroot}%{_metainfodir}/%{name}.appdata.xml
+desktop-file-validate %{buildroot}%{_datadir}/applications/org.joplinapp.Joplin.desktop
+install -D -m644 -p %{sourcetree_contrib}/org.joplinapp.Joplin.appdata.xml %{buildroot}%{_metainfodir}/org.joplinapp.Joplin.appdata.xml
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 # Native build
@@ -437,8 +437,8 @@ install -D -m755 -p %{sourcetree}/ElectronClient/dist/'Joplin '%{version}'.AppIm
 %{_bindir}/%{name_desktop}
 %{_bindir}/%{name_cli}
 # desktop environment metadata
-%{_datadir}/applications/%{name}.desktop
-%{_metainfodir}/%{name}.appdata.xml
+%{_datadir}/applications/org.joplinapp.Joplin.desktop
+%{_metainfodir}/org.joplinapp.Joplin.appdata.xml
 # desktop environment icons
 %{_datadir}/icons/hicolor/256x256/apps/%{name}.png
 %{_datadir}/icons/hicolor/32x32/apps/%{name}.png
@@ -481,6 +481,14 @@ umask 007
 
 
 %changelog
+* Mon Jun 22 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.224-0.2.testing.taw
+  - org.joplinapp.Joplin.desktop and org.joplinapp.Joplin.appdata.xml moved to  
+    these names to be in compliance with:  
+    https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#file-naming  
+    https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html#sect-Metadata-GenericComponent
+    https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names  
+    https://docs.flatpak.org/en/latest/conventions.html  
+
 * Sun Jun 21 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.224-0.1.testing.taw
   - 1.0.24 — https://github.com/laurent22/joplin/releases/tag/v1.0.224
   - Fixed regression
