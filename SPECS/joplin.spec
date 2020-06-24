@@ -22,7 +22,7 @@ Name: joplin
 %define name_desktop joplin-desktop
 Summary: A free and secure notebook application
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -481,6 +481,9 @@ umask 007
 
 
 %changelog
+* Tue Jun 23 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.224-1.taw
+  - 1.0.224 — https://github.com/laurent22/joplin/releases/tag/v1.0.224
+
 * Mon Jun 22 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.224-0.2.testing.taw
   - org.joplinapp.Joplin.desktop and org.joplinapp.Joplin.appdata.xml moved to  
     these names to be in compliance with:  
@@ -490,7 +493,7 @@ umask 007
     https://docs.flatpak.org/en/latest/conventions.html  
 
 * Sun Jun 21 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.224-0.1.testing.taw
-  - 1.0.24 — https://github.com/laurent22/joplin/releases/tag/v1.0.224
+  - 1.0.224 — https://github.com/laurent22/joplin/releases/tag/v1.0.224
   - Fixed regression
   - Improved: API: Improved error handling on service end-point
   - Fixed: API: Fixed externalEditWatcher/noteIsWatched call, fixed tests
