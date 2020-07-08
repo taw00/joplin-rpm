@@ -63,287 +63,41 @@ system.</p>
       </description>
     </release>
 -->
+    <release version="1.0.227" date="2020-07-07">
+      <url>https://github.com/laurent22/joplin/releases/tag/v1.0.227</url>
+    </release>
     <release version="1.0.224" date="2020-06-20">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.224</url>
-      <description>
-        <p>Summary:</p>
-        <ul>
-          <li>Fixed regression in v1.0.223 (an unreleased version)</li>
-          <li>Improved: API: Improved error handling on service end-point</li>
-          <li>Fixed: API: Fixed externalEditWatcher/noteIsWatched call, fixed tests</li>
-          <li>New: API: Add support for external editing from API</li>
-          <li>New: Add default filename for jex export (#3034 by @CalebJohn)</li>
-          <li>New: Add swapLineUp and swapLineDown keys to Code Mirror editor (#3363 by @CalebJohn)</li>
-          <li>Improved: Do not expand the left notebook when following a link to a note</li>
-          <li>Improved: Reduce database logging statements</li>
-          <li>Improved: Remove auto-indent for in note html/xml for Code Mirror (#3374 by @CalebJohn)</li>
-          <li>Fixed: Fix getLineSpan logic and list token regex logic (#3365 by @CalebJohn)</li>
-          <li>Fixed: Fixed various bugs related to the import of ENEX files as HTML</li>
-          <li>Fixed: Prevent desktop.ini file from breaking sync lock (#3381)</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
-
     <release version="1.0.220" date="2020-06-13">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.220</url>
-      <description>
-        <p>Summary:</p>
-        <ul>
-          <li>Improved: Improved escaping of Markdown titles in links (#3333)</li>
-          <li>Improved: Refactored themes to allow using the same ones in both desktop and mobile version</li>
-          <li>Fixed: Fixed issue with setting filename for edited attachments</li>
-          <li>Fixed: Prevent notebook to be the parent of itself (#3334)</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
-
     <release version="1.0.218" date="2020-06-07">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.218</url>
-      <description>
-        <p>Summary:</p>
-        <ul>
-          <li>Fixed: Fixed regression when applying theme for Ace Editor (#3338) (#3337 by @CalebJohn)</li>
-          <li>Fixed: Regression: Fixed issue with note being needlessly reloaded in WYSIWYG editor</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
-
     <release version="1.0.216" date="2020-05-24">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.216</url>
-      <description>
-        <p>Summary:</p>
-        <p>This release includes a rewrite of the note editor component in order to allow further improvements (which were no longer possible) and to make it easier to maintain both WYSIWYG editors and regular editor.</p>
-        <p>A new button "Code View" has been added to switch between the WYSIWYG editor and the Markdown editor.</p>
-        <p>The note-specific toolbar has also been moved next to the title field for now because it wasn't practical to leave it with the editor-specific toolbar (and also not logical). It might be tweaked or moved later on once we have a clearer idea of what we want to do.</p>
-        <p>Finally, the tag bar has been moved to the top of the note editor pane. Again this was in part necessary after the refactoring, but also more logical since the tags are relevant to the note, but not to the note content. So it makes more sense to have the editor toolbar right next to the editor content, without the tag bar in between, as before.</p>
-        <ul>
-          <li>New: Add + to access 'Zoom In', allows to use the numpad (#2630 by Helmut K. C. Tessarek)</li>
-          <li>New: Add option to "Reveal file in folder" when right-clicking on image</li>
-          <li>New: Added support for basic search</li>
-          <li>New: WYSIWYG: Added localisation support</li>
-          <li>New: WYSIWYG: Added support for scroll restore</li>
-          <li>New: Added more info on how to switch to Markdown editor</li>
-          <li>Security: Filter SVG element event attributes to prevent XSS vulnerability (#3143)</li>
-          <li>Improved: Add note history (back/forward buttons) (#2819) (#2409 by Naveen M V)</li>
-          <li>Improved: Moved note-related toolbar button next to tag bar</li>
-          <li>Improved: Switch to Font Awesome as icon library (#3137)</li>
-          <li>Improved: Upgraded to Electron 8.2.5</li>
-          <li>Improved: WYSIWYG: Allow pasting images in editor</li>
-          <li>Improved: Handle compositionend event in TinyMCE (#3164 by Shotaro Yamada)</li>
-          <li>Improved: Improve automatic title generation (#2955) (#2915 by anirudh murali)</li>
-          <li>Improved: Remove colour gradient from sidebar and replaced expand icons with chrevrons</li>
-          <li>Improved: Started resource fetcher service when a note has been decrypted</li>
-          <li>Improved: Support Windows tiles (#3063 by Giacomo Rossetto)</li>
-          <li>Improved: WYSIWYG: Enable context menu on resources, links and text</li>
-          <li>Improved: WYSIWYG: Handle "Paste as text" when pressing Ctrl+Shift+V</li>
-          <li>Improved: WYSIWYG: Handle drag and drop of notes and files</li>
-          <li>Fixed: Better handling of missing table field bug on Linux (#3088)</li>
-          <li>Fixed: Disable or enable menu items depending on the current view (#2467)</li>
-          <li>Fixed: Fix focus after exiting GotoAnything (#3075) (#3066 by Mohammed Rabeeh)</li>
-          <li>Fixed: Fix format of geolocation data (#2673 by @mic704b)</li>
-          <li>Fixed: Fix issue where last used filename was displayed when exporting directory</li>
-          <li>Fixed: Fixed KaTeX font issue in exported PDF and HTML (#3089 by @kowalskidev)</li>
-          <li>Fixed: Fixed background color on large Mermaid graphs (#3111) (#3109 by Rahul Mohata)</li>
-          <li>Fixed: Fixed note toolbar layout</li>
-          <li>Fixed: Fixed order of notebooks in "Move to notebook" dialog (#3084) (#3052 by Siddhant Sehgal)</li>
-          <li>Fixed: Fixed regression with Ace Editor (switching layout had bugs)</li>
-          <li>Fixed: Fixed regression with Ace Editor list indentation, and cleaned up code</li>
-          <li>Fixed: Fixed regression with local search (could not be closed anymore)</li>
-          <li>Fixed: Fixed the Goto Anything item list overflow (#3096) (#3095 by Rahul Mohata)</li>
-          <li>Fixed: Fixed various bugs and regressions following note editor refactoring</li>
-          <li>Fixed: Long URIs break Note Info dialog (#3136) (#3131 by Mohammed Rabeeh)</li>
-          <li>Fixed: Prevent Goto Anything from freezing when inputting special characters (#3093)</li>
-          <li>Fixed: WYSIWYG: Fix CODE element style</li>
-          <li>Fixed: WYSIWYG: Fixed clicking a link within a checkbox label</li>
-          <li>Fixed: WYSIWYG: Fixed undo issue when pasting text</li>
-          <li>Fixed: Fix notebook associated with note when doing search, and expand correct notebook (#3219)</li>
-          <li>Fixed: Make sidebar resizable when note list is not displayed (#2895) (#2865 by anirudh murali)</li>
-          <li>Fixed: WYSIWYG: Fixed UI translation issue for certain languages</li>
-          <li>Fixed: Word/character counter includes Markdown syntax and HTML tags (#3037) (#3009 by @RedDocMD)</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
-
     <release version="1.0.201" date="2020-04-14">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.201</url>
-      <description>
-        <p>Summary:</p>
-        <ul>
-          <li>Improved: Search in title and body by default when using Goto Anything</li>
-          <li>Improved: Disable prompt dialog OK button when input is empty (#2905) (#2799 by Siddhant Sehgal)</li>
-          <li>Improved: Disable BASE html tag, which can break certain plugins such as Katex</li>
-          <li>Fixed: In some cases, notes with Katex code were not exported correctly as PDF (#3058)</li>
-          <li>Fixed: Trying to fix resource path issue in WYSIWYG editor (#2968)</li>
-          <li>Fixed: Fixed Katex rendering issue when greater than symbol appears in markup (#3033)</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
-
     <release version="1.0.200" date="2020-04-12">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.200</url>
-      <description>
-        <p>Summary: This is to fix a few regressions in previous release.</p>
-        <ul>
-          <li>New: Add more log statements to attempt to fix #2968</li>
-          <li>Improved: Update zh_TW.po (#3020 by Ethan Chen)</li>
-          <li>Improved: Update sv.po (#3013 by @abolishallprivateproperty)</li>
-          <li>Fixed: Fix Go To Anything closing when clicking inside the modal (#3029) (#3028 by Anjula Karunarathne)</li>
-          <li>Fixed: Fix JEX export (#3026 by @CalebJohn)</li>
-          <li>Fixed: Fixes todo mouse hover behaviour (#2831) (#2830 by Siddhant Sehgal)</li>
-          <li>Fixed: Fixes selection in text editor after applying formatting (#2737) (#2736 by @Rishgod)</li>
-          <li>Fixed: Title auto-update didn't work anymore (#3019)</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
-
     <release version="1.0.199" date="2020-04-10">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.199</url>
-      <description>
-        <p>Summary:</p>
-        <ul>
-          <li>New: Added new Aritim-Dark theme (#2997 by @TobiasDev)</li>
-          <li>New: WYSIWYG: Added support for code blocks edition and creation</li>
-          <li>New: WYSIWYG: Added support for tables</li>
-          <li>New: WYSIWYG: Apply theme to toolbar</li>
-          <li>New: WYSIWYG: Better handling of links on macOS and inside Katex block</li>
-          <li>New: WYSIWYG: Do not display target list in link dialog</li>
-          <li>New: WYSIWYG: Handle internal note links</li>
-          <li>New: WYSIWYG: Handle resource download mode</li>
-          <li>New: WYSIWYG: Improved documentation on what plugins are compatible with WYSIWYG editor</li>
-          <li>New: WYSIWYG: Preserve HTML code in Markdown when editing from wysiwyg editor</li>
-          <li>New: Add "Retry All" option to synchronisation page (#2688)</li>
-          <li>New: Add friendly default filenames to export options (#2749 by @CalebJohn)</li>
-          <li>New: Add message box to ask confirmation when resizing image</li>
-          <li>Improved: Clear provisional flag as soon as note is modified to avoid data loss (#2681)</li>
-          <li>Improved: Close Goto Anything modal on outside click (#2940 by Siddhant Sehgal)</li>
-          <li>Improved: Moved all themes out into their own .js theme files (#2951 by @TobiasDev)</li>
-          <li>Improved: Resource screen improvements (#2850) (#2639)</li>
-          <li>Improved: Right-click to move note to notebook (#2566) (#2296 by Siddhant Sehgal)</li>
-          <li>Improved: Update it_IT.po (#2978 by @abonte)</li>
-          <li>Improved: Update ko.po (#2986 by @xmlangel)</li>
-          <li>Improved: Update nb_NO.po (#2973 by Mats Estensen)</li>
-          <li>Improved: Update zh_CN.po (#2971 by @troilus)</li>
-          <li>Improved: Wait for note to be saved before closing the app</li>
-          <li>Fixed: Fixed iOS and macOS icons and created script to automate icon creation (#2604)</li>
-          <li>Fixed: Fixed regression when drag and dropping files</li>
-          <li>Fixed: Fixed styling issues with rendered Markdown</li>
-          <li>Fixed: Prevent decryption loop when a resource cannot be decrypted (#2257)</li>
-          <li>Fixed: When modifying a conflicted note, it would disappear from the view (#2709)</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
-
     <release version="1.0.197" date="2020-03-30">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.197</url>
-      <description>
-        <p>Summary:</p>
-        <ul>
-          <li>New: Added support for checkboxes and fixed various issues with WYSIWYG editor</li>
-          <li>New: Added Vietnamese translation</li>
-          <li>Improved: Go To Anything by body (#2686) (#2683 by Anjula Karunarathne)</li>
-          <li>Improved: Cleaning up the install / update script (#2719 by Brandon Wulf)</li>
-          <li>Fixed: MD importer handle special chars in linked image name (#2346) (#2334 by @bart)</li>
-          <li>Fixed: Prevent title overflow on small windows (#2918) (#2917 by anirudh murali)</li>
-          <li>Fixed: Fixed top margin of toolbar (#2828) (#2824 by Siddhant Sehgal)</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
-
     <release version="1.0.195" date="2020-03-22">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.195</url>
-      <description>
-        <p>Summary:</p>
-        <ul>
-          <li>New: Added experimental WYSIWYG editor (#2556) (#176)</li>
-          <li>New: Added way to upgrade master key encryption and sync target encryption</li>
-          <li>New: Add button to About box to copy Joplin's information to the clipboard (#2711 by Helmut K. C. Tessarek)</li>
-          <li>New: Api: Add support for "tags" property for note PUT request (#2649) (#941 by @jyuvaraj03)</li>
-          <li>New: Add global shortcut to show/hide Joplin (#2653 by Helmut K. C. Tessarek)</li>
-          <li>Improved: Fast notebook deletion (#2730) (#2703 by @RedDocMD)</li>
-          <li>Improved: Enhance notelist focus behaviour (#2520 by @mic704b)</li>
-          <li>Improved: Indent lists by pressing tab when caret is after bullet (#2713) (#498 by Shotaro Yamada)</li>
-          <li>Fixed: Expand notebook tree when clicking on notebook in search results (#2620) (#2616 by Mohammed Rabeeh)</li>
-          <li>Fixed: Remember last selected note (#2809) (#2803 by Naveen M V)</li>
-          <li>Fixed: Fix menu bar shortcut (Alt+E) while editing a note (Win) (#2776 by @nullpointer666)</li>
-          <li>Fixed: Fix integration test harness issues. (#2723 by @mic704b)</li>
-          <li>Fixed: Fix calls to non-existent function (#2675 by @mic704b)</li>
-          <li>Fixed: Fix format of note timestamps (#2672 by @mic704b)</li>
-          <li>Fixed: Fix show-all-notes update bugs. (#2642 by @mic704b)</li>
-          <li>Fixed: Fix issue with tag not being displayed below note when it is created</li>
-          <li>Fixed: Fix button label wrapping in toolbar (#2708) (#2700 by Anjula Karunarathne)</li>
-          <li>Fixed: Fixed renaming tag issue (#2618)</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
-
     <release version="1.0.194" date="2020-03-13">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.194</url>
-      <description>
-        <p>Summary: The main purpose of this pre-release is to allow evaluating the WYSIWYG editor.</p>
-        <ul>
-            <li>New: Added experimental WYSIWYG editor (#2556) (#176)</li>
-            <li>New: Added way to upgrade master key encryption and sync target encryption</li>
-            <li>New: Add button to About box to copy Joplin's information to the clipboard (#2711 by Helmut K. C. Tessarek)</li>
-            <li>New: Api: Add support for "tags" property for note PUT request (#2649) (#941 by @jyuvaraj03)</li>
-            <li>Improved: Enhance notelist focus behaviour (#2520 by @mic704b)</li>
-            <li>Improved: Indent lists by pressing tab when caret is after bullet (#2713) (#498 by Shotaro Yamada)</li>
-            <li>Fixed: Expand notebook tree when clicking on notebook in search results (#2620) (#2616 by Mohammed Rabeeh)</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
-
     <release version="1.0.193" date="2020-03-08">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.193</url>
-      <description>
-        <p>Summary:</p>
-        <ul>
-            <li>New: Added concept of provisional note to simplify creation and handling of newly created notes</li>
-            <li>New: Add word counter feature to notes (#2444) (#160 by @jdrobertso)</li>
-            <li>New: Added zoom controls to the application menu (#2162)</li>
-            <li>New: Added Mermaid diagrams support (#2001)</li>
-            <li>New: Add "add or remove tags" for multiple notes. (#2386) (#539 by @mic704b)</li>
-            <li>New: Added new date format YYYY.MM.DD (#2318 by XSAkos)</li>
-            <li>New: Added new, more secure encryption methods, so that they can be switched to at a later time</li>
-            <li>New: Add more context to encryption errors</li>
-            <li>Security: Fixed potential Arbitrary File Read via XSS (Reported by Javier Olmedo, fixed by Laurent Cozic)</li>
-            <li>Security: Changed default encryption method to CCM</li>
-            <li>Security: Change geolocation service to freegeoip.app to improve privacy (#2503 by Helmut K. C. Tessarek)</li>
-            <li>Improved: Improve code css for Solarized Dark (#2626 by @rajprakash)</li>
-            <li>Improved: Empty note body has 0 line count (#2623 by @jdrobertso)</li>
-            <li>Improved: Use asar packing to improve performances (#2531 by @R-L-T-Y)</li>
-            <li>Improved: Implement "show all notes" (#2472) (#262 by @mic704b)</li>
-            <li>Improved: Create a screen that list all the resouces (#2189) (#592 by Georg Grab)</li>
-            <li>Improved: Ensure tabs act like tabs and spaces act like spaces in editor. (#2508 by @mic704b)</li>
-            <li>Improved: Update Electron to 7.1.12 (#2500 by Helmut K. C. Tessarek)</li>
-            <li>Improved: Support export of multiple notes to PDF files. (#2468 by @mic704b)</li>
-            <li>Improved: Use current year in About box (in the copyright text) (#2466 by Helmut K. C. Tessarek)</li>
-            <li>Improved: Show master instead of HEAD as branch in about box (#2465 by Helmut K. C. Tessarek)</li>
-            <li>Improved: Sort tags in drop-down list (when adding tags) (#2453 by Helmut K. C. Tessarek)</li>
-            <li>Improved: Support scrolling in the note list using keys (eg page up, page down) (#2404 by @mic704b)</li>
-            <li>Improved: Do not select pasted text no matter the paste method (#2431 by @mic704b)</li>
-            <li>Improved: Support list creation on multi-line selections (#2408) (#1014 by @mic704b)</li>
-            <li>Improved: Allow --no-sandbox flag to go around AppImage limitation (#2436 by Vaidotas Simkus)</li>
-            <li>Improved: Reset time fields when duplicating a note (#2428 by Andrey Dolgov)</li>
-            <li>Improved: Improved Note search bar UI (#2329 by @mic704b)</li>
-            <li>Improved: Emphasise note title (#2311 by @mic704b)</li>
-            <li>Improved: Support "select all" in the note list (#2403 by @mic704b)</li>
-            <li>Improved: More info for "unknown profile version" error message (#2361 by @mic704b)</li>
-            <li>Improved: Handle Thai language in search (#2387) (#2279 by Kirtan Purohit)</li>
-            <li>Improved: Improve appearance of note Info dialog</li>
-            <li>. . . and a host of fixes (see release link)</li>
-        </ul>
-        <p>Note: Haven't been keeping up with every release in these notes. Apologies. I will probably be lax about it again. -todd</p>
-      </description>
     </release>
     <release version="1.0.179" date="2020-01-25">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.179</url>
@@ -376,9 +130,7 @@ system.</p>
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.165</url>
     </release>
     <release version="1.0.140" date="2019-03-10">
-      <description>
-        <p>Bug fixes, code refactoring, and performance improvements.</p>
-      </description>
+      <url>https://github.com/laurent22/joplin/releases/tag/v1.0.140</url>
     </release>
   </releases>
   <mimetypes>

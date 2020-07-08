@@ -23,7 +23,7 @@ Name: joplin
 %define tld_vendor_product_id org.joplinapp.Joplin
 Summary: A free and secure notebook application
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -33,13 +33,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 224
+%define verminor 227
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -363,8 +363,12 @@ cd ..
 #   _mandir = /usr/share/man
 #   _sysconfdir = /etc
 #   _libdir = /usr/lib or /usr/lib64 (depending on system)
+#   _metainfodir = /usr/share/metainfo
 #  Note: We install to /usr/share/ because /opt is for unpackaged applications
 #        http://www.pathname.com/fhs/pub/fhs-2.3.html
+
+# Old versions of RPM don't have _metainfodir defined
+#%%define _metainfodir %%{_datadir}/metainfo
 
 # Create directories
 install -d %{buildroot}%{_libdir}/%{name}
@@ -372,14 +376,13 @@ install -d -m755 -p %{buildroot}%{_bindir}
 install -d %{buildroot}%{installtree}/desktop
 install -d %{buildroot}%{installtree}/cli
 install -d %{buildroot}%{_datadir}/applications
-%define _metainfodir %{_datadir}/metainfo
 install -d %{buildroot}%{_metainfodir}
 
 echo "[Desktop Entry]
 Type=Application
 Name=Joplin
 GenericName=Secure notes
-Comment=A free and secure notebook application
+Comment=A free and secure notebook management application
 Exec=%{name_desktop}
 Icon=%{tld_vendor_product_id}
 Terminal=false
@@ -495,6 +498,9 @@ umask 007
 
 
 %changelog
+* Wed Jul 8 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.227-0.1.testing.taw
+  - 1.0.227 — https://github.com/laurent22/joplin/releases/tag/v1.0.227
+
 * Thu Jun 25 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.224-2.taw
 * Thu Jun 25 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.224-1.1.testing.taw
   - icons need to be in desktop spec name ID format as well: org.joplinapp.Joplin.png/svg
