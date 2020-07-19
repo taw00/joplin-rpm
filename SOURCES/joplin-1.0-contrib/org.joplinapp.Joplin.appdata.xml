@@ -63,6 +63,9 @@ system.</p>
       </description>
     </release>
 -->
+    <release version="1.0.229" date="2020-07-18">
+      <url>https://github.com/laurent22/joplin/releases/tag/v1.0.229</url>
+    </release>
     <release version="1.0.227" date="2020-07-07">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.227</url>
     </release>
