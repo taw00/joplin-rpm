@@ -18,10 +18,12 @@
 # <name>-<vermajor.<verminor>-<pkgrel>[.<extraver>][.<snapinfo>].DIST[.<minorbump>]
 
 Name: joplin
+Summary: A free and secure notebook application
+
+%define appid org.joplinapp.Joplin
+
 %define name_cli joplin-cli
 %define name_desktop joplin-desktop
-%define tld_vendor_product_id org.joplinapp.Joplin
-Summary: A free and secure notebook application
 
 %define targetIsProduction 0
 %define nativebuild 1
@@ -39,7 +41,7 @@ Version: %{vermajor}.%{verminor}
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 0.2
 %endif
 
 # MINORBUMP
@@ -104,7 +106,7 @@ ExclusiveArch: x86_64 i686 i586 i386
 %define sourcetree %{name}-%{version}
 %define sourcetree_contrib %{name}-%{vermajor}-contrib
 # /usr/share/joplin
-%define installtree %{_datadir}/%{name}
+%define installtree %{_datadir}/%{appid}
 
 Source0: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree}.tar.gz
 Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_contrib}.tar.gz
@@ -128,6 +130,7 @@ BuildRequires: libsecret-devel
 
 %if 0%{?suse_version:1}
 BuildRequires: ca-certificates-cacert ca-certificates-mozilla ca-certificates
+BuildRequires: git rsync findutils
 BuildRequires: desktop-file-utils
 BuildRequires: appstream-glib /bin/sh
 BuildRequires: nodejs10 npm10 nodejs10-devel nodejs-common
@@ -371,7 +374,7 @@ cd ..
 #%%define _metainfodir %%{_datadir}/metainfo
 
 # Create directories
-install -d %{buildroot}%{_libdir}/%{name}
+#install -d %%{buildroot}%%{_libdir}/%%{appid}
 install -d -m755 -p %{buildroot}%{_bindir}
 install -d %{buildroot}%{installtree}/desktop
 install -d %{buildroot}%{installtree}/cli
@@ -384,41 +387,32 @@ Name=Joplin
 GenericName=Secure notes
 Comment=A free and secure notebook management application
 Exec=%{name_desktop}
-Icon=%{tld_vendor_product_id}
+Icon=%{appid}
 Terminal=false
 Categories=Office;
 Keywords=secure;security;privacy;private;notes;bookmarks;collaborate;research;
 StartupNotify=true
 X-Desktop-File-Install-Version=0.23
 StartupWMClass=Joplin
-" > %{buildroot}%{_datadir}/applications/%{tld_vendor_product_id}.desktop
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/1024x1024.png %{buildroot}%{_datadir}/icons/hicolor/1024x1024/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/128x128.png     %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/144x144.png     %{buildroot}%{_datadir}/icons/hicolor/144x144/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/16x16.png         %{buildroot}%{_datadir}/icons/hicolor/16x16/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/24x24.png         %{buildroot}%{_datadir}/icons/hicolor/24x24/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/256x256.png     %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/32x32.png         %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/512x512.png     %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/72x72.png         %{buildroot}%{_datadir}/icons/hicolor/72x72/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/96x96.png         %{buildroot}%{_datadir}/icons/hicolor/96x96/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree}/Assets/JoplinIcon.svg            %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{tld_vendor_product_id}.svg
+" > %{buildroot}%{_datadir}/applications/%{appid}.desktop
 
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/1024x1024-highcontrast.png  %{buildroot}%{_datadir}/icons/HighContrast/1024x1024/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/128x128-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/128x128/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/144x144-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/144x144/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/16x16-highcontrast.png          %{buildroot}%{_datadir}/icons/HighContrast/16x16/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/24x24-highcontrast.png          %{buildroot}%{_datadir}/icons/HighContrast/24x24/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/256x256-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/256x256/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/32x32-highcontrast.png          %{buildroot}%{_datadir}/icons/HighContrast/32x32/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/512x512-highcontrast.png      %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/72x72-highcontrast.png          %{buildroot}%{_datadir}/icons/HighContrast/72x72/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/96x96-highcontrast.png          %{buildroot}%{_datadir}/icons/HighContrast/96x96/apps/%{tld_vendor_product_id}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/JoplinIcon-highcontrast.svg  %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{tld_vendor_product_id}.svg
+# icons
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/hicolor-64-%{appid}.png %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{appid}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/128x128.png               %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{appid}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/256x256.png               %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{appid}.png
+install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/512x512.png               %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
+install -D -m644 -p %{sourcetree}/Assets/JoplinIcon.svg                      %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
 
-desktop-file-validate %{buildroot}%{_datadir}/applications/%{tld_vendor_product_id}.desktop
-install -D -m644 -p %{sourcetree_contrib}/%{tld_vendor_product_id}.appdata.xml %{buildroot}%{_metainfodir}/%{tld_vendor_product_id}.appdata.xml
-appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
+# icons
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/HighContrast-64-%{appid}.png          %{buildroot}%{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/HighContrast-128-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/128x128/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/HighContrast-256-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/256x256/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/HighContrast-512-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/HighContrast-scalable-%{appid}.svg %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{appid}.svg
+
+desktop-file-validate %{buildroot}%{_datadir}/applications/%{appid}.desktop
+install -D -m644 -p %{sourcetree_contrib}/%{appid}.metainfo.xml %{buildroot}%{_metainfodir}/%{appid}.metainfo.xml
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 
 # Native build
 %if 0%{?nativebuild:1}
@@ -454,31 +448,19 @@ install -D -m755 -p %{sourcetree}/ElectronClient/dist/'Joplin '%{version}'.AppIm
 %{_bindir}/%{name_desktop}
 %{_bindir}/%{name_cli}
 # desktop environment metadata
-%{_datadir}/applications/%{tld_vendor_product_id}.desktop
-%{_metainfodir}/%{tld_vendor_product_id}.appdata.xml
+%{_datadir}/applications/%{appid}.desktop
+%{_metainfodir}/%{appid}.metainfo.xml
 # desktop environment icons
-%{_datadir}/icons/hicolor/1024x1024/apps/%{tld_vendor_product_id}.png
-  %{_datadir}/icons/hicolor/128x128/apps/%{tld_vendor_product_id}.png
-  %{_datadir}/icons/hicolor/144x144/apps/%{tld_vendor_product_id}.png
-    %{_datadir}/icons/hicolor/16x16/apps/%{tld_vendor_product_id}.png
-    %{_datadir}/icons/hicolor/24x24/apps/%{tld_vendor_product_id}.png
-  %{_datadir}/icons/hicolor/256x256/apps/%{tld_vendor_product_id}.png
-    %{_datadir}/icons/hicolor/32x32/apps/%{tld_vendor_product_id}.png
-  %{_datadir}/icons/hicolor/512x512/apps/%{tld_vendor_product_id}.png
-    %{_datadir}/icons/hicolor/72x72/apps/%{tld_vendor_product_id}.png
-    %{_datadir}/icons/hicolor/96x96/apps/%{tld_vendor_product_id}.png
- %{_datadir}/icons/hicolor/scalable/apps/%{tld_vendor_product_id}.svg
-%{_datadir}/icons/HighContrast/1024x1024/apps/%{tld_vendor_product_id}.png
-  %{_datadir}/icons/HighContrast/128x128/apps/%{tld_vendor_product_id}.png
-  %{_datadir}/icons/HighContrast/144x144/apps/%{tld_vendor_product_id}.png
-    %{_datadir}/icons/HighContrast/16x16/apps/%{tld_vendor_product_id}.png
-    %{_datadir}/icons/HighContrast/24x24/apps/%{tld_vendor_product_id}.png
-  %{_datadir}/icons/HighContrast/256x256/apps/%{tld_vendor_product_id}.png
-    %{_datadir}/icons/HighContrast/32x32/apps/%{tld_vendor_product_id}.png
-  %{_datadir}/icons/HighContrast/512x512/apps/%{tld_vendor_product_id}.png
-    %{_datadir}/icons/HighContrast/72x72/apps/%{tld_vendor_product_id}.png
-    %{_datadir}/icons/HighContrast/96x96/apps/%{tld_vendor_product_id}.png
- %{_datadir}/icons/HighContrast/scalable/apps/%{tld_vendor_product_id}.svg
+   %{_datadir}/icons/hicolor/64x64/apps/%{appid}.png
+ %{_datadir}/icons/hicolor/128x128/apps/%{appid}.png
+ %{_datadir}/icons/hicolor/256x256/apps/%{appid}.png
+ %{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
+%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
+   %{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
+ %{_datadir}/icons/HighContrast/128x128/apps/%{appid}.png
+ %{_datadir}/icons/HighContrast/256x256/apps/%{appid}.png
+ %{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
+%{_datadir}/icons/HighContrast/scalable/apps/%{appid}.svg
 
 %if 0%{?nativebuild:1}
 %{installtree}
@@ -498,10 +480,16 @@ umask 007
 
 
 %changelog
+* Wed Jul 22 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.229-0.2.testing.taw
+  - s/appdata.xml/metainfo.xml -- closer adherance to the freedesktop spec
+  - installtree is now /usr/share/[appid]/
+  - reducing the PNG icon set to 64, 128, 256, and 512
+
 * Sat Jul 18 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.229-0.1.testing.taw
   - 1.0.229 — https://github.com/laurent22/joplin/releases/tag/v1.0.229
+  - working towards OpenSUSE Leap 15.2 and Tumbleweed successful builds (not there yet)
 
-* Wed Jul 12 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.227-1.taw
+* Sun Jul 12 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.227-1.taw
 * Wed Jul 8 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.227-0.1.testing.taw
   - 1.0.227 — https://github.com/laurent22/joplin/releases/tag/v1.0.227
 
