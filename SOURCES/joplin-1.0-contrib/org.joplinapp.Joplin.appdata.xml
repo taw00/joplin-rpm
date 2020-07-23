@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This metadata copyright 2019 Todd Warner <t0dd_at_protonmail.com> -->
 <!-- https://docs.fedoraproject.org/en-US/packaging-guidelines/AppData/ -->
 <!-- https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html -->
+<!-- note the fedoraproject page seems to be dated (.appdata.xml is deprecated, for example) -->
 <component type="desktop-application">
-  <id>org.joplinapp.Joplin.desktop</id>
-  <metadata_license>MIT</metadata_license>
-  <project_license>MIT</project_license>
   <name>Joplin</name>
+  <id>org.joplinapp.Joplin</id>
+
   <summary>A free and secure notebook application.</summary>
 
   <description>
@@ -34,6 +33,10 @@ system.</p>
     </screenshot>
   </screenshots>
 
+  <launchable type="desktop-id">org.joplinapp.Joplin.desktop</launchable>
+  <icon type="stock">org.joplinapp.Joplin</icon>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
   <url type="homepage">https://joplinapp.org/</url>
   <url type="bugtracker">https://github.com/laurent22/joplin/issues</url>
   <url type="bugtracker">https://github.com/taw00/joplin-rpm/issues</url>
