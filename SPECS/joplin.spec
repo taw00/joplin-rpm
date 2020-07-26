@@ -41,7 +41,7 @@ Version: %{vermajor}.%{verminor}
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.2
+  %define _pkgrel 0.3
 %endif
 
 # MINORBUMP
@@ -227,8 +227,8 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
   echo "-------- Leap 15.1  will report as 1500 150100"
   echo "-------- Leap 15.2  will report as 1500 150200"
   echo "-------- Tumbleweed will report as 1550 undefined"
-  %if 0%{?sle_version} && 0%{?sle_version} <= 150100
-    echo "Builds for OpenSUSE Leap 15.1 and older are not currently supported."
+  %if 0%{?sle_version} && 0%{?sle_version} < 150100
+    echo "Builds for OpenSUSE Leap older than 15.1 are not supported."
     exit 1
   %endif
 %endif
@@ -463,6 +463,9 @@ umask 007
 
 
 %changelog
+* Sun Jul 26 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.231-0.3.testing.taw
+  - builds for opensuse 15.1 are now successful as well
+
 * Sun Jul 26 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.231-0.2.testing.taw
   - builds for opensuse 15.2 and tumbleweed are finally successful!
 
