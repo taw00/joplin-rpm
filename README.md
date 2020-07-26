@@ -1,4 +1,6 @@
-# Joplin - a free and secure notebook application (packaged for Fedora, RHEL, CentOS)<!--, and OpenSUSE-->
+# Joplin - a free and secure notebook application
+
+_.&nbsp;.&nbsp;.&nbsp;packaged for the Fedora, Red Hat (IBM), and OpenSUSE families of linux distributions_
 
 Joplin is a powerful desktop and mobile application for writing and organizing
 [markdown-formatted](https://joplinapp.org/markdown/) documents synced
@@ -20,8 +22,8 @@ that has "sudo" rights.
 
 **For Fedora and EL8 (RHEL8/CentOS8) users . . .**  
 
-_Note that the last RHEL/CentoOS builds ending soon (v1.0.216?). Migrate your
-desktop to Fedora._
+_Note that building for RHEL/CentOS has been problematic in the past. I
+recommend you migrate your desktop to Fedora._
 
 ```
 # Initial install...
@@ -33,13 +35,21 @@ sudo dnf install -y joplin
 sudo dnf upgrade -y joplin
 ```
 
-<!--
 **For OpenSUSE users . . .**
 
-_Stay tuned. The packages exist at
-<https://copr.fedorainfracloud.org/coprs/taw/joplin/>, I am just unsure of the
-right way to enable them for SUSE at the moment._
--->
+```
+# OpenSUSE Leap 15.2
+sudo zypper addrepo https://download.copr.fedorainfracloud.org/results/taw/joplin/opensuse-leap-15.2-x86_64/
+sudo zypper refresh
+sudo zypper install joplin
+```
+
+```
+# OpenSUSE Tumbleweed
+sudo zypper addrepo https://download.copr.fedorainfracloud.org/results/taw/joplin/opensuse-tumbleweed-$basearch/
+sudo zypper refresh
+sudo zypper install joplin
+```
 
 <!--
 **For EL7 (RHEL7 and CentOS7) users...**
@@ -101,21 +111,3 @@ appropriately when necessary.
 ## Comments? Suggestions?
 Open an issue here, or send me a note via Keybase -- https://keybase.io/toddwarner
 
-<!--
-## What about Turtl, that other notebook application?
-
-I used to also build packages for Turtl. Another encrypted multi-device opensource
-notebook application. You can find more information about that
-[here](https://github.com/taw00/turtl-rpm).
-
-The two projects overlap in functionality, but Turtl is more geared for the
-Google Keep-like user experience whereas Joplin aims more at the Evernote use
-case.  Joplin has more robust editing features, which make it more useful for
-lengthier documents, while Turtl's interface is optimized for shorter notes and
-a postit-note feel. Turtl has a more powerful security model and enables
-sharing of documents making it very collaborative.
-
-Both are great projects. And yes, there are a lot of great markdown
-notebook-ish applications out there. But Joplin is my hands-down favorite
-project in this application space.
--->

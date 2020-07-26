@@ -41,7 +41,7 @@ Version: %{vermajor}.%{verminor}
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 0.2
 %endif
 
 # MINORBUMP
@@ -128,13 +128,16 @@ Requires: libnotify
 
 BuildRequires: libsecret-devel
 
+BuildRequires: git rsync findutils grep
+BuildRequires: desktop-file-utils
+
 %if 0%{?suse_version:1}
 BuildRequires: ca-certificates-cacert ca-certificates-mozilla ca-certificates
-BuildRequires: git rsync findutils
-BuildRequires: desktop-file-utils
-BuildRequires: appstream-glib /bin/sh
-BuildRequires: nodejs10 npm10 nodejs10-devel nodejs-common
-BuildRequires: python
+BuildRequires: appstream-glib
+# For Leap 15.2, to be able to include yarn, we had to add this repo to the build system
+# https://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_Leap_15.2/
+BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common yarn
+BuildRequires: python2 gcc-c++
 %if 0%{?sle_version}
 # Leap
 %if 0%{?sle_version} == 150100
@@ -149,8 +152,6 @@ BuildRequires: python
 %endif
 
 %if 0%{?rhel:1}
-BuildRequires: git rsync findutils 
-BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
 %if 0%{?rhel} < 8
 # EL7 -- This is super ugly
@@ -171,11 +172,9 @@ BuildRequires: nodejs npm python2
 %endif
 
 %if 0%{?fedora:1}
-BuildRequires: git rsync findutils 
-BuildRequires: desktop-file-utils
 BuildRequires: libappstream-glib
 # Note: /usr/bin/python is going away -- https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
-BuildRequires: python grep
+BuildRequires: python
 BuildRequires: nodejs-sqlite3
 #%%if 0%%{?fedora} <= 30
 BuildRequires: nodejs npm nodejs-yarn node-gyp
@@ -258,35 +257,11 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 %setup -q -T -D -a 0 -n %{sourceroot}
 %setup -q -T -D -a 1 -n %{sourceroot}
 
-
-%if 0%{?suse_version:1}
-  echo "======== Forcing python2 availability for SQLite build requirements"
-  mkdir -p $HOME/.local/bin
-  if [ ! -e "$HOME/.local/bin/python" ] ;  then
-    ln -s /usr/bin/python2 $HOME/.local/bin/python
-  fi
-%endif
-
-%if 0%{?fedora:1}
-  echo "======== Forcing python2 availability for SQLite build requirements"
-  mkdir -p $HOME/.local/bin
-  if [ ! -e "$HOME/.local/bin/python" ] ;  then
-    ln -s /usr/bin/python2 $HOME/.local/bin/python
-  fi
-%endif
-
-%if 0%{?rhel:1}
-%if 0%{?rhel} >= 8
-  # This is ugly. But EL8 doesn't have /usr/bin/python
-  # /usr/bin/python is going away: https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
-  # ...brute forcing things...
-  echo "======== Forcing python2 availability for SQLite build requirements"
-  mkdir -p $HOME/.local/bin
-  if [ ! -e "$HOME/.local/bin/python" ] ;  then
-    ln -s /usr/bin/python2 $HOME/.local/bin/python
-  fi
-%endif
-%endif
+echo "======== Forcing python2 availability for SQLite build requirements"
+mkdir -p $HOME/.local/bin
+if [ ! -e "$HOME/.local/bin/python" ] ;  then
+  ln -s /usr/bin/python2 $HOME/.local/bin/python
+fi
 
 # For debugging purposes...
 %if ! %{targetIsProduction}
@@ -370,8 +345,11 @@ cd ..
 #  Note: We install to /usr/share/ because /opt is for unpackaged applications
 #        http://www.pathname.com/fhs/pub/fhs-2.3.html
 
-# Old versions of RPM don't have _metainfodir defined
-#%%define _metainfodir %%{_datadir}/metainfo
+%if 0%{?suse_version:1}
+# Old versions of RPM and opensuse as of Leap 15.2 and Tumbleweed (2020-07)
+# don't have _metainfodir defined
+%define _metainfodir %{_datadir}/metainfo
+%endif
 
 # Create directories
 #install -d %%{buildroot}%%{_libdir}/%%{appid}
@@ -485,8 +463,12 @@ umask 007
 
 
 %changelog
+* Sun Jul 26 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.231-0.2.testing.taw
+  - builds for opensuse 15.2 and tumbleweed are finally successful!
+
 * Sat Jul 25 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.231-0.1.testing.taw
   - 1.0.231 - https://github.com/laurent22/joplin/releases/tag/v1.0.231
+  - Also improved the .desktop file and made some other minor changes.
 
 * Wed Jul 22 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.229-0.2.testing.taw
   - s/appdata.xml/metainfo.xml -- closer adherance to the freedesktop spec
