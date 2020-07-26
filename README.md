@@ -40,7 +40,7 @@ that has "sudo" rights.
 
 Prep the repository . . .
 ```
-sudo dnf install dnf-plugins-core
+sudo dnf install -y dnf-plugins-core distribution-gpg-keys
 sudo dnf copr enable taw/joplin
 ```
 
