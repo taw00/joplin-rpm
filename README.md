@@ -10,9 +10,25 @@ organised into notebooks. The notes are searchable, can be copied, tagged and
 modified either from the applications directly or from your own favorite text
 or markdown editor.
 
-You can read more about what Joplin is [here](https://joplinapp.org/) and
-[here](https://github.com/laurent22/joplin) and the Joplin forums
-[here](https://discourse.joplinapp.org/).
+Notes can be imported from Evernote, to include all associated resources
+(images, attachments, etc) and all metadata (geo-location, update time,
+creation time, etc). Notes can, of course, also be imported from any other
+markdown source.
+
+Mirroring and redundancy between your devices is achieved by a simple, and
+optionally encrypted, synchronization with one of the major cloud services
+including Nextcloud, Dropbox, Onedrive, WebDAV, or your local or
+network-accessible file system.
+
+**More information about Joplin** the project can be found at [joplinapp.org](https://joplinapp.org/) and at it's [GitHub page](https://github.com/laurent22/joplin). **I maintain all RPM package development bits here:** <https://github.com/taw00/joplin-rpm>.
+
+**I can be messaged** at <a href="mailto:t0dd@protonmail.com">t0dd@protonmail.com</a> or as user t0dd in the [Joplin Community Forums](https://discourse.joplinapp.org/).
+
+### OS Notes
+* ***Fedora users:*** _Last build for Fedora 30 was Joplin v1.0.224. Upgrade to a newer version of Fedora._
+* ***RHEL and CentOS users:*** _Last build for EL7 was Joplin v1.0.216. Building for RHEL/CentOS (any version) has been challenging. How long I can keep it up, I don't know. Migrate to a desktop OS please: i.e., Fedora._
+* ***OpenSUSE users:*** _Building for SUSE (any version) has been challenging, for Leap versions in particular. How long I can keep it up is anyone's guess. Just fair warning. Keep up with current releases of OpenSUSE on your desktop._
+
 
 ## TL;DR - I want to install Joplin!
 
@@ -20,57 +36,53 @@ Open up a terminal and copy and paste these commands on the commandline of your
 Fedora Linux workstation or desktop. Note, I assume you are logged in as a user
 that has "sudo" rights.
 
-**For Fedora and EL8 (RHEL8/CentOS8) users . . .**  
+**Fedora and RHEL/CentOS8 users . . .**  
 
 _Note that building for RHEL/CentOS has been problematic in the past. I
 recommend you migrate your desktop to Fedora._
 
+Prep the repository . . .
 ```
-# Initial install...
+sudo dnf install dnf-plugins-core
 sudo dnf copr enable taw/joplin
+
+Install Joplin . . .
+```
 sudo dnf install -y joplin
 ```
-```
-# Update/upgrade...
-sudo dnf upgrade -y joplin
-```
 
-**For OpenSUSE users . . .**
+**OpenSUSE users . . .**
+
+Prep the repository . . .
 
 ```
-# OpenSUSE Leap 15.2
-sudo zypper addrepo https://download.copr.fedorainfracloud.org/results/taw/joplin/opensuse-leap-15.2-x86_64/
+# Repository setup for OpenSUSE Leap 15.1
+sudo wget https://copr.fedorainfracloud.org/coprs/taw/joplin/repo/opensuse-leap-15.1/taw-joplin-opensuse-leap-15.1.repo -O /etc/zypp/repos.d/taw-joplin-opensuse-leap-15.1.repo
 sudo zypper refresh
+```
+```
+# Repository setup for OpenSUSE Leap 15.2
+sudo wget https://copr.fedorainfracloud.org/coprs/taw/joplin/repo/opensuse-leap-15.2/taw-joplin-opensuse-leap-15.2.repo -O /etc/zypp/repos.d/taw-joplin-opensuse-leap-15.2.repo
+sudo zypper refresh
+```
+```
+# Repository setup for OpenSUSE Tumbleweed
+sudo wget https://copr.fedorainfracloud.org/coprs/taw/joplin/repo/opensuse-leap-tumbleweed/taw-joplin-opensuse-leap-tumbleweed.repo -O /etc/zypp/repos.d/taw-joplin-opensuse-leap-tumbleweed.repo
+sudo zypper refresh
+```
+
+Install Joplin . . .
+```
+# Install Joplin on OpenSUSE
 sudo zypper install joplin
 ```
 
-```
-# OpenSUSE Tumbleweed
-sudo zypper addrepo https://download.copr.fedorainfracloud.org/results/taw/joplin/opensuse-tumbleweed-$basearch/
-sudo zypper refresh
-sudo zypper install joplin
-```
+Once installed, find Joplin in your desktop menus or do a normal application search. Then run
+it. Visit [joplinapp.org](https://joplinapp.org/) for documentation and help.
 
-<!--
-**For EL7 (RHEL7 and CentOS7) users...**
-_note: EL7 builds will be ending soon, migrate to Fedora_
-
-```
-# Initial install...
-sudo yum install -y yum-plugin-copr
-sudo yum copr enable taw/joplin
-sudo yum install -y joplin
-```
-```
-# Update/upgrade...
-sudo yum update -y joplin
-```
--->
-
-Once installed, find Joplin in your menus or normal application search. Enjoy!
-
-* Useful tidbit: all data is mirrored here locally by default (even if you sync to the cloud): `~/.config/Joplin`
-* More help can be found at the official Joplin [website](https://joplinapp.org/) and [user forums](https://discourse.joplinapp.org/).
+Useful tidbit:
+* application state is maintained at `~/.config/Joplin`
+* all Joplin documents and such are mirror locally at `~/.config/joplin-desktop`
 
 ---
 
