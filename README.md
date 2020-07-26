@@ -36,15 +36,13 @@ Open up a terminal and copy and paste these commands on the commandline of your
 Fedora Linux workstation or desktop. Note, I assume you are logged in as a user
 that has "sudo" rights.
 
-**Fedora and RHEL/CentOS8 users . . .**  
-
-_Note that building for RHEL/CentOS has been problematic in the past. I
-recommend you migrate your desktop to Fedora._
+**Fedora and RHEL/CentOS users . . .**  
 
 Prep the repository . . .
 ```
 sudo dnf install dnf-plugins-core
 sudo dnf copr enable taw/joplin
+```
 
 Install Joplin . . .
 ```
