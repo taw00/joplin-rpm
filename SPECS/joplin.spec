@@ -20,7 +20,7 @@
 Name: joplin
 Summary: A free and secure notebook application
 
-%define appid org.joplinapp.Joplin
+%define appid org.joplinapp.joplin
 
 %define name_cli joplin-cli
 %define name_desktop joplin-desktop
@@ -35,13 +35,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 229
+%define verminor 231
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.2
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -381,19 +381,24 @@ install -d %{buildroot}%{installtree}/cli
 install -d %{buildroot}%{_datadir}/applications
 install -d %{buildroot}%{_metainfodir}
 
-echo "[Desktop Entry]
+echo "\
+[Desktop Entry]
 Type=Application
 Name=Joplin
-GenericName=Secure notes
+GenericName=Secure Notebook
 Comment=A free and secure notebook management application
 Exec=%{name_desktop}
 Icon=%{appid}
 Terminal=false
-Categories=Office;
+# https://specifications.freedesktop.org/menu-spec/latest/apa.html
+Categories=Network;Office;TextEditor;WordProcessor;X-Markdown;X-KaTeX;X-Mermaid;X-Fountain;X-E2EE;
 Keywords=secure;security;privacy;private;notes;bookmarks;collaborate;research;
-StartupNotify=true
-X-Desktop-File-Install-Version=0.23
 StartupWMClass=Joplin
+StartupNotify=true
+
+# .desktop spec: https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/
+# .metainfo.xml spec: https://www.freedesktop.org/software/appstream/docs/
+
 " > %{buildroot}%{_datadir}/applications/%{appid}.desktop
 
 # icons
@@ -404,11 +409,11 @@ install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/512x512.png               %{
 install -D -m644 -p %{sourcetree}/Assets/JoplinIcon.svg                      %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
 
 # icons
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/HighContrast-64-%{appid}.png          %{buildroot}%{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/HighContrast-128-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/128x128/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/HighContrast-256-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/256x256/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/HighContrast-512-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/HighContrast-scalable-%{appid}.svg %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{appid}.svg
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-64-%{appid}.png          %{buildroot}%{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-128-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/128x128/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-256-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/256x256/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-512-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-scalable-%{appid}.svg %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{appid}.svg
 
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{appid}.desktop
 install -D -m644 -p %{sourcetree_contrib}/%{appid}.metainfo.xml %{buildroot}%{_metainfodir}/%{appid}.metainfo.xml
@@ -480,6 +485,9 @@ umask 007
 
 
 %changelog
+* Sat Jul 25 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.231-0.1.testing.taw
+  - 1.0.231 - https://github.com/laurent22/joplin/releases/tag/v1.0.231
+
 * Wed Jul 22 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.229-0.2.testing.taw
   - s/appdata.xml/metainfo.xml -- closer adherance to the freedesktop spec
   - installtree is now /usr/share/[appid]/
