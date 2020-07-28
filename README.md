@@ -51,6 +51,9 @@ sudo dnf install -y joplin
 
 **OpenSUSE users . . .**
 
+> COMING WITH THE NEXT RELEASE
+
+<!--
 Prep the repository . . .
 
 ```
@@ -74,6 +77,9 @@ Install Joplin . . .
 # Install Joplin on OpenSUSE
 sudo zypper install joplin
 ```
+-->
+
+**All users . . .**
 
 Once installed, find Joplin in your desktop menus or do a normal application search. Then run
 it. Visit [joplinapp.org](https://joplinapp.org/) for documentation and help.
