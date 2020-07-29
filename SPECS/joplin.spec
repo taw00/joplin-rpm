@@ -35,13 +35,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 231
+%define verminor 232
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.3
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -463,6 +463,9 @@ umask 007
 
 
 %changelog
+* Wed Jul 29 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.232-0.1.testing.taw
+  - 1.0.232 — https://github.com/laurent22/joplin/releases/tag/v1.0.232
+
 * Sun Jul 26 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.231-0.3.testing.taw
   - builds for opensuse 15.1 are now successful as well
 
