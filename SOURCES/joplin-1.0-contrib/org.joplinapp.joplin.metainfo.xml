@@ -56,14 +56,9 @@ system.</p>
   </provides>
 
   <releases>
-    <release version="1.0.232" date="2020-07-28">
-      <url>https://github.com/laurent22/joplin/releases/tag/v1.0.232</url>
-    </release>
-    <release version="1.0.231" date="2020-07-24">
-      <url>https://github.com/laurent22/joplin/releases/tag/v1.0.231</url>
-    </release>
-    <release version="1.0.229" date="2020-07-14">
-      <url>https://github.com/laurent22/joplin/releases/tag/v1.0.229</url>
+    <release version="1.0.233" date="2020-08-01">
+      <p>pre-release</p>
+      <url>https://github.com/laurent22/joplin/releases/tag/v1.0.233</url>
     </release>
     <release version="1.0.227" date="2020-07-07">
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.227</url>

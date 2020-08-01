@@ -35,7 +35,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.0
-%define verminor 232
+%define verminor 233
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -463,8 +463,11 @@ umask 007
 
 
 %changelog
+* Sat Aug 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.233-0.1.testing.taw
+  - 1.0.232 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.0.233
+
 * Wed Jul 29 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.232-0.1.testing.taw
-  - 1.0.232 — https://github.com/laurent22/joplin/releases/tag/v1.0.232
+  - 1.0.232 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.0.232
 
 * Sun Jul 26 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.231-0.3.testing.taw
   - builds for opensuse 15.1 are now successful as well
@@ -473,7 +476,7 @@ umask 007
   - builds for opensuse 15.2 and tumbleweed are finally successful!
 
 * Sat Jul 25 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.231-0.1.testing.taw
-  - 1.0.231 - https://github.com/laurent22/joplin/releases/tag/v1.0.231
+  - 1.0.231 pre-release - https://github.com/laurent22/joplin/releases/tag/v1.0.231
   - Also improved the .desktop file and made some other minor changes.
 
 * Wed Jul 22 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.229-0.2.testing.taw
@@ -482,7 +485,7 @@ umask 007
   - reducing the PNG icon set to 64, 128, 256, and 512
 
 * Sat Jul 18 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.229-0.1.testing.taw
-  - 1.0.229 — https://github.com/laurent22/joplin/releases/tag/v1.0.229
+  - 1.0.229 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.0.229
   - working towards OpenSUSE Leap 15.2 and Tumbleweed successful builds (not there yet)
 
 * Sun Jul 12 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.227-1.taw
