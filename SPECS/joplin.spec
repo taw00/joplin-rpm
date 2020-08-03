@@ -25,7 +25,7 @@ Summary: A free and secure notebook application
 %define name_cli joplin-cli
 %define name_desktop joplin-desktop
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -463,8 +463,11 @@ umask 007
 
 
 %changelog
+* Sun Aug 02 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.233-1.taw
+  - 1.0.233 release — https://github.com/laurent22/joplin/releases/tag/v1.0.233
+
 * Sat Aug 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.233-0.1.testing.taw
-  - 1.0.232 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.0.233
+  - 1.0.233 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.0.233
 
 * Wed Jul 29 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.232-0.1.testing.taw
   - 1.0.232 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.0.232

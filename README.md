@@ -51,9 +51,6 @@ sudo dnf install -y joplin
 
 **OpenSUSE users . . .**
 
-> COMING WITH THE NEXT RELEASE
-
-<!--
 Prep the repository . . .
 
 ```
@@ -77,7 +74,6 @@ Install Joplin . . .
 # Install Joplin on OpenSUSE
 sudo zypper install joplin
 ```
--->
 
 **All users . . .**
 
