@@ -65,7 +65,7 @@ sudo zypper refresh
 ```
 ```
 # Repository setup for OpenSUSE Tumbleweed
-sudo wget https://copr.fedorainfracloud.org/coprs/taw/joplin/repo/opensuse-leap-tumbleweed/taw-joplin-opensuse-leap-tumbleweed.repo -O /etc/zypp/repos.d/taw-joplin-opensuse-leap-tumbleweed.repo
+sudo wget https://copr.fedorainfracloud.org/coprs/taw/joplin/repo/opensuse-tumbleweed/taw-joplin-opensuse-tumbleweed.repo -O /etc/zypp/repos.d/taw-joplin-opensuse-tumbleweed.repo
 sudo zypper refresh
 ```
 
