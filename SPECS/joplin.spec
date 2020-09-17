@@ -35,7 +35,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.1
-%define verminor 2
+%define verminor 3
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -463,6 +463,9 @@ umask 007
 
 
 %changelog
+* Thu Sep 17 2020 Todd Warner <t0dd_at_protonmail.com> 1.1.3-0.1.testing.taw
+  - 1.1.3 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.1.3
+
 * Wed Sep 15 2020 Todd Warner <t0dd_at_protonmail.com> 1.1.2-0.1.testing.taw
   - 1.1.2 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.1.2
 
