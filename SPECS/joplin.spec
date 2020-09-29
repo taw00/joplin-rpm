@@ -25,7 +25,7 @@ Summary: A free and secure notebook application
 %define name_cli joplin-cli
 %define name_desktop joplin-desktop
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -34,8 +34,8 @@ Summary: A free and secure notebook application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 1.1
-%define verminor 4
+%define vermajor 1.2
+%define verminor 3
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -463,6 +463,9 @@ umask 007
 
 
 %changelog
+* Tue Sep 29 2020 Todd Warner <t0dd_at_protonmail.com> 1.2.3-0.1.testing.taw
+  - 1.2.3 release — https://github.com/laurent22/joplin/releases/tag/v1.2.3
+
 * Mon Sep 21 2020 Todd Warner <t0dd_at_protonmail.com> 1.1.4-1.taw
 * Mon Sep 21 2020 Todd Warner <t0dd_at_protonmail.com> 1.1.4-0.1.testing.taw
   - 1.1.4 release — https://github.com/laurent22/joplin/releases/tag/v1.1.4
