@@ -39,9 +39,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -108,7 +108,7 @@ ExclusiveArch: x86_64 i686 i586 i386
 # /usr/share/joplin
 %define installtree %{_datadir}/%{appid}
 
-Source0: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree}.tar.gz
+Source0: https://github.com/laurent22/joplin/archive/v%{version}/%{sourcetree}.tar.gz
 Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_contrib}.tar.gz
 
 # See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
@@ -137,7 +137,7 @@ BuildRequires: appstream-glib
 # For Leap 15.2, to be able to include yarn, we had to add this repo to the build system
 # https://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_Leap_15.2/
 BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common yarn
-BuildRequires: python2 gcc-c++
+BuildRequires: python gcc-c++
 %if 0%{?sle_version}
 # Leap
 %if 0%{?sle_version} == 150100
@@ -163,24 +163,21 @@ BuildRequires: libappstream-glib
 # Note that this version of nodejs installs npm as well.
 BuildRequires: nodejs >= 2:10
 BuildRequires: yarn
+# The python in RHEL7 is python2
 BuildRequires: python
 %else
 # EL8 is based on Fedora 28 (sorta)
-# Note: /usr/bin/python is going away -- https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
-BuildRequires: nodejs npm python2
+BuildRequires: nodejs npm python3
 %endif
 %endif
 
 %if 0%{?fedora:1}
 BuildRequires: libappstream-glib
-# Note: /usr/bin/python is going away -- https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
 BuildRequires: python
-BuildRequires: nodejs-sqlite3
-#%%if 0%%{?fedora} <= 30
-BuildRequires: nodejs npm nodejs-yarn node-gyp
-#%%endif
-%if 0%{?fedora} >= 31
-BuildRequires: python2
+%if 0%{?fedora} <= 32
+BuildRequires: nodejs npm nodejs-yarn node-gyp nodejs-sqlite3
+%else
+BuildRequires: nodejs npm yarnpkg gcc-c++
 %endif
 %endif
 
@@ -188,8 +185,8 @@ BuildRequires: python2
 
 #t0dd: I often add these extra packages to enable mock environment introspection
 %if ! %{targetIsProduction}
-#BuildRequires: tree vim-enhanced less findutils
-BuildRequires: tree vim-enhanced less
+#BuildRequires: tree vim-enhanced less dnf findutils
+BuildRequires: tree vim-enhanced less dnf
 %endif
 
 
@@ -257,11 +254,18 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 %setup -q -T -D -a 0 -n %{sourceroot}
 %setup -q -T -D -a 1 -n %{sourceroot}
 
-echo "======== Forcing python2 availability for SQLite build requirements"
+
+%if 0%{?rhel:1} && 0%{?rhel} == 8
+# In order to build the SQLite bits, a version of python must be addressable as
+# python from the commandline. Python3 on EL8 is addessed as /usr/bin/python3.
+# Python got  bit crazy, but is settling down with the end of python2 as of
+# January 2020. Read more about python and how it is packaged here:
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
 mkdir -p $HOME/.local/bin
 if [ ! -e "$HOME/.local/bin/python" ] ;  then
-  ln -s /usr/bin/python2 $HOME/.local/bin/python
+  ln -s /usr/bin/python3 $HOME/.local/bin/python
 fi
+%endif
 
 # For debugging purposes...
 %if ! %{targetIsProduction}
@@ -284,6 +288,11 @@ cd %{sourcetree}
   if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
     ln -s /usr/bin/yarnpkg $HOME/.local/bin/yarn
   fi
+
+%if 0%{?fedora} >= 33
+  # Fedora 33 doesn't supply node-gyp or nodejs-sqlite3
+  npm install node-gyp sqlite3
+%endif
 
 # Fedora 28-
 %else
@@ -463,6 +472,14 @@ umask 007
 
 
 %changelog
+* Thu Oct 29 2020 Todd Warner <t0dd_at_protonmail.com> 1.2.6-2.taw
+* Thu Oct 29 2020 Todd Warner <t0dd_at_protonmail.com> 1.2.6-1.1.testing.taw
+  - changes to get this to build on Fedora 33
+  - python2 is no longer required to build the SQLite bits, thank god. Not  
+    even shipped with Fedora 33. Updated the spec accordingly.
+  - upstream tarball is no longer mirrored in the joplin-rpm github.  
+    Redundant. Updated the spec accordingly.
+
 * Fri Oct 9 2020 Todd Warner <t0dd_at_protonmail.com> 1.2.6-1.taw
 * Fri Oct 9 2020 Todd Warner <t0dd_at_protonmail.com> 1.2.6-0.1.testing.taw
   - 1.2.6 release — https://github.com/laurent22/joplin/releases/tag/v1.2.6
@@ -480,7 +497,7 @@ umask 007
 * Thu Sep 17 2020 Todd Warner <t0dd_at_protonmail.com> 1.1.3-0.1.testing.taw
   - 1.1.3 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.1.3
 
-* Wed Sep 15 2020 Todd Warner <t0dd_at_protonmail.com> 1.1.2-0.1.testing.taw
+* Tue Sep 15 2020 Todd Warner <t0dd_at_protonmail.com> 1.1.2-0.1.testing.taw
   - 1.1.2 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.1.2
 
 * Wed Sep 09 2020 Todd Warner <t0dd_at_protonmail.com> 1.0.245-1.taw
