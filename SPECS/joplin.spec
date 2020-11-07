@@ -34,14 +34,14 @@ Summary: A free and secure notebook application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 1.2
-%define verminor 6
+%define vermajor 1.3
+%define verminor 18
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -472,6 +472,10 @@ umask 007
 
 
 %changelog
+* Sat Nov 7 2020 Todd Warner <t0dd_at_protonmail.com> 1.3.18-1.taw
+* Sat Nov 7 2020 Todd Warner <t0dd_at_protonmail.com> 1.3.18-0.1.testing.taw
+  - 1.3.18 release — https://github.com/laurent22/joplin/releases/tag/v1.3.18
+
 * Thu Oct 29 2020 Todd Warner <t0dd_at_protonmail.com> 1.2.6-2.taw
 * Thu Oct 29 2020 Todd Warner <t0dd_at_protonmail.com> 1.2.6-1.1.testing.taw
   - changes to get this to build on Fedora 33
