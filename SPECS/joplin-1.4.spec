@@ -35,13 +35,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.4
-%define verminor 10
+%define verminor 12
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
 %define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -134,7 +134,8 @@ BuildRequires: desktop-file-utils
 BuildRequires: ca-certificates-cacert ca-certificates-mozilla ca-certificates
 BuildRequires: appstream-glib
 BuildRequires: gcc-c++
-BuildRequires: python
+# this is ugly and wrong. but it works.
+BuildRequires: /usr/bin/python
 BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
 # Leap
 %if 0%{?sle_version}
@@ -248,6 +249,17 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
     echo "Builds for EL 6 and older are not supported."
     exit 1
   %endif
+  %if 0%{?rhel} == 8
+    # In order to build the SQLite bits, a version of python must be addressable as
+    # python from the commandline. Python3 on EL8 is addessed as /usr/bin/python3.
+    # Python got  bit crazy, but is settling down with the end of python2 as of
+    # January 2020. Read more about python and how it is packaged here:
+    # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
+    mkdir -p $HOME/.local/bin
+    if [ ! -e "$HOME/.local/bin/python" ] ;  then
+      ln -s /usr/bin/python3 $HOME/.local/bin/python
+    fi
+  %endif
 %endif
 
 # Unarchived source tree structure (extracted in {_builddir})
@@ -260,18 +272,6 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 %setup -q -T -D -a 0 -n %{sourceroot}
 %setup -q -T -D -a 1 -n %{sourceroot}
 
-
-%if 0%{?rhel:1} && 0%{?rhel} == 8
-# In order to build the SQLite bits, a version of python must be addressable as
-# python from the commandline. Python3 on EL8 is addessed as /usr/bin/python3.
-# Python got  bit crazy, but is settling down with the end of python2 as of
-# January 2020. Read more about python and how it is packaged here:
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
-mkdir -p $HOME/.local/bin
-if [ ! -e "$HOME/.local/bin/python" ] ;  then
-  ln -s /usr/bin/python3 $HOME/.local/bin/python
-fi
-%endif
 
 # For debugging purposes...
 %if ! %{targetIsProduction}
@@ -489,6 +489,11 @@ umask 007
 
 
 %changelog
+* Tue Nov 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.12-1.1.testing.taw
+* Tue Nov 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.12-0.1.testing.taw
+  - 1.4.12 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.4.12
+  - OpenSUSE 15.2 stopped building. Couldn't find /usr/bin/python -- fixed!
+
 * Sat Nov 14 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.10-0.1.testing.taw
   - 1.4.10 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.4.10
 
