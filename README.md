@@ -26,7 +26,9 @@ network-accessible file system.
 
 ### OS Notes
 * ***Fedora users:*** _Last build for Fedora 30 was Joplin v1.0.224. Upgrade to a newer version of Fedora._
-* ***RHEL and CentOS users:*** _Last build for EL7 was Joplin v1.0.216. Building for RHEL/CentOS (any version) has been challenging. How long I can keep it up, I don't know. Migrate to a desktop OS please: i.e., Fedora._
+* ***RHEL and CentOS users:***
+  - _Last build for EL7 was Joplin v1.0.216. Building for RHEL/CentOS (any version) has been challenging. How long I can keep it up, I don't know. Migrate to a desktop OS please: i.e., Fedora._
+  - _EL8 builds are failing for Joplin v1.4.\*. I am trying to resolve this issue, but it is not looking promising._
 * ***OpenSUSE users:*** _Building for SUSE (any version) has been challenging, for Leap versions in particular. How long I can keep it up is anyone's guess. Just fair warning. Keep up with current releases of OpenSUSE on your desktop._
 
 

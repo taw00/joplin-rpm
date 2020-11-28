@@ -34,7 +34,7 @@ Summary: A free and secure notebook application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 1.3
+%define vermajor 1.4
 %define verminor 18
 Version: %{vermajor}.%{verminor}
 
@@ -115,78 +115,80 @@ Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_con
 Requires: libcanberra-gtk2 libnotify
 Requires: libnotify
 
-# Including the terminal client tree really does a number on dependencies. We
-# need to filter things.
-# Desktop will include some silly scans for provides and deps as well
-%global __provides_exclude_from ^(.%{installtree}/.*\\.so.*|%{installtree}/cli/node_modules/.*|%{installtree}/cli/build/.*|%{installtree}/cli/tests/.*|%{installtree}/desktop/resources/.*)$
-%global __requires_exclude_from ^(.%{installtree}/.*\\.so.*|%{installtree}/cli/node_modules/.*|%{installtree}/cli/build/.*|%{installtree}/cli/tests/.*|%{installtree}/desktop/resources/.*)$
+# Exclusions from provides and requires calculations and from the results
+#%%global __provides_exclude_from ^(.%%{installtree}/.*\\.so.*|%%{installtree}/cli/node_modules/.*|%%{installtree}/cli/build/.*|%%{installtree}/cli/tests/.*|%%{installtree}/desktop/resources/.*)$
+#%%global __requires_exclude_from ^(.%%{installtree}/.*\\.so.*|%%{installtree}/cli/node_modules/.*|%%{installtree}/cli/build/.*|%%{installtree}/cli/tests/.*|%%{installtree}/desktop/resources/.*)$
+%global __provides_exclude_from ^(.%{installtree}/.*\\.so.*|%{installtree}/desktop/resources/node_modules/.*|%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
+%global __requires_exclude_from ^(.%{installtree}/.*\\.so.*|%{installtree}/desktop/resources/node_modules/.*|%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
 %global __provides_exclude ^(lib.*\\.so.*)$
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(/usr/bin.*/coffee))$
 
+BuildRequires: libsecret-devel
+BuildRequires: git rsync findutils grep
+BuildRequires: desktop-file-utils
 # provided by coreutils RPM
 #BuildRequires: /usr/bin/readlink /usr/bin/dirname
 
-BuildRequires: libsecret-devel
-
-BuildRequires: git rsync findutils grep
-BuildRequires: desktop-file-utils
-
+# OPENSUSE
 %if 0%{?suse_version:1}
 BuildRequires: ca-certificates-cacert ca-certificates-mozilla ca-certificates
 BuildRequires: appstream-glib
-# For Leap 15.2, to be able to include yarn, we had to add this repo to the build system
-# https://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_Leap_15.2/
-BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common yarn
-BuildRequires: python gcc-c++
-%if 0%{?sle_version}
+BuildRequires: gcc-c++
+# this is ugly and wrong. but it works.
+BuildRequires: /usr/bin/python
+BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
 # Leap
-%if 0%{?sle_version} == 150100
+%if 0%{?sle_version}
 # Leap 15.1
+%if 0%{?sle_version} == 150100
 %endif
-%if 0%{?sle_version} == 150200
 # Leap 15.2
+%if 0%{?sle_version} == 150200
 %endif
-%else
 # Tumbleweed
+%else
 %endif
 %endif
 
+# CENTOS / RHEL (EL7 and EL8)
 %if 0%{?rhel:1}
+BuildRequires: gcc-c++
 BuildRequires: libappstream-glib
-%if 0%{?rhel} < 8
-# EL7 -- This is super ugly
+# EL7
+%if 0%{?rhel} == 7
 # EL7 is too far behind on many many packages (EL7 is based on F19 and F20).
 # Therefore, you have to pull from some RPMs from other repos. In this case,
-# nodejs and yarn. Include these repos into your mock or build environments...
+# nodejs. Include these repos into your mock or build environments...
 #   https://rpm.nodesource.com/pub_10.x/el/7/$basearch
-#   https://dl.yarnpkg.com/rpm/
 # Note that this version of nodejs installs npm as well.
-BuildRequires: nodejs >= 2:10
-BuildRequires: yarn
-# The python in RHEL7 is python2
+# Note that the python in EL7 is python2
 BuildRequires: python
+BuildRequires: nodejs >= 2:10
+# EL8
 %else
-# EL8 is based on Fedora 28 (sorta)
-BuildRequires: nodejs npm python3
+%if 0%{?rhel} == 8
+BuildRequires: python3
+BuildRequires: nodejs npm
+# EL9 (which doesn't exist yet)
+%else
+BuildRequires: python
+BuildRequires: nodejs npm
+%endif
 %endif
 %endif
 
+# FEDORA
 %if 0%{?fedora:1}
 BuildRequires: libappstream-glib
+BuildRequires: gcc-c++
 BuildRequires: python
-%if 0%{?fedora} <= 32
-BuildRequires: nodejs npm nodejs-yarn node-gyp nodejs-sqlite3
-%else
-BuildRequires: nodejs npm yarnpkg gcc-c++
+BuildRequires: nodejs npm
 %endif
-%endif
-
-
 
 #t0dd: I often add these extra packages to enable mock environment introspection
 %if ! %{targetIsProduction}
-#BuildRequires: tree vim-enhanced less dnf findutils
-BuildRequires: tree vim-enhanced less dnf
+#BuildRequires: tree vim-enhanced less dnf iputils findutils
+BuildRequires: tree vim-enhanced less dnf iputils
 %endif
 
 
@@ -217,6 +219,7 @@ echo "======== prep stage ========"
 
 rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 
+# OPENSUSE
 # The prep section is the first place we can run shell commands. Therefore,
 # these checks are here...
 %if 0%{?suse_version:1}
@@ -229,6 +232,8 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
     exit 1
   %endif
 %endif
+
+# FEDORA
 %if 0%{?fedora:1}
   echo "======== Fedora version: %{fedora}"
   %if 0%{?fedora} <= 29
@@ -236,11 +241,24 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
     exit 1
   %endif
 %endif
+
+# CENTOS / RHEL (EL7 and EL8)
 %if 0%{?rhel:1}
   echo "======== EL version: %{rhel}"
   %if 0%{?rhel} < 7
     echo "Builds for EL 6 and older are not supported."
     exit 1
+  %endif
+  %if 0%{?rhel} == 8
+    # In order to build the SQLite bits, a version of python must be addressable as
+    # python from the commandline. Python3 on EL8 is addessed as /usr/bin/python3.
+    # Python got  bit crazy, but is settling down with the end of python2 as of
+    # January 2020. Read more about python and how it is packaged here:
+    # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
+    mkdir -p $HOME/.local/bin
+    if [ ! -e "$HOME/.local/bin/python" ] ;  then
+      ln -s /usr/bin/python3 $HOME/.local/bin/python
+    fi
   %endif
 %endif
 
@@ -255,18 +273,6 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 %setup -q -T -D -a 1 -n %{sourceroot}
 
 
-%if 0%{?rhel:1} && 0%{?rhel} == 8
-# In order to build the SQLite bits, a version of python must be addressable as
-# python from the commandline. Python3 on EL8 is addessed as /usr/bin/python3.
-# Python got  bit crazy, but is settling down with the end of python2 as of
-# January 2020. Read more about python and how it is packaged here:
-# https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
-mkdir -p $HOME/.local/bin
-if [ ! -e "$HOME/.local/bin/python" ] ;  then
-  ln -s /usr/bin/python3 $HOME/.local/bin/python
-fi
-%endif
-
 # For debugging purposes...
 %if ! %{targetIsProduction}
   cd .. ; tree -d -L 2 %{sourceroot} ; cd -
@@ -279,25 +285,15 @@ echo "======== build stage ========"
 
 cd %{sourcetree}
 
+# FEDORA
 %if 0%{?fedora:1}
-# Fedora 29+ (executable is yarnpkg and not yarn)
 %if 0%{?fedora} >= 29
-  #if [ "$?" -ne 0 ] ; then
-  echo "======== Mapping yarnpkg to 'yarn' as build scripts expect"
-  mkdir -p $HOME/.local/bin
-  if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
-    ln -s /usr/bin/yarnpkg $HOME/.local/bin/yarn
-  fi
-
 %if 0%{?fedora} >= 33
-  # Fedora 33 doesn't supply node-gyp or nodejs-sqlite3
-  npm install node-gyp sqlite3
 %endif
-
-# Fedora 28-
+# Fedora 28 or older
 %else
-  # NOTE: This is here for posterity. We are no longer building for Fedora 28
-  #       and older.
+  # NOTE: This is here for posterity.
+  #       We are no longer building for Fedora 28 and older.
   npm install yarn
   _pwd=$(pwd)
   echo "======== Mapping yarn so it can be found in the path"
@@ -311,31 +307,58 @@ cd %{sourcetree}
 %endif
 %endif
 
-# EL7 and 8
+# CENTOS / RHEL (EL7 and EL8)
 %if 0%{?rhel:1}
 %if 0%{?rhel} >= 8
-  npm install gyp
-  npm install yarn
-  _pwd=$(pwd)
-  echo "======== Mapping yarn so it can be found in the path"
-  mkdir -p $HOME/.local/bin
-  if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
-    ln -s ${_pwd}/node_modules/.bin/yarn $HOME/.local/bin/yarn
-  fi
+#  npm update
+#  npm install node-gyp
+#  npm install node-pre-gyp
 %endif
-  yarn add electron-builder --dev
-  yarn add electron-packager --dev
 %endif
 
-echo "###### NOTE: You will see the build gripe about a husky build failure because a .git can't be found. Ignore this #######"
+echo "
+###### NOTE: You will see the build gripe about a husky build failure
+######       because a .git can't be found. Ignore it.
+"
 
 ### BUILD IT!
-# This npm install will trigger these set of events:
-# cd Tools && npm i && cd .. && cd ReactNativeClient && npm i && cd .. && cd ElectronClient && npm i && cd .. && cd CliClient && npm i && cd .. && gulp build
 npm install
-cd ElectronClient
-yarn dist
-cd ..
+
+# CLI - can't get to work yet, so pulling from the RPM for now
+#cd packages/app-cli
+#npm run build
+#cd ../..
+# DESKTOP
+cd packages/app-desktop
+npm run dist
+cd ../..
+
+# experimenting. trying to get rid of all those error messages in the
+# developmental console in the UI
+#%%if 0%%{?nativebuild:1}
+#cd packages
+#mkdir app-desktop/dist/linux-unpacked/resources/app.asar.unpacked/node_modules/\@joplin
+#cp -a lib app-desktop/dist/linux-unpacked/resources/app.asar.unpacked/node_modules/\@joplin/
+#cd ..
+#%%endif
+
+### CLEANUP
+%if 0%{?nativebuild:1}
+cd packages/app-desktop/dist/linux-unpacked/resources
+# 7zip-bin and wrong architectures
+# For whatever reason, we end up with several 7zip-bin architectures. They
+# trigger incorrect and unmeetable dependencies. So we strip out the irrelevant
+# ones.
+# Question: Do we even need 7zip-bin at all? Probably(?), so leaving it in.
+%ifarch x86_64 amd64
+rm -rf $(find app*/node_modules/7zip-bin-linux/* -type d | grep -v x64)
+%else
+rm -rf $(find app*/node_modules/7zip-bin-linux/* -type d | grep -v ia32)
+%endif
+# Other superfluous cleanup needs
+rm -rf build
+cd ../../../../..
+%endif
 
 
 %install
@@ -364,7 +387,8 @@ cd ..
 #install -d %%{buildroot}%%{_libdir}/%%{appid}
 install -d -m755 -p %{buildroot}%{_bindir}
 install -d %{buildroot}%{installtree}/desktop
-install -d %{buildroot}%{installtree}/cli
+# CLI: can't get to work at the moment, so pulling from the RPM.
+#install -d %%{buildroot}%%{installtree}/cli
 install -d %{buildroot}%{_datadir}/applications
 install -d %{buildroot}%{_metainfodir}
 
@@ -408,37 +432,30 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 
 # Native build
 %if 0%{?nativebuild:1}
-# Strip out irrelevant 7zip-bin architecture builds. This is ugly, but (a)
-# those bits are superfluous, and (b) they add dependencies that can't be met.
-# Question I have is... do we need 7zip-bin? Probably, so leaving it in.
-#%%if "%%{?_lib}" == "lib64"
-%ifarch x86_64 amd64
-rm -rf $(find %{sourcetree}/ElectronClient/dist/linux-unpacked/resources/app*/node_modules/7zip-bin-linux/* -type d | grep -v x64)
-%else
-rm -rf $(find %{sourcetree}/ElectronClient/dist/linux-unpacked/resources/app*/node_modules/7zip-bin-linux/* -type d | grep -v ia32)
-%endif
-cp -a %{sourcetree}/CliClient/* %{buildroot}%{installtree}/cli
-cp -a %{sourcetree}/ElectronClient/dist/linux-unpacked/* %{buildroot}%{installtree}/desktop/
-# a little ugly
-ln -s %{installtree}/cli/build/main.js %{buildroot}%{installtree}/cli/%{name}
-ln -s %{installtree}/cli/%{name} %{buildroot}%{_bindir}/%{name_cli}
-ln -s %{installtree}/desktop/joplin %{buildroot}%{installtree}/desktop/%{name_desktop}
-ln -s %{installtree}/desktop/joplin %{buildroot}%{_bindir}/%{name_desktop}
+# CLI: can't get to work at the moment, so pulling from the RPM. TODO: tackle another day
+#cp -a %%{sourcetree}/packages/app-cli/build/* %%{buildroot}%%{installtree}/cli
+#ln -s %%{installtree}/cli/main.js %%{buildroot}%%{_bindir}/%%{name_cli}
 
-# AppImage build
+cp -a %{sourcetree}/packages/app-desktop/dist/linux-unpacked/* %{buildroot}%{installtree}/desktop
+mv %{buildroot}%{installtree}/desktop/\@joplinapp-desktop %{buildroot}%{installtree}/desktop/%{name_desktop}
+ln -s %{installtree}/desktop/%{name_desktop} %{buildroot}%{_bindir}/%{name_desktop}
+
+# Alternative build: package the AppImage build instead
 %else
 # This is SUPER ugly... It's an alternative if we want to use it.
-install -D -m755 -p %{sourcetree}/ElectronClient/dist/'Joplin '%{version}'.AppImage' %{buildroot}%{_bindir}/%{name_desktop}
+install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/'Joplin-'%{version}'.AppImage' %{buildroot}%{_bindir}/%{name_desktop}
 %endif
 
 
 %files
 %defattr(-,root,root,-)
 %license %{sourcetree}/LICENSE
-%doc %{sourcetree}/ElectronClient/dist/linux-unpacked/LICENSE.electron.txt
-%doc %{sourcetree}/ElectronClient/dist/linux-unpacked/LICENSES.chromium.html
+%doc %{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSE.electron.txt
+%doc %{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSES.chromium.html
+# DESKTOP
 %{_bindir}/%{name_desktop}
-%{_bindir}/%{name_cli}
+# CLI - not working at the moment, so ... pulled.
+#%%{_bindir}/%%{name_cli}
 # desktop environment metadata
 %{_datadir}/applications/%{appid}.desktop
 %{_metainfodir}/%{appid}.metainfo.xml
@@ -472,6 +489,24 @@ umask 007
 
 
 %changelog
+* Sat Nov 28 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.18-1.taw
+* Sat Nov 28 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.18-0.1.testing.taw
+  - 1.4.18 — https://github.com/laurent22/joplin/releases/tag/v1.4.18
+
+* Tue Nov 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.12-1.1.testing.taw
+* Tue Nov 24 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.12-0.1.testing.taw
+  - 1.4.12 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.4.12
+  - OpenSUSE 15.2 stopped building. Couldn't find /usr/bin/python -- fixed!
+
+* Sat Nov 14 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.10-0.1.testing.taw
+  - 1.4.10 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.4.10
+
+* Fri Nov 13 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.9-0.1.testing.taw
+  - 1.4.9 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.4.9
+  - This version restructures the build with lerna and organizes the  
+    application bits differently. So lots of changes from prior prior builds.  
+    Yarn is no longer used for example. sqlite3 is pulled in by the build, etc.
+
 * Sat Nov 7 2020 Todd Warner <t0dd_at_protonmail.com> 1.3.18-1.taw
 * Sat Nov 7 2020 Todd Warner <t0dd_at_protonmail.com> 1.3.18-0.1.testing.taw
   - 1.3.18 release — https://github.com/laurent22/joplin/releases/tag/v1.3.18
