@@ -39,9 +39,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -150,29 +150,36 @@ BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
 %endif
 %endif
 
-# CENTOS / RHEL (EL7 and EL8)
+# CENTOS / RHEL
+# EL7 is too far behind on its available nodejs. Therefore we pull
+# from upstream for the build. Add this repos to mock and COPR.
+#     https://rpm.nodesource.com/pub_10.x/el/$releasever/$basearch
+#     In the past, this repo was also included: https://dl.yarnpkg.com/rpm/
+# EL8's default nodejs is v10. We need v12 which is provided in the nodejs 12
+# module. You have to enable the module in COPR in the settings for
+# EL8: nodejs:12
+# This is the equivalent of doing sudo dnf module enable nodejs:12 at the
+# commandline. I do not know a way of specifying this in the .spec file.
 %if 0%{?rhel:1}
 BuildRequires: gcc-c++
 BuildRequires: libappstream-glib
+
 # EL7
 %if 0%{?rhel} == 7
-# EL7 is too far behind on many many packages (EL7 is based on F19 and F20).
-# Therefore, you have to pull from some RPMs from other repos. In this case,
-# nodejs. Include these repos into your mock or build environments...
-#   https://rpm.nodesource.com/pub_10.x/el/7/$basearch
-# Note that this version of nodejs installs npm as well.
-# Note that the python in EL7 is python2
 BuildRequires: python
 BuildRequires: nodejs >= 2:10
+
 # EL8
 %else
 %if 0%{?rhel} == 8
 BuildRequires: python3
 BuildRequires: nodejs npm
+
 # EL9 (which doesn't exist yet)
 %else
 BuildRequires: python
 BuildRequires: nodejs npm
+
 %endif
 %endif
 %endif
@@ -293,7 +300,8 @@ cd %{sourcetree}
 # Fedora 28 or older
 %else
   # NOTE: This is here for posterity.
-  #       We are no longer building for Fedora 28 and older.
+  #       We are no longer building for Fedora 28 and older and I don't think
+  #       that yarn is used anymore.
   npm install yarn
   _pwd=$(pwd)
   echo "======== Mapping yarn so it can be found in the path"
@@ -489,6 +497,10 @@ umask 007
 
 
 %changelog
+* Tue Dec 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.18-2.taw
+* Tue Dec 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.18-1.1.testing.taw
+  - Fixing the RHEL8 builds by using nodejs from upstream.
+
 * Sat Nov 28 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.18-1.taw
 * Sat Nov 28 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.18-0.1.testing.taw
   - 1.4.18 — https://github.com/laurent22/joplin/releases/tag/v1.4.18
