@@ -35,13 +35,13 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 1.4
-%define verminor 18
+%define verminor 19
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -497,6 +497,10 @@ umask 007
 
 
 %changelog
+* Tue Dec 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.19-1.taw
+* Tue Dec 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.19-0.1.testing.taw
+  - 1.4.19 — https://github.com/laurent22/joplin/releases/tag/v1.4.19
+
 * Tue Dec 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.18-2.taw
 * Tue Dec 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.18-1.1.testing.taw
   - Fixing the RHEL8 builds by using nodejs from upstream.
