@@ -520,7 +520,7 @@ umask 007
 * Fri Nov 13 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.9-0.1.testing.taw
   - 1.4.9 pre-release — https://github.com/laurent22/joplin/releases/tag/v1.4.9
   - This version restructures the build with lerna and organizes the  
-    application bits differently. So lots of changes from prior prior builds.  
+    application bits differently. So lots of changes from prior builds.  
     Yarn is no longer used for example. sqlite3 is pulled in by the build, etc.
 
 * Sat Nov 7 2020 Todd Warner <t0dd_at_protonmail.com> 1.3.18-1.taw
