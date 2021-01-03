@@ -34,8 +34,8 @@ Summary: A free and secure notebook application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 1.4
-%define verminor 19
+%define vermajor 1.5
+%define verminor 14
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -497,6 +497,10 @@ umask 007
 
 
 %changelog
+* Sun Jan 03 2021 Todd Warner <t0dd_at_protonmail.com> 1.5.14-1.taw
+* Sun Jan 03 2021 Todd Warner <t0dd_at_protonmail.com> 1.5.14-0.1.testing.taw
+  - 1.5.14 — https://github.com/laurent22/joplin/releases/tag/v1.5.14
+
 * Tue Dec 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.19-1.taw
 * Tue Dec 01 2020 Todd Warner <t0dd_at_protonmail.com> 1.4.19-0.1.testing.taw
   - 1.4.19 — https://github.com/laurent22/joplin/releases/tag/v1.4.19
