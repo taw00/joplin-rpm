@@ -25,7 +25,7 @@ Summary: A free and secure notebook application
 %define name_cli joplin-cli
 %define name_desktop joplin-desktop
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -39,9 +39,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -85,8 +85,11 @@ Release: %{_release}
 License: MIT
 # URL: https://joplin.cozic.net/
 URL: https://joplinapp.org/
-# Note, for example, this will not build on ppc64le
-ExclusiveArch: x86_64 i686 i586 i386
+
+# Note1, for example, this will not build on ppc64le
+# Note2, attempted aarch64 (also called arm64?). Thus far, the builds fail.
+#ExclusiveArch: x86_64 i686 i586 i386 aarch64
+ExclusiveArch: x86_64
 
 # how are debug info and build_ids managed (I only halfway understand this):
 # https://github.com/rpm-software-management/rpm/blob/master/macros.in
@@ -358,7 +361,7 @@ cd packages/app-desktop/dist/linux-unpacked/resources
 # trigger incorrect and unmeetable dependencies. So we strip out the irrelevant
 # ones.
 # Question: Do we even need 7zip-bin at all? Probably(?), so leaving it in.
-%ifarch x86_64 amd64
+%ifarch x86_64 amd64 aarch64
 rm -rf $(find app*/node_modules/7zip-bin-linux/* -type d | grep -v x64)
 %else
 rm -rf $(find app*/node_modules/7zip-bin-linux/* -type d | grep -v ia32)
@@ -497,6 +500,9 @@ umask 007
 
 
 %changelog
+* Sun Jan 03 2021 Todd Warner <t0dd_at_protonmail.com> 1.5.14-1.1.testing.taw
+  - allowing build on aarch64 --> FAILED (changes commented out)
+
 * Sun Jan 03 2021 Todd Warner <t0dd_at_protonmail.com> 1.5.14-1.taw
 * Sun Jan 03 2021 Todd Warner <t0dd_at_protonmail.com> 1.5.14-0.1.testing.taw
   - 1.5.14 — https://github.com/laurent22/joplin/releases/tag/v1.5.14
