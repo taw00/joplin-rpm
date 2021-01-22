@@ -25,7 +25,7 @@ Summary: A free and secure notebook application
 %define name_cli joplin-cli
 %define name_desktop joplin-desktop
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -34,14 +34,14 @@ Summary: A free and secure notebook application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 1.5
-%define verminor 14
+%define vermajor 1.6
+%define verminor 8
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if ! %{targetIsProduction}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -139,17 +139,19 @@ BuildRequires: appstream-glib
 BuildRequires: gcc-c++
 # this is ugly and wrong. but it works.
 BuildRequires: /usr/bin/python
-BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
 # Leap
 %if 0%{?sle_version}
 # Leap 15.1
 %if 0%{?sle_version} == 150100
+BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
 %endif
 # Leap 15.2
 %if 0%{?sle_version} == 150200
+BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
 %endif
 # Tumbleweed
 %else
+BuildRequires: nodejs14 npm14 nodejs14-devel nodejs-common
 %endif
 %endif
 
@@ -500,8 +502,13 @@ umask 007
 
 
 %changelog
+* Fri Jan 22 2021 Todd Warner <t0dd_at_protonmail.com> 1.6.8-1.taw
+* Fri Jan 22 2021 Todd Warner <t0dd_at_protonmail.com> 1.6.8-0.1.testing.taw
+  - 1.6.8 — https://github.com/laurent22/joplin/releases/tag/v1.6.8
+  - Had to boost nodejs version requirements for SUSE Tumbleweed
+
 * Sun Jan 03 2021 Todd Warner <t0dd_at_protonmail.com> 1.5.14-1.1.testing.taw
-  - allowing build on aarch64 --> FAILED (changes commented out)
+  - testing allowing builds on aarch64 --> FAILED (changes commented out)
 
 * Sun Jan 03 2021 Todd Warner <t0dd_at_protonmail.com> 1.5.14-1.taw
 * Sun Jan 03 2021 Todd Warner <t0dd_at_protonmail.com> 1.5.14-0.1.testing.taw
