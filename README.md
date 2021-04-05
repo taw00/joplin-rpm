@@ -56,11 +56,6 @@ sudo dnf install -y joplin
 Prep the repository . . .
 
 ```
-# Repository setup for OpenSUSE Leap 15.1
-sudo wget https://copr.fedorainfracloud.org/coprs/taw/joplin/repo/opensuse-leap-15.1/taw-joplin-opensuse-leap-15.1.repo -O /etc/zypp/repos.d/taw-joplin-opensuse-leap-15.1.repo
-sudo zypper refresh
-```
-```
 # Repository setup for OpenSUSE Leap 15.2
 sudo wget https://copr.fedorainfracloud.org/coprs/taw/joplin/repo/opensuse-leap-15.2/taw-joplin-opensuse-leap-15.2.repo -O /etc/zypp/repos.d/taw-joplin-opensuse-leap-15.2.repo
 sudo zypper refresh
