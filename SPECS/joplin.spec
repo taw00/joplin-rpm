@@ -25,7 +25,7 @@ Summary: A free and secure notebook application
 %define name_cli joplin-cli
 %define name_desktop joplin-desktop
 
-%define targetIsProduction 1
+%define targetIsProduction 0
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -34,8 +34,8 @@ Summary: A free and secure notebook application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 1.7
-%define verminor 11
+%define vermajor 1.8
+%define verminor 5
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -151,7 +151,9 @@ BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
 %endif
 # Tumbleweed
 %else
-BuildRequires: nodejs14 npm14 nodejs14-devel nodejs-common
+#BuildRequires: nodejs-default npm-default nodejs-common
+#BuildRequires: nodejs16 npm16 nodejs16-devel nodejs-common
+BuildRequires: nodejs10 npm10 nodejs10-devel nodejs-common
 %endif
 %endif
 
@@ -330,7 +332,7 @@ cd %{sourcetree}
 %endif
 
 echo "
-###### NOTE: You will see the build gripe about a husky build failure
+###### NOTE: You may see the build gripe about a husky build failure
 ######       because a .git can't be found. Ignore it.
 "
 
@@ -502,6 +504,10 @@ umask 007
 
 
 %changelog
+* Mon May 10 2021 Todd Warner <t0dd_at_protonmail.com> 1.8.5-0.1.testing.taw
+  - https://github.com/laurent22/joplin/releases/tag/v1.8.5 pre-release
+  - Updated OpenSUSE's tumbleweed nodejs BuildRequires
+
 * Thu Feb 4 2021 Todd Warner <t0dd_at_protonmail.com> 1.7.11-1.taw
 * Thu Feb 4 2021 Todd Warner <t0dd_at_protonmail.com> 1.7.11-0.1.testing.taw
   - 1.7.11 — https://github.com/laurent22/joplin/releases/tag/v1.7.11
