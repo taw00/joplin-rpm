@@ -25,7 +25,7 @@ Summary: A free and secure notebook application
 %define name_cli joplin-cli
 %define name_desktop joplin-desktop
 
-%define targetIsProduction 0
+%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -504,6 +504,7 @@ umask 007
 
 
 %changelog
+* Mon May 17 2021 Todd Warner <t0dd_at_protonmail.com> 1.8.5-1.taw
 * Mon May 10 2021 Todd Warner <t0dd_at_protonmail.com> 1.8.5-0.1.testing.taw
   - https://github.com/laurent22/joplin/releases/tag/v1.8.5 pre-release
   - Updated OpenSUSE's tumbleweed nodejs BuildRequires
