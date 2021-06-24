@@ -17,6 +17,9 @@
 # Package (RPM) name-version-release.
 # <name>-<vermajor.<verminor>-<pkgrel>[.<extraver>][.<snapinfo>].DIST[.<minorbump>]
 
+# Filters out unneccessary provides
+%{?nodejs_default_filter}
+
 Name: joplin
 Summary: A free and secure notebook application
 
@@ -39,9 +42,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -147,13 +150,16 @@ BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
 %endif
 # Leap 15.2
 %if 0%{?sle_version} == 150200
-BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
+#BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
+#BuildRequires: nodejs14 npm14 nodejs14-devel nodejs-common
+BuildRequires: nodejs npm nodejs-devel nodejs-common
 %endif
 # Tumbleweed
 %else
-#BuildRequires: nodejs-default npm-default nodejs-common
+#BuildRequires: nodejs10 npm10 nodejs10-devel nodejs-common
+#BuildRequires: nodejs14 npm14 nodejs14-devel nodejs-common
 #BuildRequires: nodejs16 npm16 nodejs16-devel nodejs-common
-BuildRequires: nodejs10 npm10 nodejs10-devel nodejs-common
+BuildRequires: nodejs npm nodejs-devel nodejs-common
 %endif
 %endif
 
@@ -370,8 +376,6 @@ rm -rf $(find app*/node_modules/7zip-bin-linux/* -type d | grep -v x64)
 %else
 rm -rf $(find app*/node_modules/7zip-bin-linux/* -type d | grep -v ia32)
 %endif
-# Other superfluous cleanup needs
-rm -rf build
 cd ../../../../..
 %endif
 
@@ -504,6 +508,13 @@ umask 007
 
 
 %changelog
+* Thu Jun 24 2021 Todd Warner <t0dd_at_protonmail.com> 2.0.11-2.taw
+* Thu Jun 24 2021 Todd Warner <t0dd_at_protonmail.com> 2.0.11-1.1.testing.taw
+  - Fixes https://github.com/laurent22/joplin/issues/4330  
+    Apparently, app-desktop/build is not a superfluous build artifact.
+  - Updated nodejs versions for OpenSUSE Leap 15.2 and Tumbleweed
+  - Added spec macros that cleans up nodejs-triggered provides.
+
 * Wed Jun 16 2021 Todd Warner <t0dd_at_protonmail.com> 2.0.11-1.taw
 * Wed Jun 16 2021 Todd Warner <t0dd_at_protonmail.com> 2.0.11-0.1.testing.taw
   - https://github.com/laurent22/joplin/releases/tag/v2.0.11
