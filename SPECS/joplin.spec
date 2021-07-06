@@ -154,6 +154,10 @@ BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
 #BuildRequires: nodejs14 npm14 nodejs14-devel nodejs-common
 BuildRequires: nodejs npm nodejs-devel nodejs-common
 %endif
+# Leap 15.3
+%if 0%{?sle_version} == 150300
+BuildRequires: nodejs npm nodejs-devel nodejs-common
+%endif
 # Tumbleweed
 %else
 #BuildRequires: nodejs10 npm10 nodejs10-devel nodejs-common
@@ -246,6 +250,7 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
   echo "======== OpenSUSE version: %{suse_version} %{sle_version}"
   echo "-------- Leap 15.1  will report as 1500 150100"
   echo "-------- Leap 15.2  will report as 1500 150200"
+  echo "-------- Leap 15.3  will report as 1500 150300"
   echo "-------- Tumbleweed will report as 1550 undefined"
   %if 0%{?sle_version} && 0%{?sle_version} < 150100
     echo "Builds for OpenSUSE Leap older than 15.1 are not supported."
