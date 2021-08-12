@@ -38,7 +38,7 @@ Summary: A free and secure notebook application
 
 # VERSION
 %define vermajor 2.2
-%define verminor 6
+%define verminor 7
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -513,6 +513,11 @@ umask 007
 
 
 %changelog
+* Wed Aug 11 2021 Todd Warner <t0dd_at_protonmail.com> 2.2.7-1.taw
+* Wed Aug 11 2021 Todd Warner <t0dd_at_protonmail.com> 2.2.7-0.1.testing.taw
+  - https://github.com/laurent22/joplin/releases/tag/v2.2.7
+  - apparently, there was a couple issues with the last release.
+
 * Wed Aug 11 2021 Todd Warner <t0dd_at_protonmail.com> 2.2.6-1.taw
 * Wed Aug 11 2021 Todd Warner <t0dd_at_protonmail.com> 2.2.6-0.1.testing.taw
   - https://github.com/laurent22/joplin/releases/tag/v2.2.6
