@@ -21,7 +21,7 @@
 %{?nodejs_default_filter}
 
 Name: joplin
-Summary: A free and secure notebook application
+Summary: Notebook Application
 
 %define appid org.joplinapp.joplin
 
@@ -42,9 +42,9 @@ Summary: A free and secure notebook application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if ! %{targetIsProduction}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -513,6 +513,9 @@ umask 007
 
 
 %changelog
+* Sun Aug 15 2021 Todd Warner <t0dd_at_protonmail.com> 2.2.7-1.1.testing.taw
+  - The summary is too expressive for Fedora Packaging Guidelines. Reduced.
+
 * Wed Aug 11 2021 Todd Warner <t0dd_at_protonmail.com> 2.2.7-1.taw
 * Wed Aug 11 2021 Todd Warner <t0dd_at_protonmail.com> 2.2.7-0.1.testing.taw
   - https://github.com/laurent22/joplin/releases/tag/v2.2.7
