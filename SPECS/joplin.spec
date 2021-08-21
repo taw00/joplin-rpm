@@ -18,9 +18,21 @@
 # <name>-<vermajor.<verminor>-<pkgrel>[.<extraver>][.<snapinfo>].DIST[.<minorbump>]
 
 # Filters out unneccessary provides
+# See also: https://docs.fedoraproject.org/en-US/packaging-guidelines/Node.js/
 %{?nodejs_default_filter}
+%global __python %{python2}
+
+%define isTestBuild 0
+%define sourceIsPrebuilt 1
+
+%define upgradeNPM 1
+%define useNodeSourceReposEL 0
+%define useNodeSourceReposFC 0
+%define useNodeSourceReposLEAP 0
+%define useNodeSourceReposTW 0
 
 Name: joplin
+%define name2 Joplin
 Summary: Notebook Application
 
 %define appid org.joplinapp.joplin
@@ -28,7 +40,6 @@ Summary: Notebook Application
 %define name_cli joplin-cli
 %define name_desktop joplin-desktop
 
-%define targetIsProduction 1
 %define nativebuild 1
 
 # Only used if the dev team or the RPM builder includes things like rc3 or the
@@ -37,14 +48,14 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 2.2
-%define verminor 7
+%define vermajor 2.3
+%define verminor 5
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
-%if ! %{targetIsProduction}
-  %define _pkgrel 1.1
+%define _pkgrel 1
+%if %{isTestBuild}
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -54,14 +65,24 @@ Version: %{vermajor}.%{verminor}
 # Build the release string - don't edit this
 #
 
+# note, rp = repackaged
 %define snapinfo highlyexperimental
-%if %{targetIsProduction}
+%if ! %{isTestBuild}
   %undefine snapinfo
+  %if %{sourceIsPrebuilt}
+    %define snapinfo rp
+  %endif
 %else
   %define snapinfo testing
+  %if %{sourceIsPrebuilt}
+    %define snapinfo testing.rp
+  %endif
 %endif
 %if 0%{?buildQualifier:1}
   %define snapinfo %{buildQualifier}
+  %if %{sourceIsPrebuilt}
+    %define snapinfo %{buildQualifier}.rp
+  %endif
 %endif
 
 # pkgrel will also be defined, snapinfo and minorbump may not be
@@ -111,10 +132,32 @@ ExclusiveArch: x86_64
 %define sourceroot %{name}-%{vermajor}
 %define sourcetree %{name}-%{version}
 %define sourcetree_contrib %{name}-%{vermajor}-contrib
+%define appimagename %{name2}-%{version}.AppImage
 # /usr/share/joplin
 %define installtree %{_datadir}/%{appid}
 
+%if ! %{sourceIsPrebuilt}
 Source0: https://github.com/laurent22/joplin/archive/v%{version}/%{sourcetree}.tar.gz
+%else
+# Binary source is big, so we split it up 16 ways (less than 10M per chunk):
+#   split -n 16 Joplin-[version].AppImage Joplin-[version].AppImage-
+Source10: %{appimagename}-aa
+Source11: %{appimagename}-ab
+Source12: %{appimagename}-ac
+Source13: %{appimagename}-ad
+Source14: %{appimagename}-ae
+Source15: %{appimagename}-af
+Source16: %{appimagename}-ag
+Source17: %{appimagename}-ah
+Source18: %{appimagename}-ai
+Source19: %{appimagename}-aj
+Source20: %{appimagename}-ak
+Source21: %{appimagename}-al
+Source22: %{appimagename}-am
+Source23: %{appimagename}-an
+Source24: %{appimagename}-ao
+Source25: %{appimagename}-ap
+%endif
 Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_contrib}.tar.gz
 
 # See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
@@ -129,8 +172,23 @@ Requires: libnotify
 %global __provides_exclude ^(lib.*\\.so.*)$
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(/usr/bin.*/coffee))$
 
+# BUILDREQUIRES IF PRE-BUILT BINARY
+%if %{sourceIsPrebuilt}
+BuildRequires: desktop-file-utils
+%if 0%{?suse_version:1}
+BuildRequires: appstream-glib
+%endif
+%if 0%{?rhel:1}
+BuildRequires: libappstream-glib
+%endif
+%if 0%{?fedora:1}
+BuildRequires: libappstream-glib
+%endif
+
+# BUILDREQUIRES IF BUILT FROM SOURCE
+%else
 BuildRequires: libsecret-devel
-BuildRequires: git rsync findutils grep
+BuildRequires: git rsync grep
 BuildRequires: desktop-file-utils
 # provided by coreutils RPM
 #BuildRequires: /usr/bin/readlink /usr/bin/dirname
@@ -142,60 +200,67 @@ BuildRequires: appstream-glib
 BuildRequires: gcc-c++
 # this is ugly and wrong. but it works.
 BuildRequires: /usr/bin/python
-# Leap
+
+# OPENSUSE LEAP
 %if 0%{?sle_version}
-# Leap 15.1
-%if 0%{?sle_version} == 150100
-BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
-%endif
-# Leap 15.2
-%if 0%{?sle_version} == 150200
-#BuildRequires: nodejs12 npm12 nodejs12-devel nodejs-common
-#BuildRequires: nodejs14 npm14 nodejs14-devel nodejs-common
-BuildRequires: nodejs npm nodejs-devel nodejs-common
-%endif
-# Leap 15.3
-%if 0%{?sle_version} == 150300
-BuildRequires: nodejs npm nodejs-devel nodejs-common
-%endif
-# Tumbleweed
+%if %{useNodeSourceReposLEAP}
+BuildRequires: nodejs >= 2:12
 %else
-#BuildRequires: nodejs10 npm10 nodejs10-devel nodejs-common
-#BuildRequires: nodejs14 npm14 nodejs14-devel nodejs-common
-#BuildRequires: nodejs16 npm16 nodejs16-devel nodejs-common
-BuildRequires: nodejs npm nodejs-devel nodejs-common
+BuildRequires: npm
+#BuildRequires: nodejs npm
+%endif
+
+# OPENSUSE TUMBLEWEED
+%else
+%if %{useNodeSourceReposTW}
+BuildRequires: nodejs >= 2:12
+%else
+BuildRequires: npm
+#BuildRequires: nodejs npm
+%endif
+##BuildRequires: nodejs10 npm10 nodejs10-devel nodejs-common
+##BuildRequires: nodejs14 npm14 nodejs14-devel nodejs-common
+##BuildRequires: nodejs16 npm16 nodejs16-devel nodejs-common
+#BuildRequires: nodejs npm nodejs-devel nodejs-common
 %endif
 %endif
 
 # CENTOS / RHEL
+# All CentOS and EL may require upstream nodesource repos. This
+# is supplied by adding the appropriate repo to each OS setting
+# in COPR (EL7 always needs this set).
+#     https://rpm.nodesource.com/pub_16.x/el/$releasever/$basearch
 # EL7 is too far behind on its available nodejs. Therefore we pull
 # from upstream for the build. Add this repos to mock and COPR.
-#     https://rpm.nodesource.com/pub_10.x/el/$releasever/$basearch
+#     https://rpm.nodesource.com/pub_16.x/el/$releasever/$basearch
 #     In the past, this repo was also included: https://dl.yarnpkg.com/rpm/
-# EL8's default nodejs is v10. We need v12 which is provided in the nodejs 12
-# module. You have to enable the module in COPR in the settings for
+# EL8's default nodejs is v10. We need at least v12 which is provided in the
+# nodejs 12 module. You have to enable the module in COPR in the settings for
 # EL8: nodejs:12
+# See also https://docs.fedoraproject.org/en-US/modularity/installing-modules/
 # This is the equivalent of doing sudo dnf module enable nodejs:12 at the
 # commandline. I do not know a way of specifying this in the .spec file.
 %if 0%{?rhel:1}
 BuildRequires: gcc-c++
 BuildRequires: libappstream-glib
+%if 0%{?rhel} == 7 || %{useNodeSourceReposEL}
+BuildRequires: nodejs >= 2:12
+%else
+BuildRequires: nodejs npm
+%endif
 
 # EL7
 %if 0%{?rhel} == 7
 BuildRequires: python
-BuildRequires: nodejs >= 2:10
 
 # EL8
 %else
 %if 0%{?rhel} == 8
 BuildRequires: python3
-BuildRequires: nodejs npm
 
 # EL9 (which doesn't exist yet)
 %else
 BuildRequires: python
-BuildRequires: nodejs npm
 
 %endif
 %endif
@@ -205,15 +270,26 @@ BuildRequires: nodejs npm
 %if 0%{?fedora:1}
 BuildRequires: libappstream-glib
 BuildRequires: gcc-c++
-BuildRequires: python
-BuildRequires: nodejs npm
+BuildRequires: python2.7
+%if %{useNodeSourceReposFC}
+BuildRequires: nodejs >= 2:12
+%else
+#BuildRequires: npm
+BuildRequires: npm
+BuildRequires: nodejs-devel >= 16
+%endif
+%endif
+
+# [ENDIF] BUILDREQUIRES IF BUILT FROM SOURCE
 %endif
 
 #t0dd: I often add these extra packages to enable mock environment introspection
-%if ! %{targetIsProduction}
+%if %{isTestBuild}
 #BuildRequires: tree vim-enhanced less dnf iputils findutils
 BuildRequires: tree vim-enhanced less dnf iputils
 %endif
+
+
 
 
 %description
@@ -236,6 +312,8 @@ including Nextcloud, Dropbox, Onedrive, WebDAV, or your local or
 network-accessible file system.
 
 
+
+
 %prep
 # Prep section starts us in directory {_builddir}
 
@@ -244,8 +322,8 @@ echo "======== prep stage ========"
 rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 
 # OPENSUSE
-# The prep section is the first place we can run shell commands. Therefore,
-# these checks are here...
+# The prep section is the first place we can run shell commands.
+# Therefore, these checks are here...
 %if 0%{?suse_version:1}
   echo "======== OpenSUSE version: %{suse_version} %{sle_version}"
   echo "-------- Leap 15.1  will report as 1500 150100"
@@ -261,8 +339,8 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 # FEDORA
 %if 0%{?fedora:1}
   echo "======== Fedora version: %{fedora}"
-  %if 0%{?fedora} <= 29
-    echo "Builds for Fedora 29 and older are no longer supported."
+  %if 0%{?fedora} <= 32
+    echo "Builds for Fedora 32 and older are no longer supported."
     exit 1
   %endif
 %endif
@@ -274,11 +352,64 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
     echo "Builds for EL 6 and older are not supported."
     exit 1
   %endif
+%endif
+
+# Unarchived source tree structure (extracted in {_builddir})
+#   {sourceroot}            joplin-2.3
+#    \_{sourcetree}          \_joplin-2.3.5
+#    \_{sourcetree_contrib}  \_joplin-2.3-contrib
+#   ...or if prebuilt...
+#    \_{sourcetree}          \_joplin-2.3.5
+#    \_{appimagename}        \_Joplin-2.3.5.AppImage
+#    \_{sourcetree_contrib}  \_joplin-2.3-contrib
+
+%if ! %{sourceIsPrebuilt}
+#Source0
+%setup -q -T -D -a 0 -n %{sourceroot}
+
+%else
+#Source10 through Source25
+# Note, {_sourcedir} = {_builddir}/../SOURCES = /builddir/build/SOURCES
+#       rpmlint errors on use of {_sourcedir}
+# We need to stitch the binary blob together once again...
+#   cat {_sourcedir}/Joplin-[version].AppImage-* > {_builddir}/{sourceroot}/Joplin-[version].AppImage
+# There are three ways to do it. The first is pendantic, but ensures the
+# ordering. The second errors for the above reason. And the third is brute force
+#cat %%{SOURCE10} %%{SOURCE11} %%{SOURCE12} %%{SOURCE13} %%{SOURCE14} %%{SOURCE15} %%{SOURCE16} %%{SOURCE17} %%{SOURCE18} %%{SOURCE19} %%{SOURCE20} %%{SOURCE21} %%{SOURCE22} %%{SOURCE23} %%{SOURCE24} %%{SOURCE25} > %%{_builddir}/%%{sourceroot}/%%{appimagename}
+#cat %%{_sourcedir}/%%{appimagename}-* > %%{_builddir}/%%{sourceroot}/%%{appimagename}
+cat ../SOURCES/%{appimagename}-* > %{_builddir}/%{sourceroot}/%{appimagename}
+%endif
+
+#Source1
+%setup -q -T -D -a 1 -n %{sourceroot}
+
+# For debugging purposes...
+%if %{isTestBuild}
+  %if %{sourceIsPrebuilt}
+    cd ..
+    tree -L 2 %{sourceroot}
+    ls -h %{sourceroot}/%{appimagename}
+    sha256sum %{sourceroot}/%{appimagename}
+    cd -
+  %else
+    cd .. ; tree -d -L 2 %{sourceroot} ; cd -
+  %endif
+%endif
+
+# PREP STAGE FOR BUILD FROM PRE-BUILT BINARY
+%if %{sourceIsPrebuilt}
+# NO-OP
+
+# PREP STAGE FOR BUILD FROM SOURCE
+%else
+# CENTOS / RHEL (EL8) -- special case pythong
+%if 0%{?rhel:1}
   %if 0%{?rhel} == 8
-    # In order to build the SQLite bits, a version of python must be addressable as
-    # python from the commandline. Python3 on EL8 is addessed as /usr/bin/python3.
-    # Python got  bit crazy, but is settling down with the end of python2 as of
-    # January 2020. Read more about python and how it is packaged here:
+    # In order to build the SQLite bits, a version of python must be
+    # addressable as python from the commandline. Python3 on EL8 is
+    # addessed as /usr/bin/python3.  Python got  bit crazy, but is
+    # settling down with the end of python2 as of January 2020. Read
+    # more about python and how it is packaged here:
     # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
     mkdir -p $HOME/.local/bin
     if [ ! -e "$HOME/.local/bin/python" ] ;  then
@@ -287,40 +418,57 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
   %endif
 %endif
 
-# Unarchived source tree structure (extracted in {_builddir})
-#   sourceroot             joplin-1.0
-#    \_{sourcetree}          \_joplin-1.0.174
-#    \_{sourcetree_contrib}  \_joplin-1.0-contrib
+npm --version
 
-# Extract into {_builddir}/{sourceroot}/
-# Source0 and Source1
-%setup -q -T -D -a 0 -n %{sourceroot}
-%setup -q -T -D -a 1 -n %{sourceroot}
-
-
-# For debugging purposes...
-%if ! %{targetIsProduction}
-  cd .. ; tree -d -L 2 %{sourceroot} ; cd -
+# upgrade? from npm 6 to 7+ because upstream uses
+# "lockfileVersion": 2 in all package-lock.json files theoretically,
+# lockfileVersion 2 is backwards compatable:
+# https://docs.npmjs.com/cli/v7/configuring-npm/package-lock-json
+%if %{upgradeNPM}
+#npm install npm@7.19.1
+npm install npm@latest
+npm install node-gyp@latest
+node_modules/.bin/npm --version
 %endif
+
+# [END] PREP STAGE FOR BUILD FROM SOURCE
+%endif
+
+
 
 
 %build
 # Build section starts us in directory {_builddir}/{sourceroot}
 echo "======== build stage ========"
 
+# BUILD FROM PRE-BUILT BINARY
+%if %{sourceIsPrebuilt}
+# STUB -- may be a no-op
+
+# BUILD FROM SOURCE
+%else
 cd %{sourcetree}
 
 # FEDORA
 %if 0%{?fedora:1}
 %if 0%{?fedora} >= 29
 %if 0%{?fedora} >= 33
+  echo "\
+# forcing python2 here by the Joplin RPM specfile build script
+# this can be removed after build is complete
+PYTHON=%{python2}" >> ~/.bashrc
+  source ~/.bashrc
 %endif
 # Fedora 28 or older
 %else
   # NOTE: This is here for posterity.
-  #       We are no longer building for Fedora 28 and older and I don't think
-  #       that yarn is used anymore.
-  npm install yarn
+  #       We are no longer building for Fedora 28 and older and I
+  #       don't think that yarn is used anymore.
+  %if %{upgradeNPM}
+    ../node_modules/.bin/npm install yarn
+  %else
+    npm install yarn
+  %endif
   _pwd=$(pwd)
   echo "======== Mapping yarn so it can be found in the path"
   mkdir -p $HOME/.local/bin
@@ -336,9 +484,9 @@ cd %{sourcetree}
 # CENTOS / RHEL (EL7 and EL8)
 %if 0%{?rhel:1}
 %if 0%{?rhel} >= 8
-#  npm update
-#  npm install node-gyp
-#  npm install node-pre-gyp
+#  ../node_modules/.bin/npm update
+#  ../node_modules/.bin/npm install node-gyp
+#  ../node_modules/.bin/npm install node-pre-gyp
 %endif
 %endif
 
@@ -348,7 +496,11 @@ echo "
 "
 
 ### BUILD IT!
-npm install
+%if %{upgradeNPM}
+  PYTHON=%{python2} ../node_modules/.bin/npm install
+%else
+  npm install
+%endif
 
 # CLI - can't get to work yet, so pulling from the RPM for now
 #cd packages/app-cli
@@ -356,7 +508,11 @@ npm install
 #cd ../..
 # DESKTOP
 cd packages/app-desktop
-npm run dist
+%if %{upgradeNPM}
+  PYTHON=%{python2} ../../../node_modules/.bin/npm run dist
+%else
+  npm run dist
+%endif
 cd ../..
 
 # experimenting. trying to get rid of all those error messages in the
@@ -372,9 +528,9 @@ cd ../..
 %if 0%{?nativebuild:1}
 cd packages/app-desktop/dist/linux-unpacked/resources
 # 7zip-bin and wrong architectures
-# For whatever reason, we end up with several 7zip-bin architectures. They
-# trigger incorrect and unmeetable dependencies. So we strip out the irrelevant
-# ones.
+# For whatever reason, we end up with several 7zip-bin architectures.
+# They trigger incorrect and unmeetable dependencies. So we strip out
+# the irrelevant ones.
 # Question: Do we even need 7zip-bin at all? Probably(?), so leaving it in.
 %ifarch x86_64 amd64 aarch64
 rm -rf $(find app*/node_modules/7zip-bin-linux/* -type d | grep -v x64)
@@ -383,6 +539,19 @@ rm -rf $(find app*/node_modules/7zip-bin-linux/* -type d | grep -v ia32)
 %endif
 cd ../../../../..
 %endif
+
+# [END] BUILD FROM SOURCE
+%endif
+
+
+
+
+%check
+%if ! %{sourceIsPrebuilt}
+  %{__nodejs} -e 'require("./")'
+%endif
+
+
 
 
 %install
@@ -413,6 +582,7 @@ install -d -m755 -p %{buildroot}%{_bindir}
 install -d %{buildroot}%{installtree}/desktop
 # CLI: can't get to work at the moment, so pulling from the RPM.
 #install -d %%{buildroot}%%{installtree}/cli
+
 install -d %{buildroot}%{_datadir}/applications
 install -d %{buildroot}%{_metainfodir}
 
@@ -437,11 +607,16 @@ StartupNotify=true
 " > %{buildroot}%{_datadir}/applications/%{appid}.desktop
 
 # icons
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/hicolor-64-%{appid}.png %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{appid}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/128x128.png               %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{appid}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/256x256.png               %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{appid}.png
-install -D -m644 -p %{sourcetree}/Assets/LinuxIcons/512x512.png               %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
-install -D -m644 -p %{sourcetree}/Assets/JoplinIcon.svg                      %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/hicolor-64-%{appid}.png  %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/from-upstream/128x128.png               %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/from-upstream/256x256.png               %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/from-upstream/512x512.png               %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/from-upstream/JoplinIcon.svg            %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
+
+#install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/128x128.png               %%{buildroot}%%{_datadir}/icons/hicolor/128x128/apps/%%{appid}.png
+#install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/256x256.png               %%{buildroot}%%{_datadir}/icons/hicolor/256x256/apps/%%{appid}.png
+#install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/512x512.png               %%{buildroot}%%{_datadir}/icons/hicolor/512x512/apps/%%{appid}.png
+#install -D -m644 -p %%{sourcetree}/Assets/JoplinIcon.svg                      %%{buildroot}%%{_datadir}/icons/hicolor/scalable/apps/%%{appid}.svg
 
 # icons
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-64-%{appid}.png          %{buildroot}%{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
@@ -454,6 +629,12 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{appid}.desktop
 install -D -m644 -p %{sourcetree_contrib}/%{appid}.metainfo.xml %{buildroot}%{_metainfodir}/%{appid}.metainfo.xml
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 
+# INSTALL BUILD FROM PRE-BUILT BINARY
+%if %{sourceIsPrebuilt}
+mv %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
+
+# INSTALL BUILD FROM SOURCE
+%else
 # Native build
 %if 0%{?nativebuild:1}
 # CLI: can't get to work at the moment, so pulling from the RPM. TODO: tackle another day
@@ -464,20 +645,30 @@ cp -a %{sourcetree}/packages/app-desktop/dist/linux-unpacked/* %{buildroot}%{ins
 mv %{buildroot}%{installtree}/desktop/\@joplinapp-desktop %{buildroot}%{installtree}/desktop/%{name_desktop}
 ln -s %{installtree}/desktop/%{name_desktop} %{buildroot}%{_bindir}/%{name_desktop}
 
-# Alternative build: package the AppImage build instead
+# Alternative build: package the AppImage build instead (that was built from "source")
 %else
 # This is SUPER ugly... It's an alternative if we want to use it.
-install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/'Joplin-'%{version}'.AppImage' %{buildroot}%{_bindir}/%{name_desktop}
+install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/%{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
 %endif
+
+# [END] INSTALL BUILD FROM SOURCE
+%endif
+
+
 
 
 %files
 %defattr(-,root,root,-)
-%license %{sourcetree}/LICENSE
-%doc %{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSE.electron.txt
-%doc %{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSES.chromium.html
+
+%license %{sourcetree_contrib}/from-upstream/LICENSE
+%doc     %{sourcetree_contrib}/from-upstream/LICENSE.electron.txt
+%doc     %{sourcetree_contrib}/from-upstream/LICENSES.chromium.html
+#%%license %%{sourcetree}/LICENSE
+#%%doc %%{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSE.electron.txt
+#%%doc %%{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSES.chromium.html
+
 # DESKTOP
-%{_bindir}/%{name_desktop}
+%attr (755, root, root) %{_bindir}/%{name_desktop}
 # CLI - not working at the moment, so ... pulled.
 #%%{_bindir}/%%{name_cli}
 # desktop environment metadata
@@ -495,9 +686,14 @@ install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/'Joplin-'%{version}'
  %{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
 %{_datadir}/icons/HighContrast/scalable/apps/%{appid}.svg
 
-%if 0%{?nativebuild:1}
-%{installtree}
+# FILES SPECIFIC TO BUILT FROM SOURCE
+%if %{sourceIsPrebuilt}
+  %if 0%{?nativebuild:1}
+    %{installtree}
+  %endif
 %endif
+
+
 
 
 %post
@@ -506,13 +702,40 @@ umask 007
 /usr/bin/update-desktop-database &> /dev/null || :
 
 
+
+
 %postun
 umask 007
 #/sbin/ldconfig > /dev/null 2>&1
 /usr/bin/update-desktop-database &> /dev/null || :
 
 
+
+
 %changelog
+* Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-1.taw
+* Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-0.1.testing.taw
+  - THIS BUILD IS A TOTAL MESS. READ ON.
+  - https://github.com/laurent22/joplin/releases/tag/v2.3.5
+  - experimenting with updating the run-time npm to version 7+ in support of  
+    upstream lockfileVersion in package-lock.json files. But, in theory, the  
+    lockfileVersion of 2 means it is still backwards compatible.
+  - IMPORTANT -- COULD NOT GET joplin 2.3.3+ to build. See issue:  
+    https://github.com/taw00/joplin-rpm/issues/8
+  - Attempting build using pre-built binaries, but leaving a TON of experimental  
+    specfile kruft in until I figure out what is going on.
+  - Copied upstream icons and license files to contrib archive so if we build  
+    from pre-built binaries we don't have to include the upstream source tarball  
+    in the source RPM.
+
+* Tue Aug 17 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.3-0.1.testing.taw
+  - https://github.com/laurent22/joplin/releases/tag/v2.3.3
+  - in specfile: flipped the logic and changed the variable:
+    s/targetIsProduction/isTestBuild
+  - experimenting with updating the run-time npm to version 7+ in support of  
+    upstream lockfileVersion in package-lock.json files. But, in theory, the  
+    lockfileVersion of 2 means it is still backwards compatible.
+
 * Sun Aug 15 2021 Todd Warner <t0dd_at_protonmail.com> 2.2.7-1.1.testing.taw
   - The summary is too expressive for Fedora Packaging Guidelines. Reduced.
 

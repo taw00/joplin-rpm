@@ -25,12 +25,21 @@ network-accessible file system.
 **I can be messaged** at <a href="mailto:t0dd@protonmail.com">t0dd@protonmail.com</a> or as user t0dd in the [Joplin Community Forums](https://discourse.joplinapp.org/).
 
 ### OS Notes
-* ***Fedora users:*** _Last build for Fedora 30 was Joplin v1.0.224. Upgrade to a newer version of Fedora._
-* ***RHEL and CentOS users:***
-  - _Last build for EL7 was Joplin v1.0.216. Building for RHEL/CentOS (any version) has been challenging. How long I can keep it up, I don't know. Migrate to a desktop OS please: i.e., Fedora._
-  - _EL8 builds are failing for Joplin v1.4.\*. I am trying to resolve this issue, but it is not looking promising._
-* ***OpenSUSE users:*** _Building for SUSE (any version) has been challenging, for Leap versions in particular. How long I can keep it up is anyone's guess. Just fair warning. Keep up with current releases of OpenSUSE on your desktop._
 
+As of version 2.3.3, the normal build process is breaking due to some bizarre
+dependency calling python2 in the build tree. Thus far, after many many hours
+attempting to work around the issue, I have not been successful in mitigating
+the problem. For the foreseeable future, I will be packaging upstream AppImage
+binaries until this is resolved. 
+
+<!--
+I had to make upstream nodejs available to CentOS, EL7
+and EL8, and Fedora (all RedHat/IBM products) to enable binary builds. This is
+insecure and wrong, but it is what I have been forced to do. The REPO URLs are
+as follows:
+- CentOS and EL: https://rpm.nodesource.com/pub_16.x/el/$releasever/$basearch
+- Fedora: https://rpm.nodesource.com/pub_16.x/el/$releasever/$basearch
+-->
 
 ## TL;DR - I want to install Joplin!
 
