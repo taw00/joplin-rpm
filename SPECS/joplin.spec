@@ -53,9 +53,9 @@ Summary: Notebook Application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if %{isTestBuild}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -139,24 +139,7 @@ ExclusiveArch: x86_64
 %if ! %{sourceIsPrebuilt}
 Source0: https://github.com/laurent22/joplin/archive/v%{version}/%{sourcetree}.tar.gz
 %else
-# Binary source is big, so we split it up 16 ways (less than 10M per chunk):
-#   split -n 16 Joplin-[version].AppImage Joplin-[version].AppImage-
-Source10: %{appimagename}-aa
-Source11: %{appimagename}-ab
-Source12: %{appimagename}-ac
-Source13: %{appimagename}-ad
-Source14: %{appimagename}-ae
-Source15: %{appimagename}-af
-Source16: %{appimagename}-ag
-Source17: %{appimagename}-ah
-Source18: %{appimagename}-ai
-Source19: %{appimagename}-aj
-Source20: %{appimagename}-ak
-Source21: %{appimagename}-al
-Source22: %{appimagename}-am
-Source23: %{appimagename}-an
-Source24: %{appimagename}-ao
-Source25: %{appimagename}-ap
+Source10: https://github.com/laurent22/joplin/releases/download/v%{version}/%{appimagename}
 %endif
 Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_contrib}.tar.gz
 
@@ -368,16 +351,7 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 %setup -q -T -D -a 0 -n %{sourceroot}
 
 %else
-#Source10 through Source25
-# Note, {_sourcedir} = {_builddir}/../SOURCES = /builddir/build/SOURCES
-#       rpmlint errors on use of {_sourcedir}
-# We need to stitch the binary blob together once again...
-#   cat {_sourcedir}/Joplin-[version].AppImage-* > {_builddir}/{sourceroot}/Joplin-[version].AppImage
-# There are three ways to do it. The first is pendantic, but ensures the
-# ordering. The second errors for the above reason. And the third is brute force
-#cat %%{SOURCE10} %%{SOURCE11} %%{SOURCE12} %%{SOURCE13} %%{SOURCE14} %%{SOURCE15} %%{SOURCE16} %%{SOURCE17} %%{SOURCE18} %%{SOURCE19} %%{SOURCE20} %%{SOURCE21} %%{SOURCE22} %%{SOURCE23} %%{SOURCE24} %%{SOURCE25} > %%{_builddir}/%%{sourceroot}/%%{appimagename}
-#cat %%{_sourcedir}/%%{appimagename}-* > %%{_builddir}/%%{sourceroot}/%%{appimagename}
-cat ../SOURCES/%{appimagename}-* > %{_builddir}/%{sourceroot}/%{appimagename}
+mv %{SOURCE10} %{_builddir}/%{sourceroot}/%{appimagename}
 %endif
 
 #Source1
@@ -713,8 +687,14 @@ umask 007
 
 
 %changelog
-* Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-1.taw
-* Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-0.1.testing.taw
+* Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-2.rp.taw
+* Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-1.1.testing.rp.taw
+  - Simplified how the binary blob is addressed. Instead of sharing it and  
+    storing it locally, just leave it upstream, just like the normal source  
+    archive.
+
+* Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-1.rp.taw
+* Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-0.1.testing.rp.taw
   - THIS BUILD IS A TOTAL MESS. READ ON.
   - https://github.com/laurent22/joplin/releases/tag/v2.3.5
   - experimenting with updating the run-time npm to version 7+ in support of  
