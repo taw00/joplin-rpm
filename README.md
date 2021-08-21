@@ -32,6 +32,8 @@ attempting to work around the issue, I have not been successful in mitigating
 the problem. For the foreseeable future, I will be packaging upstream AppImage
 binaries until this is resolved. 
 
+As of version 2.4.z, I will be moving builds away from EL8 proper and to CentOS Stream only.
+
 <!--
 I had to make upstream nodejs available to CentOS, EL7
 and EL8, and Fedora (all RedHat/IBM products) to enable binary builds. This is
