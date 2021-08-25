@@ -342,7 +342,6 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 #    \_{sourcetree}          \_joplin-2.3.5
 #    \_{sourcetree_contrib}  \_joplin-2.3-contrib
 #   ...or if prebuilt...
-#    \_{sourcetree}          \_joplin-2.3.5
 #    \_{appimagename}        \_Joplin-2.3.5.AppImage
 #    \_{sourcetree_contrib}  \_joplin-2.3-contrib
 
