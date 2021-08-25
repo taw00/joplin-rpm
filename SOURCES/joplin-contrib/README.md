@@ -1,4 +1,4 @@
-## Contributions to Upstream Joplin
+## Additions to Upstream Joplin
 
 This archive supplies additions to Joplin upstream and are used to flesh out
 the Joplin package build. Fedora and the linux desktop standards (LSB, etc) and the linux package standards require more than upstream provides. Namely,
