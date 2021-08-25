@@ -131,3 +131,26 @@ appropriately when necessary.
 ## Comments? Suggestions?
 Open an issue here, or send me a note via Keybase -- https://keybase.io/toddwarner
 
+---
+
+## The build process for those who are curious
+
+If minor update — e.g., 2.2.6 to 2.2.7
+
+TEST RELEASE
+
+1. Bump the release in `joplin.spec`, but mark it as a test build.
+2. Update the release log in contributed `org.joplinapp.joplin.metainfo.xml` file. Reference my contribs [here](SOURCES/joplin-contrib).
+3. Rebundle and commit the `joplin-2.2-contrib.tar.gz` to include that updated `.metainfo.xml` file.
+4. Upload `.spec` to COPR build system TEST repo, and press a button to build for CentOS, Fedora, and OpenSUSE.
+5. Resolve any failures.
+6. Test drive Joplin test build on my own machine and some select recruited testers.
+
+PRODUCTION RELEASE
+
+7. Passes testing, then I flip the testing bit to off in the `.spec` file.
+8. Upload `.spec` to COPR build system PRODUCTION repo and build to all those platforms (a reduced set though).
+9. Wait for any complaints from the community in case I broke something.
+
+For major releases, e.g., 2.2.7 to 2.3.3, I only add more testing and sometimes
+hold off spec file revamps for those releases.
