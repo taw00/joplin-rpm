@@ -48,14 +48,14 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 2.3
-%define verminor 5
+%define vermajor 2.4
+%define verminor 9
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -299,14 +299,11 @@ network-accessible file system.
 
 %prep
 # Prep section starts us in directory {_builddir}
-
 echo "======== prep stage ========"
 
 rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 
 # OPENSUSE
-# The prep section is the first place we can run shell commands.
-# Therefore, these checks are here...
 %if 0%{?suse_version:1}
   echo "======== OpenSUSE version: %{suse_version} %{sle_version}"
   echo "-------- Leap 15.1  will report as 1500 150100"
@@ -328,7 +325,7 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
   %endif
 %endif
 
-# CENTOS / RHEL (EL7 and EL8)
+# CENTOS / RHEL
 %if 0%{?rhel:1}
   echo "======== EL version: %{rhel}"
   %if 0%{?rhel} < 7
@@ -345,37 +342,19 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 #    \_{appimagename}        \_Joplin-2.3.5.AppImage
 #    \_{sourcetree_contrib}  \_joplin-2.3-contrib
 
-%if ! %{sourceIsPrebuilt}
-#Source0
-%setup -q -T -D -a 0 -n %{sourceroot}
-
-%else
-mv %{SOURCE10} %{_builddir}/%{sourceroot}/%{appimagename}
-%endif
-
-#Source1
-%setup -q -T -D -a 1 -n %{sourceroot}
-
-# For debugging purposes...
-%if %{isTestBuild}
-  %if %{sourceIsPrebuilt}
-    cd ..
-    tree -L 2 %{sourceroot}
-    ls -h %{sourceroot}/%{appimagename}
-    sha256sum %{sourceroot}/%{appimagename}
-    cd -
-  %else
-    cd .. ; tree -d -L 2 %{sourceroot} ; cd -
-  %endif
-%endif
-
 # PREP STAGE FOR BUILD FROM PRE-BUILT BINARY
 %if %{sourceIsPrebuilt}
-# NO-OP
+#Source10 (binary) and Source1 (contrib)
+mv %{SOURCE10} %{_builddir}/%{sourceroot}/%{appimagename}
+%setup -q -T -D -a 1 -n %{sourceroot}
 
 # PREP STAGE FOR BUILD FROM SOURCE
 %else
-# CENTOS / RHEL (EL8) -- special case pythong
+#Source0 (src) and Source1 (contrib)
+%setup -q -T -D -a 0 -n %{sourceroot}
+%setup -q -T -D -a 1 -n %{sourceroot}
+
+# CENTOS / RHEL (EL8) -- special case python
 %if 0%{?rhel:1}
   %if 0%{?rhel} == 8
     # In order to build the SQLite bits, a version of python must be
@@ -686,6 +665,11 @@ umask 007
 
 
 %changelog
+* Thu Sep 30 2021 Todd Warner <t0dd_at_protonmail.com> 2.4.9-1.rp.taw
+* Thu Sep 30 2021 Todd Warner <t0dd_at_protonmail.com> 2.4.9-0.1.testing.rp.taw
+  - https://github.com/laurent22/joplin/releases/tag/v2.4.9
+  - pre-built from binary again. I can't figure out what is going on with the build from source just yet.
+
 * Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-2.rp.taw
 * Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-1.1.testing.rp.taw
   - Simplified how the binary blob is addressed. Instead of sharing it and  
