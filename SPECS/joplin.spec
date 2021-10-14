@@ -49,7 +49,7 @@ Summary: Notebook Application
 
 # VERSION
 %define vermajor 2.4
-%define verminor 9
+%define verminor 12
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -665,6 +665,11 @@ umask 007
 
 
 %changelog
+* Thu Oct 14 2021 Todd Warner <t0dd_at_protonmail.com> 2.4.12-1.rp.taw
+* Thu Oct 14 2021 Todd Warner <t0dd_at_protonmail.com> 2.4.12-0.1.testing.rp.taw
+  - https://github.com/laurent22/joplin/releases/tag/v2.4.12
+  - pre-built from binary again. I can't figure out what is going on with the build from source just yet.
+
 * Thu Sep 30 2021 Todd Warner <t0dd_at_protonmail.com> 2.4.9-1.rp.taw
 * Thu Sep 30 2021 Todd Warner <t0dd_at_protonmail.com> 2.4.9-0.1.testing.rp.taw
   - https://github.com/laurent22/joplin/releases/tag/v2.4.9
