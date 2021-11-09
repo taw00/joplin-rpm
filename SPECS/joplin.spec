@@ -22,8 +22,8 @@
 %{?nodejs_default_filter}
 %global __python %{python2}
 
-%define isTestBuild 1
-%define sourceIsPrebuilt 0
+%define isTestBuild 0
+%define sourceIsPrebuilt 1
 
 %define upgradeNPM 1
 %define useNodeSourceReposEL 0
@@ -49,7 +49,7 @@ Summary: Notebook Application
 
 # VERSION
 %define vermajor 2.5
-%define verminor 10
+%define verminor 12
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -665,19 +665,25 @@ umask 007
 
 
 %changelog
-* Mon Nov 1 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.10-1.taw
-* Mon Nov 1 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.10-0.1.testing.taw
+* Mon Nov 12 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.12-1.rp.taw
+* Mon Nov 12 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.12-0.1.testing.rp.taw
+  - https://github.com/laurent22/joplin/releases/tag/v2.5.12
+  - pre-built from binary again. I can't figure out what is going on with the build-from-source process just yet.
+
+* Mon Nov 1 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.10-1.rp.taw
+* Mon Nov 1 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.10-0.1.testing.rp.taw
   - https://github.com/laurent22/joplin/releases/tag/v2.5.10
+  - pre-built from binary again. I can't figure out what is going on with the build-from-source process just yet.
 
 * Thu Oct 14 2021 Todd Warner <t0dd_at_protonmail.com> 2.4.12-1.rp.taw
 * Thu Oct 14 2021 Todd Warner <t0dd_at_protonmail.com> 2.4.12-0.1.testing.rp.taw
   - https://github.com/laurent22/joplin/releases/tag/v2.4.12
-  - pre-built from binary again. I can't figure out what is going on with the build from source just yet.
+  - pre-built from binary again. I can't figure out what is going on with the build-from-source process just yet.
 
 * Thu Sep 30 2021 Todd Warner <t0dd_at_protonmail.com> 2.4.9-1.rp.taw
 * Thu Sep 30 2021 Todd Warner <t0dd_at_protonmail.com> 2.4.9-0.1.testing.rp.taw
   - https://github.com/laurent22/joplin/releases/tag/v2.4.9
-  - pre-built from binary again. I can't figure out what is going on with the build from source just yet.
+  - pre-built from binary again. I can't figure out what is going on with the build-from-source process just yet.
 
 * Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-2.rp.taw
 * Fri Aug 20 2021 Todd Warner <t0dd_at_protonmail.com> 2.3.5-1.1.testing.rp.taw
