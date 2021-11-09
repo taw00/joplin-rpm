@@ -665,8 +665,8 @@ umask 007
 
 
 %changelog
-* Mon Nov 12 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.12-1.rp.taw
-* Mon Nov 12 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.12-0.1.testing.rp.taw
+* Tue Nov 9 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.12-1.rp.taw
+* Tue Nov 9 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.12-0.1.testing.rp.taw
   - https://github.com/laurent22/joplin/releases/tag/v2.5.12
   - pre-built from binary again. I can't figure out what is going on with the build-from-source process just yet.
 
