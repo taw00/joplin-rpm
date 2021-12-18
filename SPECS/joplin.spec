@@ -22,7 +22,7 @@
 %{?nodejs_default_filter}
 %global __python %{python2}
 
-%define isTestBuild 0
+%define isTestBuild 1
 %define sourceIsPrebuilt 1
 
 %define upgradeNPM 1
@@ -48,8 +48,8 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 2.5
-%define verminor 12
+%define vermajor 2.6
+%define verminor 9
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -665,6 +665,10 @@ umask 007
 
 
 %changelog
+* Sat Dec 18 2021 Todd Warner <t0dd_at_protonmail.com> 2.6.9-1.rp.taw
+* Sat Dec 18 2021 Todd Warner <t0dd_at_protonmail.com> 2.6.9-0.1.testing.rp.taw
+  - https://github.com/laurent22/joplin/releases/tag/v2.6.0
+
 * Tue Nov 9 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.12-1.rp.taw
 * Tue Nov 9 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.12-0.1.testing.rp.taw
   - https://github.com/laurent22/joplin/releases/tag/v2.5.12
