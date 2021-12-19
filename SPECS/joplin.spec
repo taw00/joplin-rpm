@@ -49,7 +49,7 @@ Summary: Notebook Application
 
 # VERSION
 %define vermajor 2.6
-%define verminor 9
+%define verminor 10
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -665,9 +665,13 @@ umask 007
 
 
 %changelog
+* Sun Dec 19 2021 Todd Warner <t0dd_at_protonmail.com> 2.6.10-1.rp.taw
+* Sun Dec 19 2021 Todd Warner <t0dd_at_protonmail.com> 2.6.10-0.1.testing.rp.taw
+  - https://github.com/laurent22/joplin/releases/tag/v2.6.10
+
 * Sat Dec 18 2021 Todd Warner <t0dd_at_protonmail.com> 2.6.9-1.rp.taw
 * Sat Dec 18 2021 Todd Warner <t0dd_at_protonmail.com> 2.6.9-0.1.testing.rp.taw
-  - https://github.com/laurent22/joplin/releases/tag/v2.6.0
+  - https://github.com/laurent22/joplin/releases/tag/v2.6.9
 
 * Tue Nov 9 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.12-1.rp.taw
 * Tue Nov 9 2021 Todd Warner <t0dd_at_protonmail.com> 2.5.12-0.1.testing.rp.taw
