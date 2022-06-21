@@ -48,8 +48,8 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 2.7
-%define verminor 15
+%define vermajor 2.8
+%define verminor 8
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -665,6 +665,16 @@ umask 007
 
 
 %changelog
+* Tue Jun 21 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.rp.taw
+* Tue Jun 21 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-0.1.testing.rp.taw
+  - Still building using .appdata image. I am tired of fighting nodejs.
+  - https://github.com/laurent22/joplin/releases/tag/v2.8.8
+  - https://github.com/laurent22/joplin/releases/tag/v2.8.7
+  - https://github.com/laurent22/joplin/releases/tag/v2.8.6
+  - https://github.com/laurent22/joplin/releases/tag/v2.8.5
+  - https://github.com/laurent22/joplin/releases/tag/v2.8.4
+  - https://github.com/laurent22/joplin/releases/tag/v2.8.2
+
 * Thu Mar 17 2022 Todd Warner <t0dd_at_protonmail.com> 2.7.15-1.rp.taw
 * Thu Mar 17 2022 Todd Warner <t0dd_at_protonmail.com> 2.7.15-0.1.testing.rp.taw
   - https://github.com/laurent22/joplin/releases/tag/v2.7.15
