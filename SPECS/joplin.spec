@@ -20,10 +20,14 @@
 # Filters out unneccessary provides
 # See also: https://docs.fedoraproject.org/en-US/packaging-guidelines/Node.js/
 %{?nodejs_default_filter}
-%global __python %{python2}
+
+# this can make binaries unusable (it did with the Joplin appimage). Turning strip off (true?).
+# https://www.linuxquestions.org/questions/red-hat-31/prevent-strip-when-building-an-rpm-package-591099/
+%global __strip /bin/true
 
 %define isTestBuild 1
-%define sourceIsPrebuilt 1
+%define isRepackageBuild 1
+%define buildTerminalApp 1
 
 %define upgradeNPM 1
 %define useNodeSourceReposEL 0
@@ -37,7 +41,7 @@ Summary: Notebook Application
 
 %define appid org.joplinapp.joplin
 
-%define name_cli joplin-cli
+%define name_terminal joplin-terminal
 %define name_desktop joplin-desktop
 
 %define nativebuild 1
@@ -53,9 +57,9 @@ Summary: Notebook Application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if %{isTestBuild}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -69,18 +73,18 @@ Version: %{vermajor}.%{verminor}
 %define snapinfo highlyexperimental
 %if ! %{isTestBuild}
   %undefine snapinfo
-  %if %{sourceIsPrebuilt}
+  %if %{isRepackageBuild}
     %define snapinfo rp
   %endif
 %else
   %define snapinfo testing
-  %if %{sourceIsPrebuilt}
+  %if %{isRepackageBuild}
     %define snapinfo testing.rp
   %endif
 %endif
 %if 0%{?buildQualifier:1}
   %define snapinfo %{buildQualifier}
-  %if %{sourceIsPrebuilt}
+  %if %{isRepackageBuild}
     %define snapinfo %{buildQualifier}.rp
   %endif
 %endif
@@ -133,10 +137,10 @@ ExclusiveArch: x86_64
 %define sourcetree %{name}-%{version}
 %define sourcetree_contrib %{name}-%{vermajor}-contrib
 %define appimagename %{name2}-%{version}.AppImage
-# /usr/share/joplin
+# /usr/share/org.joplinapp.joplin
 %define installtree %{_datadir}/%{appid}
 
-%if ! %{sourceIsPrebuilt}
+%if ! %{isRepackageBuild}
 Source0: https://github.com/laurent22/joplin/archive/v%{version}/%{sourcetree}.tar.gz
 %else
 Source10: https://github.com/laurent22/joplin/releases/download/v%{version}/%{appimagename}
@@ -147,16 +151,21 @@ Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_con
 Requires: libcanberra-gtk2 libnotify
 Requires: libnotify
 
+%if ! %{isRepackageBuild} || %{buildTerminalApp}
+# Forcing default python version for builds here because something somewhere uses python2?
+%global __python %{python2}
+%endif
+
 # Exclusions from provides and requires calculations and from the results
-#%%global __provides_exclude_from ^(.%%{installtree}/.*\\.so.*|%%{installtree}/cli/node_modules/.*|%%{installtree}/cli/build/.*|%%{installtree}/cli/tests/.*|%%{installtree}/desktop/resources/.*)$
-#%%global __requires_exclude_from ^(.%%{installtree}/.*\\.so.*|%%{installtree}/cli/node_modules/.*|%%{installtree}/cli/build/.*|%%{installtree}/cli/tests/.*|%%{installtree}/desktop/resources/.*)$
+#%%global __provides_exclude_from ^(.%%{installtree}/.*\\.so.*|%%{installtree}/terminal/node_modules/.*|%%{installtree}/terminal/build/.*|%%{installtree}/terminal/tests/.*|%%{installtree}/desktop/resources/.*)$
+#%%global __requires_exclude_from ^(.%%{installtree}/.*\\.so.*|%%{installtree}/terminal/node_modules/.*|%%{installtree}/terminal/build/.*|%%{installtree}/terminal/tests/.*|%%{installtree}/desktop/resources/.*)$
 %global __provides_exclude_from ^(.%{installtree}/.*\\.so.*|%{installtree}/desktop/resources/node_modules/.*|%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
 %global __requires_exclude_from ^(.%{installtree}/.*\\.so.*|%{installtree}/desktop/resources/node_modules/.*|%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
 %global __provides_exclude ^(lib.*\\.so.*)$
 %global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(/usr/bin.*/coffee))$
 
 # BUILDREQUIRES IF PRE-BUILT BINARY
-%if %{sourceIsPrebuilt}
+%if %{isRepackageBuild}
 BuildRequires: desktop-file-utils
 %if 0%{?suse_version:1}
 BuildRequires: appstream-glib
@@ -266,6 +275,12 @@ BuildRequires: nodejs-devel >= 16
 # [ENDIF] BUILDREQUIRES IF BUILT FROM SOURCE
 %endif
 
+# IF BUILDING TERMINAL APP
+# Tested on Fedora 35+ only so far
+%if %{buildTerminalApp}
+BuildRequires: npm nodejs
+%endif
+
 #t0dd: I often add these extra packages to enable mock environment introspection
 %if %{isTestBuild}
 #BuildRequires: tree vim-enhanced less dnf iputils findutils
@@ -310,8 +325,8 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
   echo "-------- Leap 15.2  will report as 1500 150200"
   echo "-------- Leap 15.3  will report as 1500 150300"
   echo "-------- Tumbleweed will report as 1550 undefined"
-  %if 0%{?sle_version} && 0%{?sle_version} < 150100
-    echo "Builds for OpenSUSE Leap older than 15.1 are not supported."
+  %if 0%{?sle_version} && 0%{?sle_version} < 150300
+    echo "Builds for OpenSUSE Leap older than 15.3 are not supported."
     exit 1
   %endif
 %endif
@@ -319,8 +334,8 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 # FEDORA
 %if 0%{?fedora:1}
   echo "======== Fedora version: %{fedora}"
-  %if 0%{?fedora} <= 32
-    echo "Builds for Fedora 32 and older are no longer supported."
+  %if 0%{?fedora} < 35
+    echo "Builds for Fedora older than v35 are no longer supported."
     exit 1
   %endif
 %endif
@@ -328,8 +343,8 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 # CENTOS / RHEL
 %if 0%{?rhel:1}
   echo "======== EL version: %{rhel}"
-  %if 0%{?rhel} < 7
-    echo "Builds for EL 6 and older are not supported."
+  %if 0%{?rhel} < 8
+    echo "Builds for EL older than v8 are not supported."
     exit 1
   %endif
 %endif
@@ -343,9 +358,10 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 #    \_{sourcetree_contrib}  \_joplin-2.3-contrib
 
 # PREP STAGE FOR BUILD FROM PRE-BUILT BINARY
-%if %{sourceIsPrebuilt}
-#Source10 (binary) and Source1 (contrib)
+%if %{isRepackageBuild}
+#Source10 (binary)
 mv %{SOURCE10} %{_builddir}/%{sourceroot}/%{appimagename}
+#Source1 (contrib)
 %setup -q -T -D -a 1 -n %{sourceroot}
 
 # PREP STAGE FOR BUILD FROM SOURCE
@@ -388,13 +404,12 @@ node_modules/.bin/npm --version
 
 
 
-
 %build
 # Build section starts us in directory {_builddir}/{sourceroot}
 echo "======== build stage ========"
 
 # BUILD FROM PRE-BUILT BINARY
-%if %{sourceIsPrebuilt}
+%if %{isRepackageBuild}
 # STUB -- may be a no-op
 
 # BUILD FROM SOURCE
@@ -454,10 +469,6 @@ echo "
   npm install
 %endif
 
-# CLI - can't get to work yet, so pulling from the RPM for now
-#cd packages/app-cli
-#npm run build
-#cd ../..
 # DESKTOP
 cd packages/app-desktop
 %if %{upgradeNPM}
@@ -495,11 +506,21 @@ cd ../../../../..
 # [END] BUILD FROM SOURCE
 %endif
 
+# BUILD TERMINAL APP
+# Tested on Fedora 35+ only so far
+%if %{buildTerminalApp}
+  echo "Building Joplin Terminal App in %{_builddir}/%{sourceroot}/terminal/"
+  npm install npm@latest
+  #npm install node-gyp@latest
+  node_modules/.bin/npm --version
+  NPM_CONFIG_PREFIX=./terminal node_modules/.bin/npm install -g joplin
+%endif
 
 
 
 %check
-%if ! %{sourceIsPrebuilt}
+#%%if ! %%{isRepackageBuild} || %%{buildTerminalApp}
+%if ! %{isRepackageBuild}
   %{__nodejs} -e 'require("./")'
 %endif
 
@@ -532,8 +553,7 @@ cd ../../../../..
 #install -d %%{buildroot}%%{_libdir}/%%{appid}
 install -d -m755 -p %{buildroot}%{_bindir}
 install -d %{buildroot}%{installtree}/desktop
-# CLI: can't get to work at the moment, so pulling from the RPM.
-#install -d %%{buildroot}%%{installtree}/cli
+#install -d %%{buildroot}%%{installtree}/terminal
 
 install -d %{buildroot}%{_datadir}/applications
 install -d %{buildroot}%{_metainfodir}
@@ -582,19 +602,24 @@ install -D -m644 -p %{sourcetree_contrib}/%{appid}.metainfo.xml %{buildroot}%{_m
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 
 # INSTALL BUILD FROM PRE-BUILT BINARY
-%if %{sourceIsPrebuilt}
-mv %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
+%if %{isRepackageBuild}
+# appimages can be large ... mv'ing is more efficient than installing
+echo "#########################################################################"
+ls -lh %{appimagename}
+sha256sum %{appimagename}
+mv -v %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
+chmod 755 %{buildroot}%{_bindir}/%{name_desktop}
+ls -lh %{buildroot}%{_bindir}/%{name_desktop}
+sha256sum %{buildroot}%{_bindir}/%{name_desktop}
+echo "#########################################################################"
 
 # INSTALL BUILD FROM SOURCE
 %else
 # Native build
 %if 0%{?nativebuild:1}
-# CLI: can't get to work at the moment, so pulling from the RPM. TODO: tackle another day
-#cp -a %%{sourcetree}/packages/app-cli/build/* %%{buildroot}%%{installtree}/cli
-#ln -s %%{installtree}/cli/main.js %%{buildroot}%%{_bindir}/%%{name_cli}
-
 cp -a %{sourcetree}/packages/app-desktop/dist/linux-unpacked/* %{buildroot}%{installtree}/desktop
 mv %{buildroot}%{installtree}/desktop/\@joplinapp-desktop %{buildroot}%{installtree}/desktop/%{name_desktop}
+chmod 755 %{buildroot}%{installtree}/desktop/%{name_desktop}
 ln -s %{installtree}/desktop/%{name_desktop} %{buildroot}%{_bindir}/%{name_desktop}
 
 # Alternative build: package the AppImage build instead (that was built from "source")
@@ -604,6 +629,14 @@ install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/%{appimagename} %{bu
 %endif
 
 # [END] INSTALL BUILD FROM SOURCE
+%endif
+
+# INSTALL JOPLIN TERMINAL
+# Tested on Fedora 35+ only so far
+%if %{buildTerminalApp}
+  mv %{_builddir}/%{sourceroot}/terminal %{buildroot}%{installtree}/
+  chmod 755 %{buildroot}%{installtree}/terminal/bin/joplin
+  ln -s %{installtree}/terminal/bin/joplin %{buildroot}%{_bindir}/%{name_terminal}
 %endif
 
 
@@ -620,9 +653,18 @@ install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/%{appimagename} %{bu
 #%%doc %%{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSES.chromium.html
 
 # DESKTOP
+%if %{isRepackageBuild}
 %attr (755, root, root) %{_bindir}/%{name_desktop}
-# CLI - not working at the moment, so ... pulled.
-#%%{_bindir}/%%{name_cli}
+%{installtree}
+%else
+%if 0%{?nativebuild:1}
+%attr (755, root, root) %{installtree}/desktop/%{name_desktop}
+%{installtree}
+%else
+%attr (755, root, root) %{_bindir}/%{name_desktop}
+%endif
+%endif
+
 # desktop environment metadata
 %{_datadir}/applications/%{appid}.desktop
 %{_metainfodir}/%{appid}.metainfo.xml
@@ -638,13 +680,12 @@ install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/%{appimagename} %{bu
  %{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
 %{_datadir}/icons/HighContrast/scalable/apps/%{appid}.svg
 
-# FILES SPECIFIC TO BUILT FROM SOURCE
-%if %{sourceIsPrebuilt}
-  %if 0%{?nativebuild:1}
-    %{installtree}
-  %endif
+# TERMINAL
+%if %{buildTerminalApp}
+%attr (755, root, root) %{installtree}/terminal/bin/joplin
+%{_bindir}/%{name_terminal}
+%{installtree}
 %endif
-
 
 
 
@@ -665,6 +706,13 @@ umask 007
 
 
 %changelog
+* Mon Aug 29 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.rp.taw
+* Mon Aug 29 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.1.testing.rp.taw
+  - Joplin Terminal app added
+  - tightened up some of the restrictions on builds
+  - fixed some terminal build strings
+  - fixed a weird (and rarely used) logic error in the files section
+
 * Tue Jun 21 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.rp.taw
 * Tue Jun 21 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-0.1.testing.rp.taw
   - Still building using .appdata image. I am tired of fighting nodejs.

@@ -229,6 +229,10 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
     echo "Builds for EL older than v8 are not supported."
     exit 1
   %endif
+  %if 0%{?rhel} < 9
+    echo "Terminal builds for EL older than v9 are not supported."
+     %define buildTerminalApp 0
+  %endif
 %endif
 
 # Unarchived source tree structure (extracted in {_builddir})
