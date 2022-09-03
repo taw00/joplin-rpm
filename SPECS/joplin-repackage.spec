@@ -431,18 +431,15 @@ umask 007
 
 
 %changelog
-* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-4.rp.taw
-* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.1.testing.rp.taw
-  - specfile cleanup
-
-* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.rp.taw
-* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.3.testing.rp.taw
+* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.rp.taw
+* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.3.testing.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.2.testing.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.1.testing.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.1.testing.rp.taw
   - repackage-only spec
   - trimmed down the package dependencies.
+  - specfile cleanup
 
 * Mon Aug 29 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.rp.taw
 * Mon Aug 29 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.1.testing.rp.taw

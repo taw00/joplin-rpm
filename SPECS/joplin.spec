@@ -57,9 +57,9 @@ Summary: Notebook Application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 3
+%define _pkgrel 4
 %if %{isTestBuild}
-  %define _pkgrel 2.3
+  %define _pkgrel 3.1
 %endif
 
 # MINORBUMP
@@ -474,9 +474,9 @@ echo "
 
 ### FINALLY, BUILD IT!
 %if %{upgradeNPM}
-  PYTHON=%{python2} ../node_modules/.bin/npm install
+  PYTHON=%{python2} ../node_modules/.bin/npm install --legacy-peer-deps
 %else
-  npm install
+  npm install --legacy-peer-deps
 %endif
 
 cd packages/app-desktop
@@ -709,17 +709,18 @@ umask 007
 
 
 %changelog
-* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-4.rp.taw
-* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.1.testing.rp.taw
-  - specfile cleanup
+* Sat Sep 3 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.1.testing.taw
+  - had to force --legacy-peer-deps with npm installs
+  - native builds still unsuccessful
 
-* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.rp.taw
-* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.3.testing.rp.taw
+* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.rp.taw
+* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.3.testing.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.2.testing.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.1.testing.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.1.testing.rp.taw
   - trimmed down the package dependencies.
+  - specfile cleanup
 
 * Mon Aug 29 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.rp.taw
 * Mon Aug 29 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.1.testing.rp.taw
