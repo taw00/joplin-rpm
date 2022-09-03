@@ -4,7 +4,7 @@
 # Joplin - A secure notebook application.
 #          End-to-end encrypted markdown. Syncable between your devices.
 #
-# The RPM builds...
+# Location of the RPM spec and builds...
 # https://github/taw00/joplin-rpm
 # https://copr.fedorainfracloud.org/coprs/taw/joplin
 #
@@ -49,9 +49,9 @@ Summary: Notebook Application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 3
 %if %{isTestBuild}
-  %define _pkgrel 1.2
+  %define _pkgrel 2.3
 %endif
 
 # MINORBUMP
@@ -135,17 +135,23 @@ Requires: libnotify
 %global __python %{python2}
 %endif
 
-# Exclusions from provides and requires calculations and from the results
-# Without this too many requirements get pulled in, for example with the
-# terminal application build, it says it needs several nodejs packages
-# and npm (blech!) ... I can't seem to block it though. :(
-#%%global __provides_exclude_from ^(lib.*\\.so.*)|^(.%%{installtree}/.*\\.so.*|%%{installtree}/terminal/node_modules/.*|%%{installtree}/terminal/build/.*|%%{installtree}/terminal/tests/.*|%%{installtree}/desktop/resources/node_modules/.*|%%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
-#%%global __provides_exclude_from ^(lib.*\\.so.*)|^(.%%{installtree}/.*\\.so.*|%%{installtree}/node_modules/.*|%%{installtree}/terminal/lib/.*|%%{installtree}/desktop/resources/node_modules/.*|%%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*))$
+# Dependency calculations
+# Exclusions from provides and requires. _from values excludes from
+# calculations. Without the _from acts as a filter from the results.
+# Without this too many requirements get pulled in. For example, with the
+# terminal application build, it says it needs npm (blech!).
+
+# __provides_exclude_from
+#%%global __provides_exclude_from ^(lib.*\\.so.*|%%{installtree}/.*\\.so.*|%%{installtree}/desktop/resources/node_modules/.*|%%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
+
+# __provides_exclude
 %global __provides_exclude ^(lib.*\\.so.*)$
 
-#%%global __requires_exclude_from ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(/usr/bin.*/coffee)|^(.%%{installtree}/.*\\.so.*|%%{installtree}/terminal/node_modules/.*|%%{installtree}/terminal/build/.*|%%{installtree}/terminal/tests/.*|%%{installtree}/desktop/resources/node_modules/.*|%%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*))$
-#%%global __requires_exclude_from ^((libffmpeg[.]so.*)|(lib.*\\.so.*))$
-%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(/usr/bin.*/coffee)|(/usr/lib/node_modules/.*)|(nodejs*)|(npm*)|(/usr/bin/npm))$
+# __requires_exclude_from
+%global __requires_exclude_from ^(%{installtree}/.*\\.so.*|%{installtree}/terminal/lib/.*|%%{installtree}/desktop/resources/node_modules/.*|%%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
+
+# __requires_exclude
+%global __requires_exclude ^(libffmpeg[.]so.*|lib.*\\.so.*|/usr/bin/.*/coffee)$
 
 BuildRequires: desktop-file-utils
 %if 0%{?suse_version:1}
@@ -161,6 +167,7 @@ BuildRequires: libappstream-glib
 # TERMINAL
 # Tested on Fedora 35+ only so far
 %if %{buildTerminalApp}
+Requires: nodejs
 BuildRequires: npm nodejs
 %endif
 
@@ -422,11 +429,14 @@ umask 007
 
 
 %changelog
+* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.rp.taw
+* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.3.testing.rp.taw
+* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.2.testing.rp.taw
+* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.1.testing.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.1.testing.rp.taw
   - repackage-only spec
-  - attempted to exclude nodejs and npm requirements for joplin-terminal, but  
-    I failed. So, the package has some egregious.
+  - trimmed down the package dependencies.
 
 * Mon Aug 29 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.rp.taw
 * Mon Aug 29 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.1.testing.rp.taw
