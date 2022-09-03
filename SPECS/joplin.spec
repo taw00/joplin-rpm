@@ -4,7 +4,7 @@
 # Joplin - A secure notebook application.
 #          End-to-end encrypted markdown. Syncable between your devices.
 #
-# The RPM builds...
+# Location of the RPM spec and builds...
 # https://github/taw00/joplin-rpm
 # https://copr.fedorainfracloud.org/coprs/taw/joplin
 #
@@ -57,9 +57,9 @@ Summary: Notebook Application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 3
 %if %{isTestBuild}
-  %define _pkgrel 1.1
+  %define _pkgrel 2.3
 %endif
 
 # MINORBUMP
@@ -140,11 +140,12 @@ ExclusiveArch: x86_64
 # /usr/share/org.joplinapp.joplin
 %define installtree %{_datadir}/%{appid}
 
-%if ! %{isRepackageBuild}
-Source0: https://github.com/laurent22/joplin/archive/v%{version}/%{sourcetree}.tar.gz
+%if %{isRepackageBuild}
+Source0: https://github.com/laurent22/joplin/releases/download/v%{version}/%{appimagename}
 %else
-Source10: https://github.com/laurent22/joplin/releases/download/v%{version}/%{appimagename}
+Source0: https://github.com/laurent22/joplin/archive/v%{version}/%{sourcetree}.tar.gz
 %endif
+
 Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_contrib}.tar.gz
 
 # See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
@@ -156,16 +157,25 @@ Requires: libnotify
 %global __python %{python2}
 %endif
 
-# Exclusions from provides and requires calculations and from the results
-#%%global __provides_exclude_from ^(.%%{installtree}/.*\\.so.*|%%{installtree}/terminal/node_modules/.*|%%{installtree}/terminal/build/.*|%%{installtree}/terminal/tests/.*|%%{installtree}/desktop/resources/.*)$
-#%%global __requires_exclude_from ^(.%%{installtree}/.*\\.so.*|%%{installtree}/terminal/node_modules/.*|%%{installtree}/terminal/build/.*|%%{installtree}/terminal/tests/.*|%%{installtree}/desktop/resources/.*)$
-%global __provides_exclude_from ^(.%{installtree}/.*\\.so.*|%{installtree}/desktop/resources/node_modules/.*|%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
-%global __requires_exclude_from ^(.%{installtree}/.*\\.so.*|%{installtree}/desktop/resources/node_modules/.*|%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
-%global __provides_exclude ^(lib.*\\.so.*)$
-%global __requires_exclude ^((libffmpeg[.]so.*)|(lib.*\\.so.*)|(/usr/bin.*/coffee))$
+# Dependency calculations
+# Exclusions from provides and requires. _from values excludes from
+# calculations. Without the _from acts as a filter from the results.
+# Without this too many requirements get pulled in. For example, with the
+# terminal application build, it says it needs npm (blech!).
 
-# BUILDREQUIRES IF PRE-BUILT BINARY
-%if %{isRepackageBuild}
+# __provides_exclude_from
+#%%global __provides_exclude_from ^(lib.*\\.so.*|%%{installtree}/.*\\.so.*|%%{installtree}/desktop/resources/node_modules/.*|%%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
+
+# __provides_exclude
+%global __provides_exclude ^(lib.*\\.so.*)$
+
+# __requires_exclude_from
+%global __requires_exclude_from ^(%{installtree}/.*\\.so.*|%{installtree}/terminal/lib/.*|%%{installtree}/desktop/resources/node_modules/.*|%%{installtree}/desktop/resources/app.asar.unpacked/node_modules/.*)$
+
+# __requires_exclude
+%global __requires_exclude ^(libffmpeg[.]so.*|lib.*\\.so.*|/usr/bin/.*/coffee)$
+
+
 BuildRequires: desktop-file-utils
 %if 0%{?suse_version:1}
 BuildRequires: appstream-glib
@@ -177,18 +187,17 @@ BuildRequires: libappstream-glib
 BuildRequires: libappstream-glib
 %endif
 
+
 # BUILDREQUIRES IF BUILT FROM SOURCE
-%else
+%if ! %{isRepackageBuild}
 BuildRequires: libsecret-devel
 BuildRequires: git rsync grep
-BuildRequires: desktop-file-utils
 # provided by coreutils RPM
 #BuildRequires: /usr/bin/readlink /usr/bin/dirname
 
 # OPENSUSE
 %if 0%{?suse_version:1}
 BuildRequires: ca-certificates-cacert ca-certificates-mozilla ca-certificates
-BuildRequires: appstream-glib
 BuildRequires: gcc-c++
 # this is ugly and wrong. but it works.
 BuildRequires: /usr/bin/python
@@ -234,14 +243,13 @@ BuildRequires: npm
 # commandline. I do not know a way of specifying this in the .spec file.
 %if 0%{?rhel:1}
 BuildRequires: gcc-c++
-BuildRequires: libappstream-glib
 %if 0%{?rhel} == 7 || %{useNodeSourceReposEL}
 BuildRequires: nodejs >= 2:12
 %else
 BuildRequires: nodejs npm
 %endif
 
-# EL7
+# EL7 - build no longer supported
 %if 0%{?rhel} == 7
 BuildRequires: python
 
@@ -250,17 +258,18 @@ BuildRequires: python
 %if 0%{?rhel} == 8
 BuildRequires: python3
 
-# EL9 (which doesn't exist yet)
+# EL9+
 %else
+%if 0%{?rhel} > 8
 BuildRequires: python
 
+%endif
 %endif
 %endif
 %endif
 
 # FEDORA
 %if 0%{?fedora:1}
-BuildRequires: libappstream-glib
 BuildRequires: gcc-c++
 BuildRequires: python2.7
 %if %{useNodeSourceReposFC}
@@ -281,9 +290,8 @@ BuildRequires: nodejs-devel >= 16
 BuildRequires: npm nodejs
 %endif
 
-#t0dd: I often add these extra packages to enable mock environment introspection
+# Extra packages to enable mock environment introspection
 %if %{isTestBuild}
-#BuildRequires: tree vim-enhanced less dnf iputils findutils
 BuildRequires: tree vim-enhanced less dnf iputils
 %endif
 
@@ -359,14 +367,14 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 
 # PREP STAGE FOR BUILD FROM PRE-BUILT BINARY
 %if %{isRepackageBuild}
-#Source10 (binary)
-mv %{SOURCE10} %{_builddir}/%{sourceroot}/%{appimagename}
-#Source1 (contrib)
+# Source0 (binary)
+mv %{SOURCE0} %{_builddir}/%{sourceroot}/%{appimagename}
+# Source1 (contrib)
 %setup -q -T -D -a 1 -n %{sourceroot}
 
 # PREP STAGE FOR BUILD FROM SOURCE
 %else
-#Source0 (src) and Source1 (contrib)
+# Source0 (src) and Source1 (contrib)
 %setup -q -T -D -a 0 -n %{sourceroot}
 %setup -q -T -D -a 1 -n %{sourceroot}
 
@@ -386,12 +394,11 @@ mv %{SOURCE10} %{_builddir}/%{sourceroot}/%{appimagename}
   %endif
 %endif
 
-npm --version
-
 # upgrade? from npm 6 to 7+ because upstream uses
 # "lockfileVersion": 2 in all package-lock.json files theoretically,
 # lockfileVersion 2 is backwards compatable:
 # https://docs.npmjs.com/cli/v7/configuring-npm/package-lock-json
+npm --version
 %if %{upgradeNPM}
 #npm install npm@7.19.1
 npm install npm@latest
@@ -408,6 +415,9 @@ node_modules/.bin/npm --version
 # Build section starts us in directory {_builddir}/{sourceroot}
 echo "======== build stage ========"
 
+#
+# DESKTOP APP BUILD ==========
+#
 # BUILD FROM PRE-BUILT BINARY
 %if %{isRepackageBuild}
 # STUB -- may be a no-op
@@ -462,14 +472,13 @@ echo "
 ######       because a .git can't be found. Ignore it.
 "
 
-### BUILD IT!
+### FINALLY, BUILD IT!
 %if %{upgradeNPM}
   PYTHON=%{python2} ../node_modules/.bin/npm install
 %else
   npm install
 %endif
 
-# DESKTOP
 cd packages/app-desktop
 %if %{upgradeNPM}
   PYTHON=%{python2} ../../../node_modules/.bin/npm run dist
@@ -506,7 +515,9 @@ cd ../../../../..
 # [END] BUILD FROM SOURCE
 %endif
 
-# BUILD TERMINAL APP
+#
+# TERMINAL APP BUILD ==========
+#
 # Tested on Fedora 35+ only so far
 %if %{buildTerminalApp}
   echo "Building Joplin Terminal App in %{_builddir}/%{sourceroot}/terminal/"
@@ -585,6 +596,7 @@ install -D -m644 -p %{sourcetree_contrib}/from-upstream/256x256.png             
 install -D -m644 -p %{sourcetree_contrib}/from-upstream/512x512.png               %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
 install -D -m644 -p %{sourcetree_contrib}/from-upstream/JoplinIcon.svg            %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
 
+# repackage RPM builds don't have a sourcetree - so, just do it all from contrib
 #install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/128x128.png               %%{buildroot}%%{_datadir}/icons/hicolor/128x128/apps/%%{appid}.png
 #install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/256x256.png               %%{buildroot}%%{_datadir}/icons/hicolor/256x256/apps/%%{appid}.png
 #install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/512x512.png               %%{buildroot}%%{_datadir}/icons/hicolor/512x512/apps/%%{appid}.png
@@ -604,27 +616,19 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 # INSTALL BUILD FROM PRE-BUILT BINARY
 %if %{isRepackageBuild}
 # appimages can be large ... mv'ing is more efficient than installing
-echo "#########################################################################"
-ls -lh %{appimagename}
-sha256sum %{appimagename}
 mv -v %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
-chmod 755 %{buildroot}%{_bindir}/%{name_desktop}
-ls -lh %{buildroot}%{_bindir}/%{name_desktop}
-sha256sum %{buildroot}%{_bindir}/%{name_desktop}
-echo "#########################################################################"
 
 # INSTALL BUILD FROM SOURCE
 %else
 # Native build
 %if 0%{?nativebuild:1}
+install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/linux-unpacked/\@joplinapp-desktop %{buildroot}%{installtree}/desktop/%{name_desktop}
+rm %{sourcetree}/packages/app-desktop/dist/linux-unpacked/\@joplinapp-desktop
 cp -a %{sourcetree}/packages/app-desktop/dist/linux-unpacked/* %{buildroot}%{installtree}/desktop
-mv %{buildroot}%{installtree}/desktop/\@joplinapp-desktop %{buildroot}%{installtree}/desktop/%{name_desktop}
-chmod 755 %{buildroot}%{installtree}/desktop/%{name_desktop}
 ln -s %{installtree}/desktop/%{name_desktop} %{buildroot}%{_bindir}/%{name_desktop}
 
-# Alternative build: package the AppImage build instead (that was built from "source")
+# Non-native alternative build: package the source-built AppImage instead
 %else
-# This is SUPER ugly... It's an alternative if we want to use it.
 install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/%{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
 %endif
 
@@ -635,7 +639,6 @@ install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/%{appimagename} %{bu
 # Tested on Fedora 35+ only so far
 %if %{buildTerminalApp}
   mv %{_builddir}/%{sourceroot}/terminal %{buildroot}%{installtree}/
-  chmod 755 %{buildroot}%{installtree}/terminal/bin/joplin
   ln -s %{installtree}/terminal/bin/joplin %{buildroot}%{_bindir}/%{name_terminal}
 %endif
 
@@ -648,6 +651,7 @@ install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/%{appimagename} %{bu
 %license %{sourcetree_contrib}/from-upstream/LICENSE
 %doc     %{sourcetree_contrib}/from-upstream/LICENSE.electron.txt
 %doc     %{sourcetree_contrib}/from-upstream/LICENSES.chromium.html
+# repackage RPM builds don't have a sourcetree, so we just pull from contrib
 #%%license %%{sourcetree}/LICENSE
 #%%doc %%{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSE.electron.txt
 #%%doc %%{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSES.chromium.html
@@ -655,15 +659,17 @@ install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/%{appimagename} %{bu
 # DESKTOP
 %if %{isRepackageBuild}
 %attr (755, root, root) %{_bindir}/%{name_desktop}
-%{installtree}
+
 %else
 %if 0%{?nativebuild:1}
 %attr (755, root, root) %{installtree}/desktop/%{name_desktop}
-%{installtree}
+
 %else
 %attr (755, root, root) %{_bindir}/%{name_desktop}
 %endif
 %endif
+
+%{installtree}
 
 # desktop environment metadata
 %{_datadir}/applications/%{appid}.desktop
@@ -684,7 +690,6 @@ install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/%{appimagename} %{bu
 %if %{buildTerminalApp}
 %attr (755, root, root) %{installtree}/terminal/bin/joplin
 %{_bindir}/%{name_terminal}
-%{installtree}
 %endif
 
 
@@ -696,7 +701,6 @@ umask 007
 
 
 
-
 %postun
 umask 007
 #/sbin/ldconfig > /dev/null 2>&1
@@ -704,8 +708,19 @@ umask 007
 
 
 
-
 %changelog
+* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-4.rp.taw
+* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.1.testing.rp.taw
+  - specfile cleanup
+
+* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.rp.taw
+* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.3.testing.rp.taw
+* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.2.testing.rp.taw
+* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.1.testing.rp.taw
+* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.rp.taw
+* Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.1.testing.rp.taw
+  - trimmed down the package dependencies.
+
 * Mon Aug 29 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.rp.taw
 * Mon Aug 29 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-1.1.testing.rp.taw
   - Joplin Terminal app added

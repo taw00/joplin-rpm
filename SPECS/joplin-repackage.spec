@@ -24,7 +24,7 @@
 # https://www.linuxquestions.org/questions/red-hat-31/prevent-strip-when-building-an-rpm-package-591099/
 %global __strip /bin/true
 
-%define isTestBuild 0
+%define isTestBuild 1
 %define buildTerminalApp 1
 
 Name: joplin
@@ -123,7 +123,7 @@ ExclusiveArch: x86_64
 # /usr/share/org.joplinapp.joplin
 %define installtree %{_datadir}/%{appid}
 
-Source10: https://github.com/laurent22/joplin/releases/download/v%{version}/%{appimagename}
+Source0: https://github.com/laurent22/joplin/releases/download/v%{version}/%{appimagename}
 Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_contrib}.tar.gz
 
 # See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
@@ -152,6 +152,7 @@ Requires: libnotify
 
 # __requires_exclude
 %global __requires_exclude ^(libffmpeg[.]so.*|lib.*\\.so.*|/usr/bin/.*/coffee)$
+
 
 BuildRequires: desktop-file-utils
 %if 0%{?suse_version:1}
@@ -250,8 +251,8 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 #    \_{appimagename}        \_Joplin-2.3.5.AppImage
 #    \_{sourcetree_contrib}  \_joplin-2.3-contrib
 
-#Source10 (binary | repackage source)
-mv %{SOURCE10} %{_builddir}/%{sourceroot}/%{appimagename}
+#Source0 (binary | repackage source)
+mv %{SOURCE0} %{_builddir}/%{sourceroot}/%{appimagename}
 
 #Source1 (contrib)
 %setup -q -T -D -a 1 -n %{sourceroot}
@@ -262,10 +263,14 @@ mv %{SOURCE10} %{_builddir}/%{sourceroot}/%{appimagename}
 # Build section starts us in directory {_builddir}/{sourceroot}
 echo "======== build stage ========"
 
-# DESKTOP
+#
+# DESKTOP APP BUILD ==========
+#
 # ... is a no-op since it is all set up in the prep stage
 
-# TERMINAL
+#
+# TERMINAL APP BUILD ==========
+#
 # Tested on Fedora 35+ only so far
 %if %{buildTerminalApp}
   echo "Building Joplin Terminal App in %{_builddir}/%{sourceroot}/terminal/"
@@ -282,7 +287,6 @@ echo "======== build stage ========"
 #%%if %%{buildTerminalApp}
 #  %%{__nodejs} -e 'require("./")'
 #%%endif
-
 
 
 
@@ -345,7 +349,7 @@ install -D -m644 -p %{sourcetree_contrib}/from-upstream/256x256.png             
 install -D -m644 -p %{sourcetree_contrib}/from-upstream/512x512.png               %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
 install -D -m644 -p %{sourcetree_contrib}/from-upstream/JoplinIcon.svg            %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
 
-# repackage RPM builds don't have a sourcetree
+# repackage RPM builds don't have a sourcetree - so, just do it all from contrib
 #install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/128x128.png               %%{buildroot}%%{_datadir}/icons/hicolor/128x128/apps/%%{appid}.png
 #install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/256x256.png               %%{buildroot}%%{_datadir}/icons/hicolor/256x256/apps/%%{appid}.png
 #install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/512x512.png               %%{buildroot}%%{_datadir}/icons/hicolor/512x512/apps/%%{appid}.png
@@ -381,7 +385,7 @@ mv %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
 %license %{sourcetree_contrib}/from-upstream/LICENSE
 %doc     %{sourcetree_contrib}/from-upstream/LICENSE.electron.txt
 %doc     %{sourcetree_contrib}/from-upstream/LICENSES.chromium.html
-# repackage RPM builds don't have a sourcetree
+# repackage RPM builds don't have a sourcetree, so we just pull from contrib
 #%%license %%{sourcetree}/LICENSE
 #%%doc %%{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSE.electron.txt
 #%%doc %%{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSES.chromium.html
@@ -408,15 +412,14 @@ mv %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
 %if %{buildTerminalApp}
 %attr (755, root, root) %{installtree}/terminal/bin/joplin
 %{_bindir}/%{name_terminal}
-#%%{installtree} -- already included with desktop
 %endif
+
 
 
 %post
 umask 007
 #/sbin/ldconfig > /dev/null 2>&1
 /usr/bin/update-desktop-database &> /dev/null || :
-
 
 
 
@@ -427,8 +430,11 @@ umask 007
 
 
 
-
 %changelog
+* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-4.rp.taw
+* Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.1.testing.rp.taw
+  - specfile cleanup
+
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.3.testing.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.2.testing.rp.taw
