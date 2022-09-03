@@ -67,8 +67,8 @@ sudo dnf install -y joplin
 Prep the repository . . .
 
 ```
-# Repository setup for OpenSUSE Leap 15.2
-sudo wget https://copr.fedorainfracloud.org/coprs/taw/joplin/repo/opensuse-leap-15.2/taw-joplin-opensuse-leap-15.2.repo -O /etc/zypp/repos.d/taw-joplin-opensuse-leap-15.2.repo
+# Repository setup for OpenSUSE Leap 15.3
+sudo wget https://copr.fedorainfracloud.org/coprs/taw/joplin/repo/opensuse-leap-15.3/taw-joplin-opensuse-leap-15.3.repo -O /etc/zypp/repos.d/taw-joplin-opensuse-leap-15.3.repo
 sudo zypper refresh
 ```
 ```
@@ -133,6 +133,8 @@ Open an issue here, or send me a note via Keybase -- https://keybase.io/toddwarn
 
 ---
 
+<!--
+
 ## The build process for those who are curious
 
 If minor update — e.g., 2.2.6 to 2.2.7
@@ -154,3 +156,5 @@ PRODUCTION RELEASE
 
 For major releases, e.g., 2.2.7 to 2.3.3, I only add more testing and sometimes
 hold off spec file revamps for those releases.
+
+-->
