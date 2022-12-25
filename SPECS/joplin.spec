@@ -52,14 +52,14 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 2.8
-%define verminor 8
+%define vermajor 2.9
+%define verminor 17
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 4
+%define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 3.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -709,6 +709,9 @@ umask 007
 
 
 %changelog
+* Sat Sep 3 2022 Todd Warner <t0dd_at_protonmail.com> 2.9.17-0.1.testing.taw
+  - native builds still unsuccessful
+
 * Sat Sep 3 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.1.testing.taw
   - had to force --legacy-peer-deps with npm installs
   - native builds still unsuccessful

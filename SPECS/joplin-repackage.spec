@@ -44,14 +44,14 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 2.8
-%define verminor 8
+%define vermajor 2.9
+%define verminor 17
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 3
+%define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 2.3
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -431,6 +431,10 @@ umask 007
 
 
 %changelog
+* Sat Sep 3 2022 Todd Warner <t0dd_at_protonmail.com> 2.9.17-1.rp.taw
+* Sat Sep 3 2022 Todd Warner <t0dd_at_protonmail.com> 2.9.17-0.1.testing.rp.taw
+  - repackage-only spec; native builds still unsuccessful
+
 * Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.rp.taw
 * Fri Sep 2 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.3.testing.rp.taw
 * Tue Aug 30 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-2.2.testing.rp.taw
