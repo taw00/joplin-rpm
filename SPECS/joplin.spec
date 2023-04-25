@@ -52,8 +52,8 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 2.9
-%define verminor 17
+%define vermajor 2.10
+%define verminor 13
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -709,7 +709,12 @@ umask 007
 
 
 %changelog
-* Sat Sep 3 2022 Todd Warner <t0dd_at_protonmail.com> 2.9.17-0.1.testing.taw
+* Tue Apr 25 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.13-1.rp.taw
+* Tue Apr 25 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.13-0.1.rp.taw
+  - 2.10.13
+
+* Tue Nov 15 2022 Todd Warner <t0dd_at_protonmail.com> 2.9.17-1.rp.taw
+* Tue Nov 15 2022 Todd Warner <t0dd_at_protonmail.com> 2.9.17-0.1.rp.taw
   - native builds still unsuccessful
 
 * Sat Sep 3 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.1.testing.taw
