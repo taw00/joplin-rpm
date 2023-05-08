@@ -53,7 +53,7 @@ Summary: Notebook Application
 
 # VERSION
 %define vermajor 2.10
-%define verminor 13
+%define verminor 17
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -135,7 +135,8 @@ ExclusiveArch: x86_64
 #%%define sourceroot %%{name}-%%{vermajor}-%%{buildQualifier}
 %define sourceroot %{name}-%{vermajor}
 %define sourcetree %{name}-%{version}
-%define sourcetree_contrib %{name}-%{vermajor}-contrib
+%define sourcetree_contrib %{name}-contrib
+%define sourcearchive_contrib %{name}-%{vermajor}-contrib
 %define appimagename %{name2}-%{version}.AppImage
 # /usr/share/org.joplinapp.joplin
 %define installtree %{_datadir}/%{appid}
@@ -146,7 +147,7 @@ Source0: https://github.com/laurent22/joplin/releases/download/v%{version}/%{app
 Source0: https://github.com/laurent22/joplin/archive/v%{version}/%{sourcetree}.tar.gz
 %endif
 
-Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcetree_contrib}.tar.gz
+Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcearchive_contrib}.tar.gz
 
 # See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
 Requires: libcanberra-gtk2 libnotify
@@ -358,12 +359,12 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 %endif
 
 # Unarchived source tree structure (extracted in {_builddir})
-#   {sourceroot}            joplin-2.3
-#    \_{sourcetree}          \_joplin-2.3.5
-#    \_{sourcetree_contrib}  \_joplin-2.3-contrib
+#   {sourceroot}            joplin-2.10
+#    \_{sourcetree}          \_joplin-2.10.17
+#    \_{sourcetree_contrib}  \_joplin-contrib
 #   ...or if prebuilt...
-#    \_{appimagename}        \_Joplin-2.3.5.AppImage
-#    \_{sourcetree_contrib}  \_joplin-2.3-contrib
+#    \_{appimagename}        \_Joplin-2.10.17.AppImage
+#    \_{sourcetree_contrib}  \_joplin-contrib
 
 # PREP STAGE FOR BUILD FROM PRE-BUILT BINARY
 %if %{isRepackageBuild}
@@ -709,6 +710,12 @@ umask 007
 
 
 %changelog
+* Mon May 08 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.17-1.rp.taw
+* Mon May 08 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.17-0.1.rp.taw
+  - 2.10.17
+  - the source archive for contrib keeps the version in it's filename
+  - the source tree for contrib drops the version from the folder name
+
 * Tue Apr 25 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.13-1.rp.taw
 * Tue Apr 25 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.13-0.1.rp.taw
   - 2.10.13
