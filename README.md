@@ -24,25 +24,6 @@ network-accessible file system.
 
 **I can be messaged** at <a href="mailto:t0dd@protonmail.com">t0dd@protonmail.com</a> or as user t0dd in the [Joplin Community Forums](https://discourse.joplinapp.org/).
 
-### OS Notes
-
-As of version 2.3.3, the normal build process is breaking due to some bizarre
-dependency calling python2 in the build tree. Thus far, after many many hours
-attempting to work around the issue, I have not been successful in mitigating
-the problem. For the foreseeable future, I will be packaging upstream AppImage
-binaries until this is resolved. 
-
-As of version 2.4.z, I will be moving builds away from EL8 proper and to CentOS Stream only.
-
-<!--
-I had to make upstream nodejs available to CentOS, EL7
-and EL8, and Fedora (all RedHat/IBM products) to enable binary builds. This is
-insecure and wrong, but it is what I have been forced to do. The REPO URLs are
-as follows:
-- CentOS and EL: https://rpm.nodesource.com/pub_16.x/el/$releasever/$basearch
-- Fedora: https://rpm.nodesource.com/pub_16.x/el/$releasever/$basearch
--->
-
 ## TL;DR - I want to install Joplin!
 
 Open up a terminal and copy and paste these commands on the commandline of your
@@ -125,6 +106,27 @@ in Github) will be signed with my general-purpose GPG key found here:
 Packages delivered via COPR are signed with a GPG key specific to that
 repository. COPR enablement as shown elsewhere (TL;DR) will install this key
 appropriately when necessary.
+
+---
+
+### OS Notes
+
+As of version 2.3.3, the normal build process is breaking due to some bizarre
+dependency calling python2 in the build tree. Thus far, after many many hours
+attempting to work around the issue, I have not been successful in mitigating
+the problem. For the foreseeable future, I will be packaging upstream AppImage
+binaries until this is resolved.
+
+As of version 2.4.z, I will be moving builds away from EL8 proper and to CentOS Stream only.
+
+<!--
+I had to make upstream nodejs available to CentOS, EL7
+and EL8, and Fedora (all RedHat/IBM products) to enable binary builds. This is
+insecure and wrong, but it is what I have been forced to do. The REPO URLs are
+as follows:
+- CentOS and EL: https://rpm.nodesource.com/pub_16.x/el/$releasever/$basearch
+- Fedora: https://rpm.nodesource.com/pub_16.x/el/$releasever/$basearch
+-->
 
 ---
 
