@@ -52,8 +52,8 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 2.10
-%define verminor 19
+%define vermajor 2.11
+%define verminor 11
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -710,6 +710,10 @@ umask 007
 
 
 %changelog
+* Mon Jun 26 2023 Todd Warner <t0dd_at_protonmail.com> 2.11.11-1.rp.taw
+* Mon Jun 26 2023 Todd Warner <t0dd_at_protonmail.com> 2.11.11-0.1.rp.taw
+  - 2.11.11
+
 * Thu May 18 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.19-1.rp.taw
 * Thu May 18 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.19-0.1.rp.taw
   - 2.10.19
