@@ -55,6 +55,16 @@ system.</p>
   </provides>
 
   <releases>
+    <release version="2.12.15" date="2023-08-27">
+      <url>https://github.com/laurent22/joplin/releases/tag/v2.12.15</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v2.12.12</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v2.12.10</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v2.12.9</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v2.12.7</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v2.12.5</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v2.12.4</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v2.12.3</url>
+    </release>
     <release version="2.11.11" date="2023-06-23">
       <url>https://github.com/laurent22/joplin/releases/tag/v2.11.11</url>
       <url>https://github.com/laurent22/joplin/releases/tag/v2.11.9</url>
