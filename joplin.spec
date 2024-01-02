@@ -53,7 +53,7 @@ Summary: Notebook Application
 
 # VERSION
 %define vermajor 2.13
-%define verminor 11
+%define verminor 12
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -710,6 +710,10 @@ umask 007
 
 
 %changelog
+* Tue Jan 02 2024 Todd Warner <t0dd_at_protonmail.com> 2.13.12-1.rp.taw
+* Tue Jan 02 2024 Todd Warner <t0dd_at_protonmail.com> 2.13.12-0.1.rp.taw
+  - 2.13.12
+
 * Tue Dec 26 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.11-1.rp.taw
 * Tue Dec 26 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.11-0.1.rp.taw
   - 2.13.11
