@@ -57,9 +57,9 @@ Summary: Notebook Application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if %{isTestBuild}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -710,6 +710,10 @@ umask 007
 
 
 %changelog
+* Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-2.rp.taw
+* Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-1.1.rp.taw
+  - Removed cruft that made its way into the contrib tarball.
+
 * Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-1.rp.taw
 * Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-0.1.rp.taw
   - 2.14.19
