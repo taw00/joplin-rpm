@@ -53,13 +53,13 @@ Summary: Notebook Application
 
 # VERSION
 %define vermajor 2.14
-%define verminor 19
+%define verminor 20
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -710,6 +710,10 @@ umask 007
 
 
 %changelog
+* Wed Apr 10 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-1.rp.taw
+* Wed Apr 10 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-0.1.rp.taw
+  - 2.14.20
+
 * Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-2.rp.taw
 * Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-1.1.rp.taw
   - Removed cruft that made its way into the contrib tarball.
