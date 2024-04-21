@@ -57,9 +57,9 @@ Summary: Notebook Application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 1
+%define _pkgrel 2
 %if %{isTestBuild}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -150,7 +150,7 @@ Source0: https://github.com/laurent22/joplin/archive/v%{version}/%{sourcetree}.t
 Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcearchive_contrib}.tar.gz
 
 # See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
-Requires: libcanberra-gtk2 libnotify
+Suggests: libcanberra-gtk3
 Requires: libnotify
 
 %if ! %{isRepackageBuild} || %{buildTerminalApp}
@@ -710,6 +710,13 @@ umask 007
 
 
 %changelog
+* Sun Apr 21 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-2.rp.taw
+* Sun Apr 21 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-1.1.rp.taw
+  - bumping libcanberra from gtk2 to gtk3 and hoping this solves a SUSE  
+    dependency issue.
+  - changing the requires to a suggests because a strict need for it is not  
+    correct
+
 * Wed Apr 10 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-1.rp.taw
 * Wed Apr 10 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-0.1.rp.taw
   - 2.14.20
