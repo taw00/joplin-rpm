@@ -30,15 +30,6 @@ Open up a terminal and copy and paste these commands on the commandline of your
 Fedora Linux workstation or desktop. Note, I assume you are logged in as a user
 that has "sudo" rights.
 
-
-> <small><small>Oddball note for some folks — **EXPIRED GPG KEY?**  
-> If you get complaints about an expired GPG for this COPR repo after dnf downloads the joplin RPM, do this …
->
-> 1. Find the actual COPR key using: `rpm -q --qf "%{NAME}-%{VERSION}-%{RELEASE}\t%{SUMMARY}\n" gpg-pubkey | grep joplin`
-> 2. Remove your current GPG key for the COPR: `sudo rpm -e gpg-pubkey-XXXXXXXX-XXXXXXXX` (replacing the gpg-pubkey-* with the numbers from step 1).
-> 3. Re-install or upgrade: `sudo dnf upgrade joplin -y or sudo dnf install joplin -y`</small></small>
-
-
 **Fedora and RHEL/CentOS users . . .**  
 
 Prep the repository . . .
@@ -81,6 +72,17 @@ it. Visit [joplinapp.org](https://joplinapp.org/) for documentation and help.
 Useful tidbit:
 * application state is maintained at `~/.config/Joplin`
 * all Joplin documents and such are mirror locally at `~/.config/joplin-desktop`
+
+---
+
+**(corner case oddball issue)  
+**EXPIRED GPG KEY?**  
+
+If you get complaints about an expired GPG KEY for the COPR repo after dnf downloads the joplin RPM, do this …
+
+1. Find the actual COPR key being used: `rpm -q --qf "%{NAME}-%{VERSION}-%{RELEASE}\t%{SUMMARY}\n" gpg-pubkey | grep joplin`
+2. Remove the GPG key: `sudo rpm -e gpg-pubkey-XXXXXXXX-XXXXXXXX` (replacing the gpg-pubkey-* with the numbers from step 1).
+3. Re-install or upgrade: `sudo dnf upgrade joplin -y` or `sudo dnf install joplin -y`
 
 ---
 
