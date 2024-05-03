@@ -76,7 +76,7 @@ Useful tidbit:
 ---
 
 **(corner case oddball issue)  
-**EXPIRED GPG KEY?**  
+EXPIRED GPG KEY?**  
 
 If you get complaints about an expired GPG KEY for the COPR repo after dnf downloads the joplin RPM, do this …
 
