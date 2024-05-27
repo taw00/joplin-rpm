@@ -53,13 +53,13 @@ Summary: Notebook Application
 
 # VERSION
 %define vermajor 2.14
-%define verminor 20
+%define verminor 22
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 2
+%define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -710,6 +710,11 @@ umask 007
 
 
 %changelog
+* Mon May 22 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.22-1.rp.taw
+* Mon May 22 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.22-0.1.rp.taw
+  - 2.14.22 - this fixes a security vulnerability:  
+    https://github.com/laurent22/joplin/releases/tag/v2.14.22
+
 * Sun Apr 21 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-2.rp.taw
 * Sun Apr 21 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-1.1.rp.taw
   - bumping libcanberra from gtk2 to gtk3 and hoping this solves a SUSE  
