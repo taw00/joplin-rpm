@@ -9,7 +9,7 @@
 # https://copr.fedorainfracloud.org/coprs/taw/joplin
 #
 # The upstream project...
-# https://joplin.cozic.net/
+# https://joplinapp.org
 # https://github.com/laurent22/joplin
 
 # ---
@@ -26,6 +26,9 @@
 %global __strip /bin/true
 
 %define isTestBuild 1
+
+# Note. We have not tested a build from source in a very long time. Therefore,
+# do not turn isRepackageBuild off.
 %define isRepackageBuild 1
 %define buildTerminalApp 1
 
@@ -52,8 +55,8 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 2.14
-%define verminor 22
+%define vermajor 3.0
+%define verminor 12
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -153,10 +156,10 @@ Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcearchive_
 Suggests: libcanberra-gtk3
 Requires: libnotify
 
-%if ! %{isRepackageBuild} || %{buildTerminalApp}
-# Forcing default python version for builds here because something somewhere uses python2?
-%global __python %{python2}
-%endif
+###DEPRECATED###%%if ! %%{isRepackageBuild} || %%{buildTerminalApp}
+###DEPRECATED#### Forcing default python version for builds here because something somewhere uses python2?
+###DEPRECATED###%%global __python %%{python2}
+###DEPRECATED###%%endif
 
 # Dependency calculations
 # Exclusions from provides and requires. _from values excludes from
@@ -710,8 +713,14 @@ umask 007
 
 
 %changelog
-* Mon May 22 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.22-1.rp.taw
-* Mon May 22 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.22-0.1.rp.taw
+* Tue Jul 02 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.12-1.rp.taw
+* Tue Jul 02 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.12-0.1.rp.taw
+  - 3.0.12
+  - https://discourse.joplinapp.org/t/whats-new-in-joplin-3-0/38867/1
+  - spec file: fixed some bogus dates
+
+* Wed May 22 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.22-1.rp.taw
+* Wed May 22 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.22-0.1.rp.taw
   - 2.14.22 - this fixes a security vulnerability:  
     https://github.com/laurent22/joplin/releases/tag/v2.14.22
 
@@ -734,8 +743,8 @@ umask 007
 * Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-0.1.rp.taw
   - 2.14.19
 
-* Wed Mar 2 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.17-1.rp.taw
-* Wed Mar 2 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.17-0.1.rp.taw
+* Sat Mar 2 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.17-1.rp.taw
+* Sat Mar 2 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.17-0.1.rp.taw
   - 2.14.17
 
 * Fri Jan 12 2024 Todd Warner <t0dd_at_protonmail.com> 2.13.13-1.rp.taw
