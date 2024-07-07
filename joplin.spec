@@ -713,6 +713,10 @@ umask 007
 
 
 %changelog
+* Sun Jul 07 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.13-1.rp.taw
+* Sun Jul 07 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.13-0.1.rp.taw
+  - 3.0.13
+
 * Tue Jul 02 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.12-1.rp.taw
 * Tue Jul 02 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.12-0.1.rp.taw
   - 3.0.12
