@@ -56,7 +56,7 @@ Summary: Notebook Application
 
 # VERSION
 %define vermajor 3.0
-%define verminor 12
+%define verminor 13
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
