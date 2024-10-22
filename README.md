@@ -106,7 +106,7 @@ I build RPM packages for various projects. Constructing and maintaining source
 RPMs is very much like any other software or documentation effort. That effort
 for Joplin is maintained with source-control via github. Binaries are provided
 [here](https://copr.fedorainfracloud.org/coprs/taw/joplin/). But you don't need
-to know a whole lot about Fedora's COPR build environment to install and user
+to know a whole lot about Fedora's COPR build environment to install and use
 these RPMs. Just follow the "TL;DR" instructions below to install Joplin.
 
 If you are technically savvy, you can build your own binary packages from the
