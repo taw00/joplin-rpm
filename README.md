@@ -16,11 +16,16 @@ creation time, etc). Notes can, of course, also be imported from any other
 markdown source.
 
 Mirroring and redundancy between your devices is achieved by a simple, and
-optionally encrypted, synchronization with one of the major cloud services
-including Nextcloud, Dropbox, Onedrive, WebDAV, or your local or
-network-accessible file system.
+optionally encrypted, synchronization with the excellent paid-for service
+[Joplin Cloud](https://joplinapp.org/plans/), or one of the major cloud
+services including Nextcloud, Dropbox, Onedrive, WebDAV. Or sync to a local or
+network-accessible file system. Read more here:
+<https://joplinapp.org/help/apps/sync/>
 
-**More information about Joplin** the project can be found at [joplinapp.org](https://joplinapp.org/) and at it's [GitHub page](https://github.com/laurent22/joplin). **I maintain all RPM package development bits here:** <https://github.com/taw00/joplin-rpm>.
+**More information about Joplin** the project can be found at
+[joplinapp.org](https://joplinapp.org/) and at it's [GitHub
+page](https://github.com/laurent22/joplin). **I maintain all RPM package
+development bits here:** <https://github.com/taw00/joplin-rpm>.
 
 **I can be messaged** at <a href="mailto:t0dd@protonmail.com">t0dd@protonmail.com</a> or as user t0dd in the [Joplin Community Forums](https://discourse.joplinapp.org/).
 
