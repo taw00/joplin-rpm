@@ -55,8 +55,8 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 3.0
-%define verminor 15
+%define vermajor 3.1
+%define verminor 20
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -318,7 +318,7 @@ markdown source.
 
 Mirroring to your devices and redundancy is achieved by a simple—and
 optionally end-to-end encrypted—synchronization to various cloud services
-including Nextcloud, Dropbox, Onedrive, WebDAV, or your local or
+including Joplin Cloud, Nextcloud, Dropbox, Onedrive, WebDAV, or your local or
 network-accessible file system.
 
 
@@ -713,6 +713,10 @@ umask 007
 
 
 %changelog
+* Sun Oct 27 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.20-1.rp.taw
+* Sun Oct 27 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.20-0.1.rp.taw
+  - 3.1.20
+
 * Thu Aug 22 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.15-1.rp.taw
 * Thu Aug 22 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.15-0.1.rp.taw
   - 3.0.15
