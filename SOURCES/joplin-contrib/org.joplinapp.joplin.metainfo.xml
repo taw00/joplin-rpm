@@ -55,7 +55,10 @@ system.</p>
   </provides>
 
   <releases>
-    <release version="3.1.20" date="2024-08-22">
+    <release version="3.1.22" date="2024-11-06">
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.1.22</url>
+    </release>
+    <release version="3.1.20" date="2024-10-22">
       <url>https://github.com/laurent22/joplin/releases/tag/v3.1.20</url>
       <url>https://github.com/laurent22/joplin/releases/tag/v3.1.18</url>
       <url>https://github.com/laurent22/joplin/releases/tag/v3.1.17</url>
