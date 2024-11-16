@@ -7,10 +7,11 @@
   -->
 
   <name>Joplin</name>
-  <summary>A free and secure notebook application.</summary>
+  <summary>A free and secure notebook application</summary>
 
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
+  <content_rating type="oars-1.1" />
 
   <description>
     <p>Joplin is a free and secure notebook application. Organization is easy using
@@ -45,10 +46,12 @@ system.</p>
   <url type="help">https://discourse.joplinapp.org/</url>
 
   <developer_name>Laurent Cozic</developer_name>
+  <!-- Copyright 2017 Laurent Cozic (though, this file managed by Todd Warner, see below -->
   <custom>
-      <value       key="package_maintainer">Todd Warner</value>
+      <value key="package_maintainer">Todd Warner</value>
       <value key="package_maintainer_email">t0dd_AT_protonmail.com</value>
   </custom>
+  <update_contact>t0dd_AT_protonmail.com</update_contact>
 
   <provides>
     <binary>joplin-desktop</binary>
