@@ -1,60 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>org.joplinapp.joplin.desktop</id>
-  <!-- please note that the correct ID tag value should be just the appid
-       https://bugzilla.redhat.com/show_bug.cgi?id=1860130
-       Also note, we use 'translate="no"' all over the place since, for now,
+  <!-- Copyright 2017 Laurent Cozic -->
+  <id>org.joplinapp.Joplin</id>
+  <!-- Note, we use 'translate="no"' all over the place since, for now,
        this metadata is not translated, but appstream is hostile to us not
        being specific about that.
-  <id>org.joplinapp.joplin</id>
   -->
 
-  <name translate="no">Joplin</name>
-  <summary translate="no">A free and secure notebook application</summary>
-
-  <metadata_license>MIT</metadata_license>
+  <name>Joplin</name>
+  <summary>Open-source note-taking and to-do application</summary>
+  <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
-  <content_rating type="oars-1.1" />
 
-  <description translate="no">
-    <p>Joplin is a free and secure notebook application. Organization is easy using
-notebooks and tags which can all be synchronized between your various devices.
-The notes are can be searched, copied, tagged, and modified either from the
-applications directly or from your own favorite text editor. The notes are
-composed with the ever-popular and familiar markdown format.</p>
-
-    <p>Notes can be imported from Evernote, to include all associated resources
-(images, attachments, etc) and all metadata (geo-location, update time,
-creation time, etc). Notes can, of course, also be imported from any other
-markdown source.</p>
-
-    <p>Mirroring to your devices and redundancy is achieved by a simple—and
-optionally end-to-end encrypted—synchronization to various cloud services including
-Nextcloud, Dropbox, Onedrive, WebDAV, or your local or network-accessible file
-system.</p>
-  </description>
-
-  <launchable type="desktop-id">org.joplinapp.joplin.desktop</launchable>
-
-  <screenshots>
-    <screenshot type="default">
-      <caption>For all of your devices</caption>
-      <image>https://camo.githubusercontent.com/372ddfe5bb318ccbdd6803a8fec25b642a335a92/68747470733a2f2f6a6f706c696e2e636f7a69632e6e65742f696d616765732f416c6c436c69656e74732e6a7067</image>
-    </screenshot>
-  </screenshots>
+  <developer id="net.cozic">
+      <name>Laurent Cozic</name>
+  </developer>
 
   <url type="homepage">https://joplinapp.org/</url>
+  <url type="donation">https://joplinapp.org/donate/</url>
   <url type="bugtracker">https://github.com/laurent22/joplin/issues</url>
-  <url type="bugtracker">https://github.com/taw00/joplin-rpm/issues</url>
+  <url type="faq">https://joplinapp.org/faq/</url>
   <url type="help">https://discourse.joplinapp.org/</url>
 
-  <developer_name>Laurent Cozic</developer_name>
-  <!-- Copyright 2017 Laurent Cozic (though, this file managed by Todd Warner, see below -->
+  <!-- for this package build -->
+  <update_contact>t0dd_AT_protonmail.com</update_contact>
   <custom>
       <value key="package_maintainer">Todd Warner</value>
       <value key="package_maintainer_email">t0dd_AT_protonmail.com</value>
+      <value key="package_bugtracker">https://github.com/taw00/joplin-rpm/issues</value>
   </custom>
-  <update_contact>t0dd_AT_protonmail.com</update_contact>
+
+  <description translate="no">
+    <p>
+      Joplin is an open-source note-taking and to-do application which can handle a large number of notes organised into notebooks. The notes are searchable, can be copied, tagged and modified either from the application directly or from your own text editor. The notes are in Markdown format.
+    </p>
+    <p>
+      Notes exported from Evernote via .enex files can be imported into Joplin, including the formatted content (which is then converted to Markdown), resources (images, attachments, etc.) and complete metadata (geolocation, updated time, created time, etc.). Plain Markdown files can also be imported.
+    </p>
+    <p>
+      The notes can be synchronised with various cloud services including Joplin Clound, Nextcloud, Dropbox, OneDrive, WebDAV or the file system (for example with a network directory). When synchronising the notes, notebooks, tags and other metadata are saved to plain text files which can be easily inspected, backed up and moved around.
+    </p>
+    <p>
+      This application is available for Windows, Linux, macOS, Android and iOS (the terminal app also works on FreeBSD). A Web Clipper browser addon, to save web pages and screenshots from your browser, is also available for Firefox and Chrome.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">org.joplinapp.Joplin.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://joplinapp.org/images/home-top-img.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://joplinapp.org/images/multimedia-notes-img.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://joplinapp.org/images/save-web-img.png</image>
+    </screenshot>
+  </screenshots>
 
   <provides>
     <binary>joplin-desktop</binary>
@@ -348,13 +351,7 @@ system.</p>
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.140</url>
     </release>
   </releases>
-  <mimetypes>
-    <mimetype>application/x-joplin</mimetype>
-    <mimetype>text/plain</mimetype>
-    <mimetype>text/markdown</mimetype>
-  </mimetypes>
+  <content_rating type="oars-1.1" />
+  <!-- .desktop spec: https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/ -->
+  <!-- .metainfo.xml spec: https://www.freedesktop.org/software/appstream/docs/ -->
 </component>
-
-<!-- .desktop spec: https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/ -->
-<!-- .metainfo.xml spec: https://www.freedesktop.org/software/appstream/docs/ -->
-

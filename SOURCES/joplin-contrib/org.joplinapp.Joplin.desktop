@@ -1,0 +1,19 @@
+[Desktop Entry]
+Name=Joplin
+GenericName=Secure Notebook
+Comment=Joplin for Desktop, a free and secure notebook management application
+Exec=/usr/bin/joplin-desktop
+Icon=org.joplinapp.Joplin
+StartupWMClass=Joplin
+#StartupNotify=true
+Type=Application
+Categories=Office;
+MimeType=x-scheme-handler/joplin;text/markdown;
+Terminal=false
+## https://specifications.freedesktop.org/menu-spec/latest/apa.html
+Keywords=secure;security;privacy;private;notes;bookmarks;collaborate;research;
+X-GNOME-SingleWindow=true
+X-SingleMainWindow=true
+
+## .desktop spec: https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/
+## .metainfo.xml spec: https://www.freedesktop.org/software/appstream/docs/

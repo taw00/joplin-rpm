@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Joplin
+Comment=Joplin for Desktop
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=joplin-desktop --file-forwarding net.cozic.joplin_desktop @@u %u @@
+Icon=net.cozic.joplin_desktop
+StartupWMClass=Joplin
+Type=Application
+Categories=Office;
+MimeType=x-scheme-handler/joplin;
+X-GNOME-SingleWindow=true
+X-SingleMainWindow=true
+X-Flatpak-RenamedFrom=joplin.desktop;
+X-Flatpak=net.cozic.joplin_desktop

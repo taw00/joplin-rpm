@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>net.cozic.joplin_desktop</id>
+  
+  <name>Joplin</name>
+  <summary>open source note taking and to-do application</summary>
+  <developer_name>laurent22</developer_name>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  
+  <url type="homepage">https://joplinapp.org/</url>
+  <url type="donation">https://joplinapp.org/donate/</url>
+  <url type="faq">https://joplinapp.org/faq/</url>
+  
+  <recommends>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </recommends>
+  
+  <description>
+    <p>
+      Joplin is a free, open source note taking and to-do application, which can handle a large number of notes organised into notebooks. The notes are searchable, can be copied, tagged and modified either from the applications directly or from your own text editor. The notes are in Markdown format.
+    </p>
+    <p>
+      Notes exported from Evernote via .enex files can be imported into Joplin, including the formatted content (which is converted to Markdown), resources (images, attachments, etc.) and complete metadata (geolocation, updated time, created time, etc.). Plain Markdown files can also be imported.
+    </p>
+    <p>
+      The notes can be synchronised with various cloud services including Nextcloud, Dropbox, OneDrive, WebDAV or the file system (for example with a network directory). When synchronising the notes, notebooks, tags and other metadata are saved to plain text files which can be easily inspected, backed up and moved around.
+    </p>
+    <p>
+      The application is available for Windows, Linux, macOS, Android and iOS (the terminal app also works on FreeBSD). A Web Clipper, to save web pages and screenshots from your browser, is also available for Firefox and Chrome.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">net.cozic.joplin_desktop.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://joplinapp.org/images/home-top-img.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://joplinapp.org/images/multimedia-notes-img.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://joplinapp.org/images/save-web-img.png</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release version="3.1.20" date="2024-10-22">
+      <description></description>
+    </release>
+    <release version="3.0.15" date="2024-08-21">
+      <description/>
+    </release>
+    <release version="3.0.13" date="2024-07-06">
+      <description/>
+    </release>
+    <release version="3.0.12" date="2024-07-02">
+      <description/>
+    </release>
+    <release version="2.14.22" date="2024-05-22">
+      <description/>
+    </release>
+    <release version="2.14.20" date="2024-03-18"/>
+    <release version="2.14.19" date="2024-03-08"/>
+    <release version="2.14.17" date="2024-03-01"/>
+    <release version="2.13.15" date="2024-01-15"/>
+    <release version="2.13.14" date="2024-01-13"/>
+    <release version="2.13.13" date="2024-01-06"/>
+    <release version="2.13.12" date="2023-12-31"/>
+    <release version="2.13.11" date="2023-12-24"/>
+    <release version="2.13.10" date="2023-12-22"/>
+    <release version="2.13.9" date="2023-12-09"/>
+    <release version="2.13.8" date="2023-12-03"/>
+    <release version="2.12.19" date="2023-10-21"/>
+    <release version="2.12.18" date="2023-09-22"/>
+    <release version="2.12.17" date="2023-09-14"/>
+    <release version="2.12.16" date="2023-09-11"/>
+    <release version="2.12.15" date="2023-08-27"/>
+    <release version="2.11.11" date="2023-06-23"/>
+    <release version="2.10.19" date="2023-05-17"/>
+    <release version="2.10.18" date="2023-05-09"/>
+    <release version="2.9.17" date="2022-12-17"/>
+    <release version="2.8.8" date="2022-06-06"/>
+    <release version="2.7.15" date="2022-03-18"/>
+    <release version="2.7.14" date="2022-03-11"/>
+    <release version="2.7.13" date="2022-02-25"/>
+    <release version="2.7.12" date="2022-02-16"/>
+    <release version="2.7.8" date="2022-01-31"/>
+    <release version="2.7.7" date="2022-01-18"/>
+    <release version="2.7.6" date="2022-01-18"/>
+    <release version="2.6.10" date="2021-12-19"/>
+    <release date="2021-12-17" version="2.6.9"/>
+    <release date="2021-11-08" version="2.5.12"/>
+    <release date="2021-11-01" version="2.5.10"/>
+    <release date="2021-10-31" version="2.5.8"/>
+    <release date="2021-10-13" version="2.4.12"/>
+    <release date="2021-09-29" version="2.4.9"/>
+    <release date="2021-08-18" version="2.3.5"/>
+    <release date="2021-08-11" version="2.2.7"/>
+    <release date="2021-08-10" version="2.2.6"/>
+    <release date="2021-07-19" version="2.1.9"/>
+    <release date="2021-07-03" version="2.1.8"/>
+    <release date="2021-06-27" version="2.1.7"/>
+    <release date="2021-06-16" version="2.0.11"/>
+    <release date="2021-05-11" version="1.8.5"/>
+    <release date="2021-02-06" version="1.7.11"/>
+    <release date="2021-01-22" version="1.6.8"/>
+    <release date="2021-01-17" version="1.6.7"/>
+  </releases>
+  <content_rating type="oars-1.1"/>
+</component>

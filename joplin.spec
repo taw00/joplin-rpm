@@ -38,7 +38,7 @@ Name: joplin
 %define name2 Joplin
 Summary: Notebook Application
 
-%define appid org.joplinapp.joplin
+%define appid org.joplinapp.Joplin
 
 %define name_terminal joplin-terminal
 %define name_desktop joplin-desktop
@@ -58,7 +58,7 @@ Version: %{vermajor}.%{verminor}
 # RELEASE
 %define _pkgrel 3
 %if %{isTestBuild}
-  %define _pkgrel 2.1
+  %define _pkgrel 2.2
 %endif
 
 # MINORBUMP
@@ -306,26 +306,6 @@ install -d %{buildroot}%{installtree}/desktop
 install -d %{buildroot}%{_datadir}/applications
 install -d %{buildroot}%{_metainfodir}
 
-echo "\
-[Desktop Entry]
-Type=Application
-Name=Joplin
-GenericName=Secure Notebook
-Comment=A free and secure notebook management application
-Exec=%{name_desktop}
-Icon=%{appid}
-Terminal=false
-# https://specifications.freedesktop.org/menu-spec/latest/apa.html
-Categories=Network;Office;TextEditor;WordProcessor;X-Markdown;X-KaTeX;X-Mermaid;X-Fountain;X-E2EE;
-Keywords=secure;security;privacy;private;notes;bookmarks;collaborate;research;
-StartupWMClass=Joplin
-StartupNotify=true
-
-# .desktop spec: https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/
-# .metainfo.xml spec: https://www.freedesktop.org/software/appstream/docs/
-
-" > %{buildroot}%{_datadir}/applications/%{appid}.desktop
-
 # icons
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/hicolor-64-%{appid}.png  %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{appid}.png
 install -D -m644 -p %{sourcetree_contrib}/from-upstream/128x128.png               %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{appid}.png
@@ -340,6 +320,7 @@ install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-256-%{appid
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-512-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-scalable-%{appid}.svg %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{appid}.svg
 
+install -D -m644 -p %{sourcetree_contrib}/%{appid}.desktop %{buildroot}%{_datadir}/applications/%{appid}.desktop
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{appid}.desktop
 install -D -m644 -p %{sourcetree_contrib}/%{appid}.metainfo.xml %{buildroot}%{_metainfodir}/%{appid}.metainfo.xml
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
@@ -408,10 +389,16 @@ umask 007
 
 %changelog
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-3.rp.taw
+* Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.2.rp.taw
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.1.rp.taw
   - desktop is built from appimage repackage only now and therefore  
     all of the build-from-source scripting has been stripped out.  
     We still attempt to build the terminal application.
+  - moved .desktop file creation out of the spec file and into a static file  
+    in the contrib tarball
+  - appid was org.joplinapp.joplin and it is now org.joplin.Joplin
+  - org.joplinapp.Joplin.desktop and org.joplinapp.Joplin.metainfo.xml  
+    updated to better meet the appstream and desktop application spec
 
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.rp.taw
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-1.1.rp.taw
