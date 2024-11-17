@@ -307,16 +307,17 @@ install -d %{buildroot}%{_datadir}/applications
 install -d %{buildroot}%{_metainfodir}
 
 # icons
-install -D -m644 -p %{sourcetree_contrib}/from-upstream/128x128.png               %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/from-upstream/256x256.png               %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/from-upstream/512x512.png               %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/from-upstream/JoplinIcon.svg           %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/hicolor-64.png    %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{appid}.png
+install -D -m644 -p    %{sourcetree_contrib}/from-upstream/128x128.png  %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{appid}.png
+install -D -m644 -p    %{sourcetree_contrib}/from-upstream/256x256.png  %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{appid}.png
+install -D -m644 -p    %{sourcetree_contrib}/from-upstream/512x512.png  %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/from-upstream/JoplinIcon.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
 
 # icons
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-64.png           %{buildroot}%{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-128.png        %{buildroot}%{_datadir}/icons/HighContrast/128x128/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-256.png        %{buildroot}%{_datadir}/icons/HighContrast/256x256/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-512.png        %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/highcontrast-64.png     %{buildroot}%{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
+install -D -m644 -p      %{sourcetree_contrib}/desktop-icons/highcontrast-128.png   %{buildroot}%{_datadir}/icons/HighContrast/128x128/apps/%{appid}.png
+install -D -m644 -p      %{sourcetree_contrib}/desktop-icons/highcontrast-256.png   %{buildroot}%{_datadir}/icons/HighContrast/256x256/apps/%{appid}.png
+install -D -m644 -p      %{sourcetree_contrib}/desktop-icons/highcontrast-512.png   %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-scalable.svg  %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{appid}.svg
 
 install -D -m644 -p %{sourcetree_contrib}/%{appid}.desktop %{buildroot}%{_datadir}/applications/%{appid}.desktop
