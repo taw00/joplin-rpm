@@ -2,18 +2,21 @@
 <component type="desktop-application">
   <id>org.joplinapp.joplin.desktop</id>
   <!-- please note that the correct ID tag value should be just the appid
-      https://bugzilla.redhat.com/show_bug.cgi?id=1860130
+       https://bugzilla.redhat.com/show_bug.cgi?id=1860130
+       Also note, we use 'translate="no"' all over the place since, for now,
+       this metadata is not translated, but appstream is hostile to us not
+       being specific about that.
   <id>org.joplinapp.joplin</id>
   -->
 
-  <name>Joplin</name>
-  <summary>A free and secure notebook application</summary>
+  <name translate="no">Joplin</name>
+  <summary translate="no">A free and secure notebook application</summary>
 
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
   <content_rating type="oars-1.1" />
 
-  <description>
+  <description translate="no">
     <p>Joplin is a free and secure notebook application. Organization is easy using
 notebooks and tags which can all be synchronized between your various devices.
 The notes are can be searched, copied, tagged, and modified either from the

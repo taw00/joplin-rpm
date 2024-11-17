@@ -26,7 +26,11 @@
 %global __strip /bin/true
 
 %define isTestBuild 1
-%define buildTerminalApp 0
+
+# Note. We have not tested a build from source in a very long time. Therefore,
+# do not turn isRepackageBuild off.
+%define isRepackageBuild 1
+%define buildTerminalApp 1
 
 %define upgradeNPM 1
 %define useNodeSourceReposEL 0
@@ -56,9 +60,9 @@ Summary: Notebook Application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 3
+%define _pkgrel 2
 %if %{isTestBuild}
-  %define _pkgrel 2.1
+  %define _pkgrel 1.1
 %endif
 
 # MINORBUMP
@@ -71,12 +75,21 @@ Version: %{vermajor}.%{verminor}
 # note, rp = repackaged
 %define snapinfo highlyexperimental
 %if ! %{isTestBuild}
-  %define snapinfo rp
+  %undefine snapinfo
+  %if %{isRepackageBuild}
+    %define snapinfo rp
+  %endif
 %else
-  %define snapinfo testing.rp
+  %define snapinfo testing
+  %if %{isRepackageBuild}
+    %define snapinfo testing.rp
+  %endif
 %endif
 %if 0%{?buildQualifier:1}
-  %define snapinfo %{buildQualifier}.rp
+  %define snapinfo %{buildQualifier}
+  %if %{isRepackageBuild}
+    %define snapinfo %{buildQualifier}.rp
+  %endif
 %endif
 
 # pkgrel will also be defined, snapinfo and minorbump may not be
@@ -131,12 +144,22 @@ ExclusiveArch: x86_64
 # /usr/share/org.joplinapp.joplin
 %define installtree %{_datadir}/%{appid}
 
+%if %{isRepackageBuild}
 Source0: https://github.com/laurent22/joplin/releases/download/v%{version}/%{appimagename}
+%else
+Source0: https://github.com/laurent22/joplin/archive/v%{version}/%{sourcetree}.tar.gz
+%endif
+
 Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcearchive_contrib}.tar.gz
 
 # See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
 Suggests: libcanberra-gtk3
 Requires: libnotify
+
+###DEPRECATED###%%if ! %%{isRepackageBuild} || %%{buildTerminalApp}
+###DEPRECATED#### Forcing default python version for builds here because something somewhere uses python2?
+###DEPRECATED###%%global __python %%{python2}
+###DEPRECATED###%%endif
 
 # Dependency calculations
 # Exclusions from provides and requires. _from values excludes from
@@ -168,6 +191,103 @@ BuildRequires: libappstream-glib
 BuildRequires: libappstream-glib
 %endif
 
+
+# BUILDREQUIRES IF BUILT FROM SOURCE
+%if ! %{isRepackageBuild}
+BuildRequires: libsecret-devel
+BuildRequires: git rsync grep
+# provided by coreutils RPM
+#BuildRequires: /usr/bin/readlink /usr/bin/dirname
+
+# OPENSUSE
+%if 0%{?suse_version:1}
+BuildRequires: ca-certificates-cacert ca-certificates-mozilla ca-certificates
+BuildRequires: gcc-c++
+# this is ugly and wrong. but it works.
+BuildRequires: /usr/bin/python
+
+# OPENSUSE LEAP
+%if 0%{?sle_version}
+%if %{useNodeSourceReposLEAP}
+BuildRequires: nodejs >= 2:12
+%else
+BuildRequires: npm
+#BuildRequires: nodejs npm
+%endif
+
+# OPENSUSE TUMBLEWEED
+%else
+%if %{useNodeSourceReposTW}
+BuildRequires: nodejs >= 2:12
+%else
+BuildRequires: npm
+#BuildRequires: nodejs npm
+%endif
+##BuildRequires: nodejs10 npm10 nodejs10-devel nodejs-common
+##BuildRequires: nodejs14 npm14 nodejs14-devel nodejs-common
+##BuildRequires: nodejs16 npm16 nodejs16-devel nodejs-common
+#BuildRequires: nodejs npm nodejs-devel nodejs-common
+%endif
+%endif
+
+# CENTOS / RHEL
+# All CentOS and EL may require upstream nodesource repos. This
+# is supplied by adding the appropriate repo to each OS setting
+# in COPR (EL7 always needs this set).
+#     https://rpm.nodesource.com/pub_16.x/el/$releasever/$basearch
+# EL7 is too far behind on its available nodejs. Therefore we pull
+# from upstream for the build. Add this repos to mock and COPR.
+#     https://rpm.nodesource.com/pub_16.x/el/$releasever/$basearch
+#     In the past, this repo was also included: https://dl.yarnpkg.com/rpm/
+# EL8's default nodejs is v10. We need at least v12 which is provided in the
+# nodejs 12 module. You have to enable the module in COPR in the settings for
+# EL8: nodejs:12
+# See also https://docs.fedoraproject.org/en-US/modularity/installing-modules/
+# This is the equivalent of doing sudo dnf module enable nodejs:12 at the
+# commandline. I do not know a way of specifying this in the .spec file.
+%if 0%{?rhel:1}
+BuildRequires: gcc-c++
+%if 0%{?rhel} == 7 || %{useNodeSourceReposEL}
+BuildRequires: nodejs >= 2:12
+%else
+BuildRequires: nodejs npm
+%endif
+
+# EL7 - build no longer supported
+%if 0%{?rhel} == 7
+BuildRequires: python
+
+# EL8
+%else
+%if 0%{?rhel} == 8
+BuildRequires: python3
+
+# EL9+
+%else
+%if 0%{?rhel} > 8
+BuildRequires: python
+
+%endif
+%endif
+%endif
+%endif
+
+# FEDORA
+%if 0%{?fedora:1}
+BuildRequires: gcc-c++
+BuildRequires: python2.7
+%if %{useNodeSourceReposFC}
+BuildRequires: nodejs >= 2:12
+%else
+#BuildRequires: npm
+BuildRequires: npm
+BuildRequires: nodejs-devel >= 16
+%endif
+%endif
+
+# [ENDIF] BUILDREQUIRES IF BUILT FROM SOURCE
+%endif
+
 # IF BUILDING TERMINAL APP
 # Tested on Fedora 35+ only so far
 %if %{buildTerminalApp}
@@ -178,6 +298,9 @@ BuildRequires: npm nodejs
 %if %{isTestBuild}
 BuildRequires: tree vim-enhanced less dnf iputils
 %endif
+
+
+
 
 %description
 Joplin is a secure notebook application designed to organize your notes,
@@ -197,6 +320,7 @@ Mirroring to your devices and redundancy is achieved by a simple—and
 optionally end-to-end encrypted—synchronization to various cloud services
 including Joplin Cloud, Nextcloud, Dropbox, Onedrive, WebDAV, or your local or
 network-accessible file system.
+
 
 
 
@@ -239,21 +363,161 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 
 # Unarchived source tree structure (extracted in {_builddir})
 #   {sourceroot}            joplin-2.10
-#    \_{sourcetree}          \_joplin-2.10.17 (for commandline app)
+#    \_{sourcetree}          \_joplin-2.10.17
+#    \_{sourcetree_contrib}  \_joplin-contrib
+#   ...or if prebuilt...
 #    \_{appimagename}        \_Joplin-2.10.17.AppImage
 #    \_{sourcetree_contrib}  \_joplin-contrib
 
 # PREP STAGE FOR BUILD FROM PRE-BUILT BINARY
+%if %{isRepackageBuild}
 # Source0 (binary)
 mv %{SOURCE0} %{_builddir}/%{sourceroot}/%{appimagename}
 # Source1 (contrib)
 %setup -q -T -D -a 1 -n %{sourceroot}
+
+# else PREP STAGE FOR BUILD FROM SOURCE
+%else
+# Source0 (src) and Source1 (contrib)
+%setup -q -T -D -a 0 -n %{sourceroot}
+%setup -q -T -D -a 1 -n %{sourceroot}
+
+# CENTOS / RHEL (EL8) -- special case python
+%if 0%{?rhel:1}
+  %if 0%{?rhel} == 8
+    # In order to build the SQLite bits, a version of python must be
+    # addressable as python from the commandline. Python3 on EL8 is
+    # addessed as /usr/bin/python3.  Python got  bit crazy, but is
+    # settling down with the end of python2 as of January 2020. Read
+    # more about python and how it is packaged here:
+    # https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
+    mkdir -p $HOME/.local/bin
+    if [ ! -e "$HOME/.local/bin/python" ] ;  then
+      ln -s /usr/bin/python3 $HOME/.local/bin/python
+    fi
+  %endif
+%endif
+
+# upgrade? from npm 6 to 7+ because upstream uses
+# "lockfileVersion": 2 in all package-lock.json files theoretically,
+# lockfileVersion 2 is backwards compatable:
+# https://docs.npmjs.com/cli/v7/configuring-npm/package-lock-json
+npm --version
+%if %{upgradeNPM}
+#npm install npm@7.19.1
+npm install npm@latest
+npm install node-gyp@latest
+node_modules/.bin/npm --version
+%endif
+
+# [END] PREP STAGE FOR BUILD FROM SOURCE
+%endif
 
 
 
 %build
 # Build section starts us in directory {_builddir}/{sourceroot}
 echo "======== build stage ========"
+
+#
+# DESKTOP APP BUILD ==========
+#
+# BUILD FROM PRE-BUILT BINARY
+%if %{isRepackageBuild}
+# STUB -- may be a no-op
+
+# BUILD FROM SOURCE
+%else
+cd %{sourcetree}
+
+# FEDORA
+%if 0%{?fedora:1}
+%if 0%{?fedora} >= 29
+%if 0%{?fedora} >= 33
+  echo "\
+# forcing python2 here by the Joplin RPM specfile build script
+# this can be removed after build is complete
+PYTHON=%{python2}" >> ~/.bashrc
+  source ~/.bashrc
+%endif
+# Fedora 28 or older
+%else
+  # NOTE: This is here for posterity.
+  #       We are no longer building for Fedora 28 and older and I
+  #       don't think that yarn is used anymore.
+  %if %{upgradeNPM}
+    ../node_modules/.bin/npm install yarn
+  %else
+    npm install yarn
+  %endif
+  _pwd=$(pwd)
+  echo "======== Mapping yarn so it can be found in the path"
+  mkdir -p $HOME/.local/bin
+  if [ ! -e "$HOME/.local/bin/yarn" ] ;  then
+    ln -s ${_pwd}/node_modules/.bin/yarn $HOME/.local/bin/yarn
+  fi
+
+  yarn add electron-builder --dev
+  yarn add electron-packager --dev
+%endif
+%endif
+
+# CENTOS / RHEL (EL7 and EL8)
+%if 0%{?rhel:1}
+%if 0%{?rhel} >= 8
+#  ../node_modules/.bin/npm update
+#  ../node_modules/.bin/npm install node-gyp
+#  ../node_modules/.bin/npm install node-pre-gyp
+%endif
+%endif
+
+echo "
+###### NOTE: You may see the build gripe about a husky build failure
+######       because a .git can't be found. Ignore it.
+"
+
+### FINALLY, BUILD IT!
+%if %{upgradeNPM}
+  PYTHON=%{python2} ../node_modules/.bin/npm install --legacy-peer-deps
+%else
+  npm install --legacy-peer-deps
+%endif
+
+cd packages/app-desktop
+%if %{upgradeNPM}
+  PYTHON=%{python2} ../../../node_modules/.bin/npm run dist
+%else
+  npm run dist
+%endif
+cd ../..
+
+# experimenting. trying to get rid of all those error messages in the
+# developmental console in the UI
+#%%if 0%%{?nativebuild:1}
+#cd packages
+#mkdir app-desktop/dist/linux-unpacked/resources/app.asar.unpacked/node_modules/\@joplin
+#cp -a lib app-desktop/dist/linux-unpacked/resources/app.asar.unpacked/node_modules/\@joplin/
+#cd ..
+#%%endif
+
+### CLEANUP
+%if 0%{?nativebuild:1}
+cd packages/app-desktop/dist/linux-unpacked/resources
+# 7zip-bin and wrong architectures
+# For whatever reason, we end up with several 7zip-bin architectures.
+# They trigger incorrect and unmeetable dependencies. So we strip out
+# the irrelevant ones.
+# Question: Do we even need 7zip-bin at all? Probably(?), so leaving it in.
+%ifarch x86_64 amd64 aarch64
+rm -rf $(find app*/node_modules/7zip-bin-linux/* -type d | grep -v x64)
+%else
+rm -rf $(find app*/node_modules/7zip-bin-linux/* -type d | grep -v ia32)
+%endif
+cd ../../../../..
+%endif
+
+# [END] BUILD FROM SOURCE
+%endif
 
 #
 # TERMINAL APP BUILD ==========
@@ -270,12 +534,15 @@ echo "======== build stage ========"
 
 
 %check
-echo "======== check stage (no-op) ========"
+#%%if ! %%{isRepackageBuild} || %%{buildTerminalApp}
+%if ! %{isRepackageBuild}
+  %{__nodejs} -e 'require("./")'
+%endif
+
 
 
 
 %install
-echo "======== install stage ========"
 # Install section starts us in directory {_builddir}/{sourceroot}
 
 # Cheatsheet for some built-in RPM macros:
@@ -333,6 +600,12 @@ install -D -m644 -p %{sourcetree_contrib}/from-upstream/256x256.png             
 install -D -m644 -p %{sourcetree_contrib}/from-upstream/512x512.png               %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
 install -D -m644 -p %{sourcetree_contrib}/from-upstream/JoplinIcon.svg            %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
 
+# repackage RPM builds don't have a sourcetree - so, just do it all from contrib
+#install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/128x128.png               %%{buildroot}%%{_datadir}/icons/hicolor/128x128/apps/%%{appid}.png
+#install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/256x256.png               %%{buildroot}%%{_datadir}/icons/hicolor/256x256/apps/%%{appid}.png
+#install -D -m644 -p %%{sourcetree}/Assets/LinuxIcons/512x512.png               %%{buildroot}%%{_datadir}/icons/hicolor/512x512/apps/%%{appid}.png
+#install -D -m644 -p %%{sourcetree}/Assets/JoplinIcon.svg                      %%{buildroot}%%{_datadir}/icons/hicolor/scalable/apps/%%{appid}.svg
+
 # icons
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-64-%{appid}.png          %{buildroot}%{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-128-%{appid}.png       %{buildroot}%{_datadir}/icons/HighContrast/128x128/apps/%{appid}.png
@@ -345,8 +618,26 @@ install -D -m644 -p %{sourcetree_contrib}/%{appid}.metainfo.xml %{buildroot}%{_m
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 
 # INSTALL BUILD FROM PRE-BUILT BINARY
+%if %{isRepackageBuild}
 # appimages can be large ... mv'ing is more efficient than installing
 mv -v %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
+
+# else INSTALL BUILD FROM SOURCE
+%else
+# Native build
+%if 0%{?nativebuild:1}
+install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/linux-unpacked/\@joplinapp-desktop %{buildroot}%{installtree}/desktop/%{name_desktop}
+rm %{sourcetree}/packages/app-desktop/dist/linux-unpacked/\@joplinapp-desktop
+cp -a %{sourcetree}/packages/app-desktop/dist/linux-unpacked/* %{buildroot}%{installtree}/desktop
+ln -s %{installtree}/desktop/%{name_desktop} %{buildroot}%{_bindir}/%{name_desktop}
+
+# Non-native alternative build: package the source-built AppImage instead
+%else
+install -D -m755 -p %{sourcetree}/packages/app-desktop/dist/%{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
+%endif
+
+# [END] INSTALL BUILD FROM SOURCE
+%endif
 
 # INSTALL JOPLIN TERMINAL
 # Tested on Fedora 35+ only so far
@@ -357,22 +648,32 @@ mv -v %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
 
 
 
+
 %files
 %defattr(-,root,root,-)
 
 %license %{sourcetree_contrib}/from-upstream/LICENSE
 %doc     %{sourcetree_contrib}/from-upstream/LICENSE.electron.txt
 %doc     %{sourcetree_contrib}/from-upstream/LICENSES.chromium.html
+# repackage RPM builds don't have a sourcetree, so we just pull from contrib
+#%%license %%{sourcetree}/LICENSE
+#%%doc %%{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSE.electron.txt
+#%%doc %%{sourcetree}/packages/app-desktop/dist/linux-unpacked/LICENSES.chromium.html
 
 # DESKTOP
+%if %{isRepackageBuild}
 %attr (755, root, root) %{_bindir}/%{name_desktop}
-%{installtree}
 
-# TERMINAL
-%if %{buildTerminalApp}
-%attr (755, root, root) %{installtree}/terminal/bin/joplin
-%{_bindir}/%{name_terminal}
+%else
+%if 0%{?nativebuild:1}
+%attr (755, root, root) %{installtree}/desktop/%{name_desktop}
+
+%else
+%attr (755, root, root) %{_bindir}/%{name_desktop}
 %endif
+%endif
+
+%{installtree}
 
 # desktop environment metadata
 %{_datadir}/applications/%{appid}.desktop
@@ -389,6 +690,11 @@ mv -v %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
  %{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
 %{_datadir}/icons/HighContrast/scalable/apps/%{appid}.svg
 
+# TERMINAL
+%if %{buildTerminalApp}
+%attr (755, root, root) %{installtree}/terminal/bin/joplin
+%{_bindir}/%{name_terminal}
+%endif
 
 
 
@@ -407,12 +713,6 @@ umask 007
 
 
 %changelog
-* Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-3.rp.taw
-* Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.1.rp.taw
-  - desktop is built from appimage repackage only now and therefore  
-    all of the build-from-source scripting has been stripped out.  
-    We still attempt to build the terminal application.
-
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.rp.taw
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-1.1.rp.taw
   - fixing some appstream metainfo deficiencies (validate-strict)
