@@ -56,9 +56,9 @@ Summary: Notebook Application
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 3
+%define _pkgrel 4
 %if %{isTestBuild}
-  %define _pkgrel 2.2
+  %define _pkgrel 3.1
 %endif
 
 # MINORBUMP
@@ -372,13 +372,10 @@ mv -v %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
 
 
 
-
 %post
 umask 007
 #/sbin/ldconfig > /dev/null 2>&1
 /usr/bin/update-desktop-database &> /dev/null || :
-
-
 
 %postun
 umask 007
@@ -388,6 +385,10 @@ umask 007
 
 
 %changelog
+* Sun Nov 17 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-3.1.testing.rp.taw
+  - still trying to get the appstream stuff right. Still not showing
+    up in Gnome Software Center in Fedora 41 (appstream 1.0).
+
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-3.rp.taw
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.2.rp.taw
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.1.rp.taw
