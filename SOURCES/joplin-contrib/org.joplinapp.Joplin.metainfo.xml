@@ -11,6 +11,7 @@
   <summary>Open-source note-taking and to-do application</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
+  <content_rating type="oars-1.1" />
 
   <developer id="net.cozic">
       <name>Laurent Cozic</name>
@@ -351,7 +352,6 @@
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.140</url>
     </release>
   </releases>
-  <content_rating type="oars-1.1" />
   <!-- .desktop spec: https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/ -->
   <!-- .metainfo.xml spec: https://www.freedesktop.org/software/appstream/docs/ -->
 </component>
