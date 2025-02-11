@@ -51,14 +51,14 @@ Summary: Notebook Application
 %undefine buildQualifier
 
 # VERSION
-%define vermajor 3.1
-%define verminor 24
+%define vermajor 3.2
+%define verminor 12
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-%define _pkgrel 4
+%define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 3.1
+  %define _pkgrel 0.1
 %endif
 
 # MINORBUMP
@@ -385,13 +385,17 @@ umask 007
 
 
 %changelog
+* Mon Feb 10 2025 Todd Warner <t0dd_at_protonmail.com> 3.2.12-1
+* Mon Feb 10 2025 Todd Warner <t0dd_at_protonmail.com> 3.2.12-0.1
+  - 3.2.12
+
 * Sun Nov 17 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-3.1.testing.rp.taw
   - still trying to get the appstream stuff right. Still not showing
     up in Gnome Software Center in Fedora 41 (appstream 1.0).
 
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-3.rp.taw
-* Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.2.rp.taw
-* Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.1.rp.taw
+* Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.2.testing.rp.taw
+* Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.1.testing.rp.taw
   - desktop is built from appimage repackage only now and therefore  
     all of the build-from-source scripting has been stripped out.  
     We still attempt to build the terminal application.
@@ -402,127 +406,127 @@ umask 007
     updated to better meet the appstream and desktop application spec
 
 * Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-2.rp.taw
-* Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-1.1.rp.taw
+* Sat Nov 16 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-1.1.testing.rp.taw
   - fixing some appstream metainfo deficiencies (validate-strict)
 
 * Sat Nov 9 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-1.rp.taw
-* Sat Nov 9 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-0.1.rp.taw
+* Sat Nov 9 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.24-0.1.testing.rp.taw
   - 3.1.24
 
 * Fri Nov 8 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.23-1.rp.taw
-* Fri Nov 8 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.23-0.1.rp.taw
+* Fri Nov 8 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.23-0.1.testing.rp.taw
   - 3.1.23
 
 * Wed Nov 6 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.22-1.rp.taw
-* Wed Nov 6 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.22-0.1.rp.taw
+* Wed Nov 6 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.22-0.1.testing.rp.taw
   - 3.1.22
 
 * Sun Oct 27 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.20-1.rp.taw
-* Sun Oct 27 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.20-0.1.rp.taw
+* Sun Oct 27 2024 Todd Warner <t0dd_at_protonmail.com> 3.1.20-0.1.testing.rp.taw
   - 3.1.20
 
 * Thu Aug 22 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.15-1.rp.taw
-* Thu Aug 22 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.15-0.1.rp.taw
+* Thu Aug 22 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.15-0.1.testing.rp.taw
   - 3.0.15
 
 * Tue Jul 30 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.14-1.rp.taw
-* Tue Jul 30 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.14-0.1.rp.taw
+* Tue Jul 30 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.14-0.1.testing.rp.taw
   - 3.0.14
 
 * Sun Jul 07 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.13-1.rp.taw
-* Sun Jul 07 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.13-0.1.rp.taw
+* Sun Jul 07 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.13-0.1.testing.rp.taw
   - 3.0.13
 
 * Tue Jul 02 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.12-1.rp.taw
-* Tue Jul 02 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.12-0.1.rp.taw
+* Tue Jul 02 2024 Todd Warner <t0dd_at_protonmail.com> 3.0.12-0.1.testing.rp.taw
   - 3.0.12
   - https://discourse.joplinapp.org/t/whats-new-in-joplin-3-0/38867/1
   - spec file: fixed some bogus dates
 
 * Wed May 22 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.22-1.rp.taw
-* Wed May 22 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.22-0.1.rp.taw
+* Wed May 22 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.22-0.1.testing.rp.taw
   - 2.14.22 - this fixes a security vulnerability:  
     https://github.com/laurent22/joplin/releases/tag/v2.14.22
 
 * Sun Apr 21 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-2.rp.taw
-* Sun Apr 21 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-1.1.rp.taw
+* Sun Apr 21 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-1.1.testing.rp.taw
   - bumping libcanberra from gtk2 to gtk3 and hoping this solves a SUSE  
     dependency issue.
   - changing the requires to a suggests because a strict need for it is not  
     correct
 
 * Wed Apr 10 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-1.rp.taw
-* Wed Apr 10 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-0.1.rp.taw
+* Wed Apr 10 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.20-0.1.testing.rp.taw
   - 2.14.20
 
 * Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-2.rp.taw
-* Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-1.1.rp.taw
+* Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-1.1.testing.rp.taw
   - Removed cruft that made its way into the contrib tarball.
 
 * Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-1.rp.taw
-* Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-0.1.rp.taw
+* Mon Mar 18 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.19-0.1.testing.rp.taw
   - 2.14.19
 
 * Sat Mar 2 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.17-1.rp.taw
-* Sat Mar 2 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.17-0.1.rp.taw
+* Sat Mar 2 2024 Todd Warner <t0dd_at_protonmail.com> 2.14.17-0.1.testing.rp.taw
   - 2.14.17
 
 * Fri Jan 12 2024 Todd Warner <t0dd_at_protonmail.com> 2.13.13-1.rp.taw
-* Fri Jan 12 2024 Todd Warner <t0dd_at_protonmail.com> 2.13.13-0.1.rp.taw
+* Fri Jan 12 2024 Todd Warner <t0dd_at_protonmail.com> 2.13.13-0.1.testing.rp.taw
   - 2.13.13
 
 * Tue Jan 02 2024 Todd Warner <t0dd_at_protonmail.com> 2.13.12-1.rp.taw
-* Tue Jan 02 2024 Todd Warner <t0dd_at_protonmail.com> 2.13.12-0.1.rp.taw
+* Tue Jan 02 2024 Todd Warner <t0dd_at_protonmail.com> 2.13.12-0.1.testing.rp.taw
   - 2.13.12
 
 * Tue Dec 26 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.11-1.rp.taw
-* Tue Dec 26 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.11-0.1.rp.taw
+* Tue Dec 26 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.11-0.1.testing.rp.taw
   - 2.13.11
 
 * Wed Dec 13 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.9-1.rp.taw
-* Wed Dec 13 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.9-0.1.rp.taw
+* Wed Dec 13 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.9-0.1.testing.rp.taw
   - 2.13.9
 
 * Wed Dec 6 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.8-1.rp.taw
-* Wed Dec 6 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.8-0.1.rp.taw
+* Wed Dec 6 2023 Todd Warner <t0dd_at_protonmail.com> 2.13.8-0.1.testing.rp.taw
   - 2.13.8
 
 * Wed Oct 25 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.19-1.rp.taw
-* Wed Oct 25 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.19-0.1.rp.taw
+* Wed Oct 25 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.19-0.1.testing.rp.taw
   - 2.12.19
 
 * Wed Sep 27 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.18-1.rp.taw
-* Wed Sep 27 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.18-0.1.rp.taw
+* Wed Sep 27 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.18-0.1.testing.rp.taw
   - 2.12.18
 
 * Fri Sep 15 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.17-1.rp.taw
-* Fri Sep 15 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.17-0.1.rp.taw
+* Fri Sep 15 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.17-0.1.testing.rp.taw
   - 2.12.17
 
 * Wed Sep 6 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.15-1.rp.taw
-* Wed Sep 6 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.15-0.1.rp.taw
+* Wed Sep 6 2023 Todd Warner <t0dd_at_protonmail.com> 2.12.15-0.1.testing.rp.taw
   - 2.12.15
 
 * Mon Jun 26 2023 Todd Warner <t0dd_at_protonmail.com> 2.11.11-1.rp.taw
-* Mon Jun 26 2023 Todd Warner <t0dd_at_protonmail.com> 2.11.11-0.1.rp.taw
+* Mon Jun 26 2023 Todd Warner <t0dd_at_protonmail.com> 2.11.11-0.1.testing.rp.taw
   - 2.11.11
 
 * Thu May 18 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.19-1.rp.taw
-* Thu May 18 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.19-0.1.rp.taw
+* Thu May 18 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.19-0.1.testing.rp.taw
   - 2.10.19
 
 * Mon May 08 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.17-1.rp.taw
-* Mon May 08 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.17-0.1.rp.taw
+* Mon May 08 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.17-0.1.testing.rp.taw
   - 2.10.17
   - the source archive for contrib keeps the version in it's filename
   - the source tree for contrib drops the version from the folder name
 
 * Tue Apr 25 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.13-1.rp.taw
-* Tue Apr 25 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.13-0.1.rp.taw
+* Tue Apr 25 2023 Todd Warner <t0dd_at_protonmail.com> 2.10.13-0.1.testing.rp.taw
   - 2.10.13
 
 * Tue Nov 15 2022 Todd Warner <t0dd_at_protonmail.com> 2.9.17-1.rp.taw
-* Tue Nov 15 2022 Todd Warner <t0dd_at_protonmail.com> 2.9.17-0.1.rp.taw
+* Tue Nov 15 2022 Todd Warner <t0dd_at_protonmail.com> 2.9.17-0.1.testing.rp.taw
   - native builds still unsuccessful
 
 * Sat Sep 3 2022 Todd Warner <t0dd_at_protonmail.com> 2.8.8-3.1.testing.taw

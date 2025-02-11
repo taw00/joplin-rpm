@@ -61,6 +61,20 @@
   </provides>
 
   <releases>
+    <release version="3.2.12" date="2025-01-23">
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.12</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.11</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.10</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.9</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.8</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.7</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.6</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.5</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.4</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.3</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.2</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.2.1</url>
+    </release>
     <release version="3.1.24" date="2024-11-09">
       <url>https://github.com/laurent22/joplin/releases/tag/v3.1.24</url>
     </release>
