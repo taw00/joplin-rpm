@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017 Laurent Cozic -->
 <component type="desktop-application">
-  <!-- Copyright 2017 Laurent Cozic -->
   <id>org.joplinapp.Joplin</id>
   <launchable type="desktop-id">org.joplinapp.Joplin.desktop</launchable>
-
   <name>Joplin</name>
   <summary>Open-source note-taking and to-do application</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
   <content_rating type="oars-1.1" />
-
   <developer id="net.cozic">
       <name>Laurent Cozic</name>
   </developer>
-
   <url type="homepage">https://joplinapp.org/</url>
   <url type="donation">https://joplinapp.org/donate/</url>
   <url type="bugtracker">https://github.com/laurent22/joplin/issues</url>
   <url type="faq">https://joplinapp.org/faq/</url>
   <url type="help">https://discourse.joplinapp.org/</url>
-
-  <!-- for this package build -->
+  <!-- contact info for this package build -->
   <update_contact>t0dd_AT_protonmail.com</update_contact>
   <custom>
       <value key="package_maintainer">Todd Warner</value>
       <value key="package_maintainer_email">t0dd_AT_protonmail.com</value>
       <value key="package_bugtracker">https://github.com/taw00/joplin-rpm/issues</value>
   </custom>
-
   <description translate="no">
     <p>
       Joplin is an open-source note-taking and to-do application which can handle a large number of notes organised into notebooks. The notes are searchable, can be copied, tagged and modified either from the application directly or from your own text editor. The notes are in Markdown format.
@@ -42,7 +37,6 @@
       This application is available for Windows, Linux, macOS, Android and iOS (the terminal app also works on FreeBSD). A Web Clipper browser addon, to save web pages and screenshots from your browser, is also available for Firefox and Chrome.
     </p>
   </description>
-
   <screenshots>
     <screenshot type="default">
       <image>https://joplinapp.org/images/home-top-img.png</image>
@@ -54,12 +48,10 @@
       <image>https://joplinapp.org/images/save-web-img.png</image>
     </screenshot>
   </screenshots>
-
   <provides>
     <id>org.joplinapp.Joplin.desktop</id>
     <binary>joplin-desktop</binary>
   </provides>
-
   <releases>
     <release version="3.3.10" date="2025-05-02">
       <url>https://github.com/laurent22/joplin/releases/tag/v3.3.10</url>
@@ -376,6 +368,7 @@
       <url>https://github.com/laurent22/joplin/releases/tag/v1.0.140</url>
     </release>
   </releases>
-  <!-- .desktop spec: https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/ -->
-  <!-- .metainfo.xml spec: https://www.freedesktop.org/software/appstream/docs/ -->
 </component>
+<!-- .desktop spec: https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/ -->
+<!-- .metainfo.xml spec: https://www.freedesktop.org/software/appstream/docs/ -->
+
