@@ -25,7 +25,7 @@
 # https://www.linuxquestions.org/questions/red-hat-31/prevent-strip-when-building-an-rpm-package-591099/
 %global __strip /bin/true
 
-%define isTestBuild 0
+%define isTestBuild 1
 %define buildTerminalApp 0
 
 %define upgradeNPM 1
