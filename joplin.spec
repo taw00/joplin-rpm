@@ -25,7 +25,7 @@
 # https://www.linuxquestions.org/questions/red-hat-31/prevent-strip-when-building-an-rpm-package-591099/
 %global __strip /bin/true
 
-%define isTestBuild 1
+%define isTestBuild 0
 %define buildTerminalApp 0
 
 %define upgradeNPM 1
@@ -50,24 +50,28 @@ Summary: Notebook Application
 %define buildQualifier 20190226
 %undefine buildQualifier
 
+# MINORBUMP (added to end of release string)
+%define minorbump taw
+
 # VERSION
+# example: 3.3.12
 %define vermajor 3.3
 %define verminor 12
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
+# example: 3.3.12-1 or 3.3.12-0.1
 %define _pkgrel 1
 %if %{isTestBuild}
   %define _pkgrel 0.1
 %endif
 
-# MINORBUMP
-%define minorbump taw
-
 #
+# FULL RELEASE (version-release) string
 # Build the release string - don't edit this
 #
 
+# example: 3.3.12-1.rp or 3.3.12-0.1.testing.rp
 # note, rp = repackaged
 %define snapinfo highlyexperimental
 %if ! %{isTestBuild}
@@ -79,6 +83,7 @@ Version: %{vermajor}.%{verminor}
   %define snapinfo %{buildQualifier}.rp
 %endif
 
+# example: 3.3.12-1.rp.taw or 3.3.12-0.1.testing.rp.taw
 # pkgrel will also be defined, snapinfo and minorbump may not be
 %define _release %{_pkgrel}
 %if 0%{?snapinfo:1}
