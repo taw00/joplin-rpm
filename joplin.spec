@@ -56,7 +56,7 @@ Summary: Notebook Application
 # VERSION
 # example: 3.3.12
 %define vermajor 3.3
-%define verminor 12
+%define verminor 13
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -164,12 +164,15 @@ Requires: libnotify
 
 BuildRequires: desktop-file-utils
 %if 0%{?suse_version:1}
+Requires: libfuse2
 BuildRequires: appstream-glib
 %endif
 %if 0%{?rhel:1}
+Requires: fuse-libs
 BuildRequires: libappstream-glib
 %endif
 %if 0%{?fedora:1}
+Requires: fuse-libs
 BuildRequires: libappstream-glib
 %endif
 
@@ -390,6 +393,11 @@ umask 007
 
 
 %changelog
+* Wed Jun 18 2025 Todd Warner <t0dd_at_protonmail.com> 3.3.13-1
+* Wed Jun 18 2025 Todd Warner <t0dd_at_protonmail.com> 3.3.13-0.1
+  - 3.3.13
+  - require v2 of the fuse libraries (required for appimages)
+
 * Mon May 19 2025 Todd Warner <t0dd_at_protonmail.com> 3.3.12-1
 * Mon May 19 2025 Todd Warner <t0dd_at_protonmail.com> 3.3.12-0.1
   - 3.3.12
