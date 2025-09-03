@@ -55,8 +55,8 @@ Summary: Notebook Application
 
 # VERSION
 # example: 3.3.12
-%define vermajor 3.3
-%define verminor 13
+%define vermajor 3.4
+%define verminor 10
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -393,6 +393,10 @@ umask 007
 
 
 %changelog
+* Wed Sep 3 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.10-1
+* Wed Sep 3 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.10-0.1
+  - 3.4.10
+
 * Wed Jun 18 2025 Todd Warner <t0dd_at_protonmail.com> 3.3.13-1
 * Wed Jun 18 2025 Todd Warner <t0dd_at_protonmail.com> 3.3.13-0.1
   - 3.3.13
