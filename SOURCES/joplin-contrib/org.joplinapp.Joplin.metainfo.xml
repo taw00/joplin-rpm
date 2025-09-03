@@ -53,6 +53,18 @@
     <binary>joplin-desktop</binary>
   </provides>
   <releases>
+    <release version="3.4.10" date="2025-09-01">
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.4.10</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.4.9</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.4.8</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.4.7</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.4.6</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.4.5</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.4.4</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.4.3</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.4.2</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.4.1</url>
+    </release>
     <release version="3.3.13" date="2025-06-09">
       <url>https://github.com/laurent22/joplin/releases/tag/v3.3.13</url>
     </release>
