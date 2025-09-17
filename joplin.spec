@@ -195,11 +195,10 @@ devices. Notes are can be searched, copied, tagged, and modified either from
 the applications directly or from your own favorite text editor. Notes are
 composed in the ever-popular and familiar markdown format.
 
-Notes can, of course, be imported from any markdown source Notes can also be
+Notes can, of course, be imported from any markdown source. Notes can also be
 imported from Evernote. Import from Evernote includes all associated resources
 (images, attachments, etc) and all metadata (geo-location, update time,
-creation time, etc). Notes can, of course, also be imported from any other
-markdown source.
+creation time, etc).
 
 Mirroring to your devices and redundancy is achieved by a simple—and
 optionally end-to-end encrypted—synchronization to various cloud services
