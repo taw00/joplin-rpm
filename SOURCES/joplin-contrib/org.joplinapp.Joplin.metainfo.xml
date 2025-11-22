@@ -53,6 +53,12 @@
     <binary>joplin-desktop</binary>
   </provides>
   <releases>
+    <release version="3.5.7-prerel" date="2025-11-22">
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.5.7</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.5.6</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.5.5</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.5.4</url>
+    </release>
     <release version="3.4.12" date="2025-09-09">
       <url>https://github.com/laurent22/joplin/releases/tag/v3.4.12</url>
     </release>
