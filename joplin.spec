@@ -170,11 +170,11 @@ Requires: fuse libfuse2
 BuildRequires: appstream-glib
 %endif
 %if 0%{?rhel:1}
-Requires: fuse lib-fuse
+Requires: fuse fuse-libs
 BuildRequires: libappstream-glib
 %endif
 %if 0%{?fedora:1}
-Requires: fuse lib-fuse
+Requires: fuse fuse-libs
 BuildRequires: libappstream-glib
 %endif
 
@@ -397,7 +397,7 @@ umask 007
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.5.7-0.3
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-3
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-2.1
-  - lib-fuse and not just fuse needs to be required
+  - fuse-libs and not just fuse needs to be required
 
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.5.7-0.2
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-2
