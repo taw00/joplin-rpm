@@ -61,9 +61,9 @@ Version: %{vermajor}.%{verminor}
 
 # RELEASE
 # example: 3.3.12-1 or 3.3.12-0.1
-%define _pkgrel 2
+%define _pkgrel 3
 %if %{isTestBuild}
-  %define _pkgrel 1.1
+  %define _pkgrel 2.1
 %endif
 
 #
@@ -166,15 +166,15 @@ BuildRequires: desktop-file-utils
 # Note, past fuse requirement was fuselib2 (suse) and fuse-libs (rhel and fedora)
 # I *think* we now have to include fuse entire
 %if 0%{?suse_version:1}
-Requires: fuse
+Requires: fuse libfuse2
 BuildRequires: appstream-glib
 %endif
 %if 0%{?rhel:1}
-Requires: fuse
+Requires: fuse lib-fuse
 BuildRequires: libappstream-glib
 %endif
 %if 0%{?fedora:1}
-Requires: fuse
+Requires: fuse lib-fuse
 BuildRequires: libappstream-glib
 %endif
 
@@ -394,6 +394,11 @@ umask 007
 
 
 %changelog
+* Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.5.7-0.3
+* Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-3
+* Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-2.1
+  - lib-fuse and not just fuse needs to be required
+
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.5.7-0.2
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-2
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-1.1
