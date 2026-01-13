@@ -54,16 +54,16 @@ Summary: Notebook Application
 %define minorbump taw
 
 # VERSION
-# example: 3.3.12
-%define vermajor 3.4
-%define verminor 12
+# example: 3.5.11
+%define vermajor 3.5
+%define verminor 11
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
-# example: 3.3.12-1 or 3.3.12-0.1
-%define _pkgrel 3
+# example: 3.5.11-1 or 3.5.11-0.1
+%define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 2.1
+  %define _pkgrel 0.1
 %endif
 
 #
@@ -71,7 +71,7 @@ Version: %{vermajor}.%{verminor}
 # Build the release string - don't edit this
 #
 
-# example: 3.3.12-1.rp or 3.3.12-0.1.testing.rp
+# example: 3.5.11-1.rp or 3.5.11-0.1.testing.rp
 # note, rp = repackaged
 %define snapinfo highlyexperimental
 %if ! %{isTestBuild}
@@ -83,7 +83,7 @@ Version: %{vermajor}.%{verminor}
   %define snapinfo %{buildQualifier}.rp
 %endif
 
-# example: 3.3.12-1.rp.taw or 3.3.12-0.1.testing.rp.taw
+# example: 3.5.11-1.rp.taw or 3.5.11-0.1.testing.rp.taw
 # pkgrel will also be defined, snapinfo and minorbump may not be
 %define _release %{_pkgrel}
 %if 0%{?snapinfo:1}
@@ -394,15 +394,23 @@ umask 007
 
 
 %changelog
+* Tue Jan 13 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.11-1
+* Tue Jan 13 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.11-0.1
+  - 3.5.11
+  - https://discourse.joplinapp.org/t/whats-new-in-joplin-3-5
+  - many improvements and fixes in upstream Joplin  
+    in particular resolves longstanding deficiency, https://github.com/laurent22/joplin/issues/13096  
+    and the associated bug, https://github.com/taw00/manuscript-css/issues/7
+
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.5.7-0.3
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-3
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-2.1
-  - fuse-libs and not just fuse needs to be required
+  - both fuse-libs and fuse packages need to be in Requires list
 
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.5.7-0.2
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-2
 * Fri Dec 12 2025 Todd Warner <t0dd_at_protonmail.com> 3.4.12-1.1
-  - fuse and not just fuse libs seems to be required
+  - fuse and not fuse-libs seems to be required (this was a mistake)
 
 * Sat Nov 22 2025 Todd Warner <t0dd_at_protonmail.com> 3.5.7-0.1
   - 3.5.7 pre-release (testing only)
