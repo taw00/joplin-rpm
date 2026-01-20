@@ -53,6 +53,9 @@
     <binary>joplin-desktop</binary>
   </provides>
   <releases>
+    <release version="3.5.12" date="2026-01-17">
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.5.12</url>
+    </release>
     <release version="3.5.11" date="2026-01-12">
       <url>https://discourse.joplinapp.org/t/whats-new-in-joplin-3-5</url>
       <url>https://github.com/laurent22/joplin/releases/tag/v3.5.11</url>
