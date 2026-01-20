@@ -56,14 +56,14 @@ Summary: Notebook Application
 # VERSION
 # example: 3.5.11
 %define vermajor 3.5
-%define verminor 11
+%define verminor 12
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
 # example: 3.5.11-1 or 3.5.11-0.1
-%define _pkgrel 1
+%define _pkgrel 2
 %if %{isTestBuild}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 #
@@ -131,13 +131,15 @@ ExclusiveArch: x86_64
 %define sourceroot %{name}-%{vermajor}
 %define sourcetree %{name}-%{version}
 %define sourcetree_contrib %{name}-contrib
-%define sourcearchive_contrib %{name}-%{vermajor}-contrib
+#%%define sourcearchive_contrib %%{name}-%%{vermajor}-contrib
+%define sourcearchive_contrib %{name}-contrib
 %define appimagename %{name2}-%{version}.AppImage
 # /usr/share/org.joplinapp.joplin
 %define installtree %{_datadir}/%{appid}
 
 Source0: https://github.com/laurent22/joplin/releases/download/v%{version}/%{appimagename}
 Source1: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{sourcearchive_contrib}.tar.gz
+Source2: https://github.com/taw00/joplin-rpm/raw/master/SOURCES/%{appid}.metainfo.xml
 
 # See https://discourse.joplinapp.org/t/dependency-on-canberra/6696
 Suggests: libcanberra-gtk3
@@ -251,12 +253,15 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 #    \_{sourcetree}          \_joplin-2.10.17 (for commandline app)
 #    \_{appimagename}        \_Joplin-2.10.17.AppImage
 #    \_{sourcetree_contrib}  \_joplin-contrib
+#    \_%{appid}.metainfo.xml     \_org.joplinapp.Joplin.metainfo.xml
 
 # PREP STAGE FOR BUILD FROM PRE-BUILT BINARY
 # Source0 (binary)
 mv %{SOURCE0} %{_builddir}/%{sourceroot}/%{appimagename}
 # Source1 (contrib)
 %setup -q -T -D -a 1 -n %{sourceroot}
+# Source2 (metadata file)
+mv %{SOURCE2} %{_builddir}/%{sourceroot}/%{appid}.metainfo.xml
 
 
 
@@ -331,7 +336,7 @@ install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-scalable.sv
 
 install -D -m644 -p %{sourcetree_contrib}/%{appid}.desktop %{buildroot}%{_datadir}/applications/%{appid}.desktop
 desktop-file-validate %{buildroot}%{_datadir}/applications/%{appid}.desktop
-install -D -m644 -p %{sourcetree_contrib}/%{appid}.metainfo.xml %{buildroot}%{_metainfodir}/%{appid}.metainfo.xml
+install -D -m644 -p %{appid}.metainfo.xml %{buildroot}%{_metainfodir}/%{appid}.metainfo.xml
 appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml
 
 # INSTALL BUILD FROM PRE-BUILT BINARY
@@ -394,6 +399,15 @@ umask 007
 
 
 %changelog
+* Mon Jan 19 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.12-2
+* Mon Jan 19 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.12-1.1
+  - pulling the medadata file out of contrib so we make the changes more  
+    efficiently managed (most of the contrib bits never change)
+
+* Mon Jan 19 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.12-1
+* Mon Jan 19 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.12-0.1
+  - 3.5.12
+
 * Tue Jan 13 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.11-1
 * Tue Jan 13 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.11-0.1
   - 3.5.11
