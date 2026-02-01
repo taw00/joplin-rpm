@@ -27,7 +27,7 @@ network-accessible file system. Read more here:
 page](https://github.com/laurent22/joplin). **I maintain all RPM package
 development bits here:** <https://github.com/taw00/joplin-rpm>.
 
-**I can be messaged** at <a href="mailto:t0dd@protonmail.com">t0dd@protonmail.com</a> or as user t0dd in the [Joplin Community Forums](https://discourse.joplinapp.org/).
+**I can be messaged** via this <a href="https://forms.gle/ogCeqcdqNSogYkPU8">Google Form</a> or as user t0dd in the [Joplin Community Forums](https://discourse.joplinapp.org/).
 
 ## TL;DR - I want to install Joplin!
 
