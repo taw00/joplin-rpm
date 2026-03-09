@@ -56,14 +56,14 @@ Summary: Notebook Application
 # VERSION
 # example: 3.5.11
 %define vermajor 3.5
-%define verminor 12
+%define verminor 13
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
 # example: 3.5.11-1 or 3.5.11-0.1
-%define _pkgrel 2
+%define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 #
@@ -399,6 +399,10 @@ umask 007
 
 
 %changelog
+* Mon Mar 9 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.13-1
+* Mon Mar 9 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.13-0.1
+  - 3.5.13
+
 * Mon Jan 19 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.12-2
 * Mon Jan 19 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.12-1.1
   - pulling the medadata file out of contrib so we make the changes more  
