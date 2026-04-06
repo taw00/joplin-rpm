@@ -26,6 +26,7 @@
 %global __strip /bin/true
 
 %define isTestBuild 1
+%define isPreReleaseVersion 1
 %define buildTerminalApp 0
 
 %define upgradeNPM 1
@@ -45,18 +46,13 @@ Summary: Notebook Application
 
 %define nativebuild 1
 
-# Only used if the dev team or the RPM builder includes things like rc3 or the
-# date in the source filename
-%define buildQualifier 20190226
-%undefine buildQualifier
-
 # MINORBUMP (added to end of release string)
 %define minorbump taw
 
 # VERSION
 # example: 3.5.11
-%define vermajor 3.5
-%define verminor 13
+%define vermajor 3.6
+%define verminor 7
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -73,14 +69,19 @@ Version: %{vermajor}.%{verminor}
 
 # example: 3.5.11-1.rp or 3.5.11-0.1.testing.rp
 # note, rp = repackaged
-%define snapinfo highlyexperimental
+%define snapinfo xxx
 %if ! %{isTestBuild}
-  %define snapinfo rp
+  %if ! %{isPreReleaseVersion}
+    %define snapinfo rp
+  %else
+    %define snapinfo prerelease.rp
+  %endif
 %else
-  %define snapinfo testing.rp
-%endif
-%if 0%{?buildQualifier:1}
-  %define snapinfo %{buildQualifier}.rp
+  %if ! %{isPreReleaseVersion}
+    %define snapinfo testing.rp
+  %else
+    %define snapinfo prerelease.testing.rp
+  %endif
 %endif
 
 # example: 3.5.11-1.rp.taw or 3.5.11-0.1.testing.rp.taw
@@ -127,7 +128,6 @@ ExclusiveArch: x86_64
 %define _hardened_build 1
 
 # https://fedoraproject.org/wiki/Packaging:SourceURL
-#%%define sourceroot %%{name}-%%{vermajor}-%%{buildQualifier}
 %define sourceroot %{name}-%{vermajor}
 %define sourcetree %{name}-%{version}
 %define sourcetree_contrib %{name}-contrib
@@ -253,7 +253,7 @@ rm -rf %{sourceroot} ; mkdir -p %{sourceroot}
 #    \_{sourcetree}          \_joplin-2.10.17 (for commandline app)
 #    \_{appimagename}        \_Joplin-2.10.17.AppImage
 #    \_{sourcetree_contrib}  \_joplin-contrib
-#    \_%{appid}.metainfo.xml     \_org.joplinapp.Joplin.metainfo.xml
+#    \_{appid}.metainfo.xml     \_org.joplinapp.Joplin.metainfo.xml
 
 # PREP STAGE FOR BUILD FROM PRE-BUILT BINARY
 # Source0 (binary)
@@ -399,6 +399,11 @@ umask 007
 
 
 %changelog
+* Mon Apr 6 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.7-0.1-prerelease
+  - 3.6.7-prerelease which addresses a lost data bug when using external  
+    editor with large notes
+  - fixed a couple spec file errors
+
 * Mon Mar 9 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.13-1
 * Mon Mar 9 2026 Todd Warner <t0dd_at_protonmail.com> 3.5.13-0.1
   - 3.5.13
@@ -454,8 +459,8 @@ umask 007
 * Sat May 3 2025 Todd Warner <t0dd_at_protonmail.com> 3.3.10-0.1
   - 3.3.10
 
-* Thu Mar 23 2025 Todd Warner <t0dd_at_protonmail.com> 3.2.13-1
-* Thu Mar 23 2025 Todd Warner <t0dd_at_protonmail.com> 3.2.13-0.1
+* Sun Mar 23 2025 Todd Warner <t0dd_at_protonmail.com> 3.2.13-1
+* Sun Mar 23 2025 Todd Warner <t0dd_at_protonmail.com> 3.2.13-0.1
   - 3.2.13
 
 * Mon Feb 10 2025 Todd Warner <t0dd_at_protonmail.com> 3.2.12-1
