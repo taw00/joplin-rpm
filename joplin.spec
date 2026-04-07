@@ -52,7 +52,7 @@ Summary: Notebook Application
 # VERSION
 # example: 3.5.11
 %define vermajor 3.6
-%define verminor 7
+%define verminor 8
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -399,6 +399,9 @@ umask 007
 
 
 %changelog
+* Tue Apr 7 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.8-0.1-prerelease
+  - 3.6.8-prerelease which addresses a bug in the 3.6.7 prerelease
+
 * Mon Apr 6 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.7-0.1-prerelease
   - 3.6.7-prerelease which addresses a lost data bug when using external  
     editor with large notes
