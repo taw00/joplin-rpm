@@ -117,6 +117,7 @@ ExclusiveArch: x86_64
 
 # how are debug info and build_ids managed (I only halfway understand this):
 # https://github.com/rpm-software-management/rpm/blob/master/macros.in
+# We do nothing but package builds now from upstream binaries, and so, this:
 # ...flip-flop next two lines in order to disable (nil) or enable (1) debuginfo package build
 %define debug_package 1
 %define debug_package %{nil}
