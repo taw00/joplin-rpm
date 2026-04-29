@@ -52,7 +52,7 @@ Summary: Notebook Application
 # VERSION
 # example: 3.5.11
 %define vermajor 3.6
-%define verminor 8
+%define verminor 10
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -400,6 +400,9 @@ umask 007
 
 
 %changelog
+* Tue Apr 28 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.10-0.1-prerelease
+  - 3.6.10-prerelease
+
 * Tue Apr 7 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.8-0.1-prerelease
   - 3.6.8-prerelease which addresses a bug in the 3.6.7 prerelease
 
