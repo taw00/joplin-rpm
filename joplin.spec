@@ -59,7 +59,7 @@ Version: %{vermajor}.%{verminor}
 # example: 3.5.11-1 or 3.5.11-0.1
 %define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 0.1
+  %define _pkgrel 0.2
 %endif
 
 #
@@ -170,15 +170,15 @@ BuildRequires: desktop-file-utils
 # I *think* we now have to include fuse entire
 %if 0%{?suse_version:1}
 Requires: fuse libfuse2
-BuildRequires: appstream-glib
+BuildRequires: appstream-glib rsvg-convert
 %endif
 %if 0%{?rhel:1}
 Requires: fuse fuse-libs
-BuildRequires: libappstream-glib
+BuildRequires: libappstream-glib librsvg2-tools
 %endif
 %if 0%{?fedora:1}
 Requires: fuse fuse-libs
-BuildRequires: libappstream-glib
+BuildRequires: libappstream-glib librsvg2-tools
 %endif
 
 # IF BUILDING TERMINAL APP
@@ -270,6 +270,12 @@ mv %{SOURCE2} %{_builddir}/%{sourceroot}/%{appid}.metainfo.xml
 # Build section starts us in directory {_builddir}/{sourceroot}
 echo "======== build stage ========"
 
+# At some point we need to do this (in the appropriate director) instead of
+# carting around PNG icons:
+#for size in 16 22 24 32 48; do rsvg-convert -w $size      hicolor-scalable.svg -o      hicolor-${size}.png; done
+#for size in 16 22 24 32 48; do rsvg-convert -w $size highcontrast-scalable.svg -o highcontrast-${size}.png; done
+
+
 #
 # TERMINAL APP BUILD ==========
 #
@@ -322,17 +328,28 @@ install -d %{buildroot}%{_datadir}/applications
 install -d %{buildroot}%{_metainfodir}
 
 # icons
-install -D -m644 -p %{sourcetree_contrib}/desktop-icons/hicolor-64.png    %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{appid}.png
-install -D -m644 -p    %{sourcetree_contrib}/from-upstream/128x128.png  %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{appid}.png
-install -D -m644 -p    %{sourcetree_contrib}/from-upstream/256x256.png  %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{appid}.png
-install -D -m644 -p    %{sourcetree_contrib}/from-upstream/512x512.png  %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
-install -D -m644 -p %{sourcetree_contrib}/from-upstream/JoplinIcon.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/hicolor-16.png  %{buildroot}%{_datadir}/icons/hicolor/16x16/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/hicolor-22.png  %{buildroot}%{_datadir}/icons/hicolor/22x22/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/hicolor-24.png  %{buildroot}%{_datadir}/icons/hicolor/24x24/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/hicolor-32.png  %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/hicolor-48.png  %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/hicolor-64.png  %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{appid}.png
+install -D -m644 -p %{sourcetree_contrib}/desktop-icons/hicolor-scalable.svg  %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
+install -D -m644 -p          %{sourcetree_contrib}/from-upstream/128x128.png  %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{appid}.png
+install -D -m644 -p          %{sourcetree_contrib}/from-upstream/256x256.png  %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{appid}.png
+install -D -m644 -p          %{sourcetree_contrib}/from-upstream/512x512.png  %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
+#install -D -m644 -p %{sourcetree_contrib}/from-upstream/JoplinIcon.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
 
 # icons
-install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/highcontrast-64.png     %{buildroot}%{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
-install -D -m644 -p      %{sourcetree_contrib}/desktop-icons/highcontrast-128.png   %{buildroot}%{_datadir}/icons/HighContrast/128x128/apps/%{appid}.png
-install -D -m644 -p      %{sourcetree_contrib}/desktop-icons/highcontrast-256.png   %{buildroot}%{_datadir}/icons/HighContrast/256x256/apps/%{appid}.png
-install -D -m644 -p      %{sourcetree_contrib}/desktop-icons/highcontrast-512.png   %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/highcontrast-16.png  %{buildroot}%{_datadir}/icons/HighContrast/16x16/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/highcontrast-22.png  %{buildroot}%{_datadir}/icons/HighContrast/22x22/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/highcontrast-24.png  %{buildroot}%{_datadir}/icons/HighContrast/24x24/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/highcontrast-32.png  %{buildroot}%{_datadir}/icons/HighContrast/32x32/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/highcontrast-48.png  %{buildroot}%{_datadir}/icons/HighContrast/48x48/apps/%{appid}.png
+install -D -m644 -p       %{sourcetree_contrib}/desktop-icons/highcontrast-64.png  %{buildroot}%{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
+install -D -m644 -p      %{sourcetree_contrib}/desktop-icons/highcontrast-128.png  %{buildroot}%{_datadir}/icons/HighContrast/128x128/apps/%{appid}.png
+install -D -m644 -p      %{sourcetree_contrib}/desktop-icons/highcontrast-256.png  %{buildroot}%{_datadir}/icons/HighContrast/256x256/apps/%{appid}.png
+install -D -m644 -p      %{sourcetree_contrib}/desktop-icons/highcontrast-512.png  %{buildroot}%{_datadir}/icons/HighContrast/512x512/apps/%{appid}.png
 install -D -m644 -p %{sourcetree_contrib}/desktop-icons/highcontrast-scalable.svg  %{buildroot}%{_datadir}/icons/HighContrast/scalable/apps/%{appid}.svg
 
 install -D -m644 -p %{sourcetree_contrib}/%{appid}.desktop %{buildroot}%{_datadir}/applications/%{appid}.desktop
@@ -374,11 +391,21 @@ mv -v %{appimagename} %{buildroot}%{_bindir}/%{name_desktop}
 %{_datadir}/applications/%{appid}.desktop
 %{_metainfodir}/%{appid}.metainfo.xml
 # desktop environment icons
+   %{_datadir}/icons/hicolor/16x16/apps/%{appid}.png
+   %{_datadir}/icons/hicolor/22x22/apps/%{appid}.png
+   %{_datadir}/icons/hicolor/24x24/apps/%{appid}.png
+   %{_datadir}/icons/hicolor/32x32/apps/%{appid}.png
+   %{_datadir}/icons/hicolor/48x48/apps/%{appid}.png
    %{_datadir}/icons/hicolor/64x64/apps/%{appid}.png
  %{_datadir}/icons/hicolor/128x128/apps/%{appid}.png
  %{_datadir}/icons/hicolor/256x256/apps/%{appid}.png
  %{_datadir}/icons/hicolor/512x512/apps/%{appid}.png
 %{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
+   %{_datadir}/icons/HighContrast/16x16/apps/%{appid}.png
+   %{_datadir}/icons/HighContrast/22x22/apps/%{appid}.png
+   %{_datadir}/icons/HighContrast/24x24/apps/%{appid}.png
+   %{_datadir}/icons/HighContrast/32x32/apps/%{appid}.png
+   %{_datadir}/icons/HighContrast/48x48/apps/%{appid}.png
    %{_datadir}/icons/HighContrast/64x64/apps/%{appid}.png
  %{_datadir}/icons/HighContrast/128x128/apps/%{appid}.png
  %{_datadir}/icons/HighContrast/256x256/apps/%{appid}.png
@@ -400,6 +427,12 @@ umask 007
 
 
 %changelog
+* Wed Apr 29 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.10-0.2-prerelease
+  - Adding missing icons (according to GNOME)
+  - Using our hicolor svg instead of upstream's
+  - testing 'BuildRequires: rsvg-convert' for future image manipulation purposes
+  - corrected StartupWMClass value in .desktop from Joplin to @joplin/app-desktop
+
 * Tue Apr 28 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.10-0.1-prerelease
   - 3.6.10-prerelease
 
