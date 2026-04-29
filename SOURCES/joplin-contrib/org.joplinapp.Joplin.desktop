@@ -5,7 +5,7 @@ Comment=Joplin for the desktop, a free and secure notebook management applicatio
 TryExec=/usr/bin/joplin-desktop
 Exec=/usr/bin/joplin-desktop %u
 Icon=org.joplinapp.Joplin
-StartupWMClass==@joplin/app-desktop
+StartupWMClass=@joplin/app-desktop
 Type=Application
 Categories=Office;
 MimeType=x-scheme-handler/joplin;text/markdown;text/plain;
