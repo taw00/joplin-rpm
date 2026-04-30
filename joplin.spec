@@ -427,6 +427,11 @@ umask 007
 
 
 %changelog
+* Thu Apr 30 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.10-1-prerelease
+  - pre-release labeled "production" due to need to squash the lost data bug  
+    mentioned in the 3.6.7-0.1-prerelease release below. Upstream is not  
+    releasing this as a production release quickly enough, IMHO.
+
 * Wed Apr 29 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.10-0.2-prerelease
   - Adding missing icons (according to GNOME)
   - Using our hicolor svg instead of upstream's
