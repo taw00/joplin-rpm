@@ -52,7 +52,7 @@ Summary: Notebook Application
 # VERSION
 # example: 3.5.11
 %define vermajor 3.6
-%define verminor 10
+%define verminor 13
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
@@ -427,6 +427,10 @@ umask 007
 
 
 %changelog
+* Tue May 12 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.13-1
+* Tue May 12 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.13-0.1
+  - 3.6.13
+
 * Thu Apr 30 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.10-1-prerelease
   - pre-release labeled "production" due to need to squash the lost data bug  
     mentioned in the 3.6.7-0.1-prerelease release below. Upstream is not  
