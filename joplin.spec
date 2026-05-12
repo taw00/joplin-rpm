@@ -26,7 +26,7 @@
 %global __strip /bin/true
 
 %define isTestBuild 1
-%define isPreReleaseVersion 1
+%define isPreReleaseVersion 0
 %define buildTerminalApp 0
 
 %define upgradeNPM 1
