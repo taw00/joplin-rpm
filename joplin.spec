@@ -59,7 +59,7 @@ Version: %{vermajor}.%{verminor}
 # example: 3.5.11-1 or 3.5.11-0.1
 %define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 0.2
+  %define _pkgrel 0.1
 %endif
 
 #
