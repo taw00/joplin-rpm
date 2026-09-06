@@ -53,6 +53,19 @@
     <binary>joplin-desktop</binary>
   </provides>
   <releases>
+    <release version="3.7.16" date="2026-09-06">
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.16</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.14</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.13</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.12</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.10</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.9</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.8</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.6</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.4</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.3</url>
+      <url>https://github.com/laurent22/joplin/releases/tag/v3.7.1</url>
+    </release>
     <release version="3.6.16" date="2026-08-20">
       <url>https://github.com/laurent22/joplin/releases/tag/v3.6.16</url>
     </release>

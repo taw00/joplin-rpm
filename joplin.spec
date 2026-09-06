@@ -169,15 +169,18 @@ BuildRequires: desktop-file-utils
 # Note, past fuse requirement was fuselib2 (suse) and fuse-libs (rhel and fedora)
 # I *think* we now have to include fuse entire
 %if 0%{?suse_version:1}
-Requires: fuse libfuse2
+#Requires: fuse libfuse2
+Requires: fuse
 BuildRequires: appstream-glib rsvg-convert
 %endif
 %if 0%{?rhel:1}
-Requires: fuse fuse-libs
+#Requires: fuse fuse-libs
+Requires: fuse
 BuildRequires: libappstream-glib librsvg2-tools
 %endif
 %if 0%{?fedora:1}
-Requires: fuse fuse-libs
+#Requires: fuse fuse-libs
+Requires: fuse
 BuildRequires: libappstream-glib librsvg2-tools
 %endif
 
@@ -427,6 +430,11 @@ umask 007
 
 
 %changelog
+* Sun Sep 6 2026 Todd Warner <t0dd_at_protonmail.com> 3.7.16-1
+* Sun Sep 6 2026 Todd Warner <t0dd_at_protonmail.com> 3.7.16-0.1
+  - 3.7.16
+  - Note: 3.7 drops the requirement for the deprecated libfuse2
+
 * Fri Aug 21 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.16-1
 * Fri Aug 21 2026 Todd Warner <t0dd_at_protonmail.com> 3.6.16-0.1
   - 3.6.16
