@@ -51,7 +51,7 @@ Summary: Notebook Application
 
 # VERSION
 # example: 3.5.11
-%define vermajor 3.6
+%define vermajor 3.7
 %define verminor 16
 Version: %{vermajor}.%{verminor}
 
