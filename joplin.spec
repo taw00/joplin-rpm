@@ -57,9 +57,9 @@ Version: %{vermajor}.%{verminor}
 
 # RELEASE
 # example: 3.5.11-1 or 3.5.11-0.1
-%define _pkgrel 1
+%define _pkgrel 2
 %if %{isTestBuild}
-  %define _pkgrel 0.1
+  %define _pkgrel 1.1
 %endif
 
 #
@@ -430,6 +430,10 @@ umask 007
 
 
 %changelog
+* Fri Nov 13 2026 Todd Warner <t0dd_at_protonmail.com> 3.7.22-2
+* Fri Nov 13 2026 Todd Warner <t0dd_at_protonmail.com> 3.7.22-1.1
+  - fix StartupWMClass entry in .desktop file
+
 * Thu Oct 29 2026 Todd Warner <t0dd_at_protonmail.com> 3.7.22-1
 * Thu Oct 29 2026 Todd Warner <t0dd_at_protonmail.com> 3.7.22-0.1
   - 3.7.22
