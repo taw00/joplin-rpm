@@ -52,14 +52,14 @@ Summary: Notebook Application
 # VERSION
 # example: 3.5.11
 %define vermajor 3.7
-%define verminor 22
+%define verminor 24
 Version: %{vermajor}.%{verminor}
 
 # RELEASE
 # example: 3.5.11-1 or 3.5.11-0.1
-%define _pkgrel 2
+%define _pkgrel 1
 %if %{isTestBuild}
-  %define _pkgrel 1.1
+  %define _pkgrel 0.1
 %endif
 
 #
@@ -430,6 +430,10 @@ umask 007
 
 
 %changelog
+* Thu Nov 18 2026 Todd Warner <t0dd_at_protonmail.com> 3.7.24-1
+* Thu Nov 18 2026 Todd Warner <t0dd_at_protonmail.com> 3.7.24-0.1
+  - 3.7.24
+
 * Fri Nov 13 2026 Todd Warner <t0dd_at_protonmail.com> 3.7.22-2
 * Fri Nov 13 2026 Todd Warner <t0dd_at_protonmail.com> 3.7.22-1.1
   - fix StartupWMClass entry in .desktop file
